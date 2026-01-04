@@ -18,44 +18,81 @@ const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
 
+  // Função para sincronizar o Título e Metadados SEO
+  const updateSEOMetadata = (loc: UserLocation) => {
+    const title = `${loc.specialty} Perto de Mim em ${loc.city} - ${loc.state} | IA HOSPITAL`;
+    document.title = title;
+    
+    // Atualiza a tag canonical dinamicamente para o Google
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      const slugCity = loc.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
+      const slugState = loc.state.toLowerCase();
+      canonical.setAttribute('href', `https://iahospital.com.br/atendimento/${slugState}/${slugCity}`);
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
 
-    // Lógica de Roteamento Virtual para SEO (Query Params)
-    const params = new URLSearchParams(window.location.search);
-    const cityParam = params.get('cidade');
-    const stateParam = params.get('estado');
-    const specialtyParam = params.get('especialidade');
+    // Lógica de Roteamento Avançada (Lê Pathname ou Query Params)
+    const parseLocation = () => {
+      const params = new URLSearchParams(window.location.search);
+      const pathParts = window.location.pathname.split('/').filter(p => p);
+      
+      // Exemplo de path: /atendimento/sp/sao-paulo/cardiologia
+      // Parts: [0]: atendimento, [1]: sp, [2]: sao-paulo, [3]: cardiologia
+      
+      let city = params.get('cidade');
+      let state = params.get('estado');
+      let specialty = params.get('especialidade');
 
-    if (cityParam || stateParam || specialtyParam) {
-      setLocation({
-        city: cityParam || 'sua localidade',
-        state: stateParam || 'Brasil',
-        specialty: specialtyParam || 'Atendimento Médico'
-      });
-    } else if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation(prev => ({ 
-            ...prev,
-            city: 'sua cidade atual', 
-            lat: position.coords.latitude, 
-            lng: position.coords.longitude 
-          }));
-        },
-        () => console.log("Location access denied")
-      );
-    }
+      if (pathParts.length >= 3) {
+        state = pathParts[1].toUpperCase();
+        city = pathParts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        if (pathParts[3]) {
+          specialty = pathParts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+      }
 
-    return () => window.removeEventListener('scroll', handleScroll);
+      if (city || state || specialty) {
+        const newLoc = {
+          city: city || 'sua localidade',
+          state: state || 'Brasil',
+          specialty: specialty || 'Atendimento Médico'
+        };
+        setLocation(newLoc);
+        updateSEOMetadata(newLoc);
+      } else if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setLocation(prev => ({ 
+              ...prev,
+              city: 'sua cidade atual', 
+              lat: position.coords.latitude, 
+              lng: position.coords.longitude 
+            }));
+          },
+          () => console.log("Geolocation access denied")
+        );
+      }
+    };
+
+    parseLocation();
+    window.addEventListener('popstate', parseLocation);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('popstate', parseLocation);
+    };
   }, []);
 
-  const updateSEO = (newLocation: UserLocation) => {
+  const handleApplyLocation = (newLocation: UserLocation) => {
     setLocation(newLocation);
-    document.title = `${newLocation.specialty} em ${newLocation.city} - ${newLocation.state} | IA HOSPITAL`;
+    updateSEOMetadata(newLocation);
   };
 
   return (
@@ -75,19 +112,16 @@ const App: React.FC = () => {
       </main>
       <Footer onAdminOpen={() => setIsAdminOpen(true)} />
       
-      {/* Botão Flutuante Admin - Mantido para facilidade de uso durante desenvolvimento */}
+      {/* Botão Flutuante Admin */}
       <button 
         onClick={() => setIsAdminOpen(true)}
-        className="fixed bottom-6 right-6 w-12 h-12 bg-slate-800 text-white rounded-full shadow-xl flex items-center justify-center hover:bg-slate-700 hover:scale-110 transition-all z-[60]"
+        className="fixed bottom-6 right-6 w-12 h-12 bg-slate-800 text-white rounded-full shadow-xl flex items-center justify-center hover:bg-slate-700 hover:scale-110 transition-all z-[60] border-2 border-orange-500/20"
         title="Admin SEO Flame Work"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
+        <span className="text-xl">🔥</span>
       </button>
 
-      {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={updateSEO} currentLocation={location} />}
+      {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={handleApplyLocation} currentLocation={location} />}
     </div>
   );
 };

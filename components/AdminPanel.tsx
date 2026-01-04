@@ -15,12 +15,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
   const [useCustomCity, setUseCustomCity] = useState(false);
   
   const [form, setForm] = useState<UserLocation>({
-    city: currentLocation.city === 'sua região' ? (CITIES_BY_STATE['SP'][0]) : currentLocation.city,
+    city: currentLocation.city === 'sua região' || currentLocation.city === 'sua cidade atual' ? (CITIES_BY_STATE['SP'][0]) : currentLocation.city,
     state: (currentLocation.state === 'Brasil' || currentLocation.state === 'Brasil (Todos)') ? 'SP' : currentLocation.state,
     specialty: currentLocation.specialty || 'Atendimento Médico'
   });
 
-  // Atualiza a cidade quando o estado muda se não estiver em modo customizado ou massivo
   useEffect(() => {
     if (!allCities && !useCustomCity) {
       const cities = CITIES_BY_STATE[form.state] || [];
@@ -33,11 +32,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
   const generateSlug = (text: string) => 
     text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 
-  const getCanonicalUrl = () => {
+  const getRelativePath = () => {
     const statePart = allStates ? 'brasil' : form.state.toLowerCase();
     const cityPart = allCities ? 'todas-as-cidades' : generateSlug(useCustomCity ? customCity : form.city);
     const specPart = generateSlug(form.specialty || 'atendimento');
-    return `https://iahospital.com.br/atendimento/${statePart}/${cityPart}/${specPart}`;
+    return `/atendimento/${statePart}/${cityPart}/${specPart}`;
   };
 
   const handleApply = () => {
@@ -46,6 +45,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
       city: allCities ? 'Todas as Cidades' : (useCustomCity ? customCity : form.city),
       state: allStates ? 'Brasil (Todos)' : form.state,
     };
+    
+    // Altera a URL do navegador sem recarregar (PushState)
+    const newPath = getRelativePath();
+    window.history.pushState({}, '', newPath);
+    
     onApply(finalLocation);
     onClose();
   };
@@ -57,7 +61,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
       <div className="relative w-full max-w-lg bg-slate-900 h-full shadow-2xl flex flex-col animate-slide-left overflow-hidden">
         
-        {/* Header de Gestão Flame Work */}
         <div className="p-6 border-b border-slate-800 flex justify-between items-center bg-gradient-to-r from-slate-950 to-slate-900">
           <div>
             <div className="flex items-center gap-2 mb-1">
@@ -71,13 +74,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
           </button>
         </div>
 
-        {/* Formulário de Estratégia Local */}
-        <div className="flex-grow overflow-y-auto p-6 space-y-8">
-          
-          {/* Toggles de Abrangência Massiva */}
+        <div className="flex-grow overflow-y-auto p-6 space-y-8 custom-scrollbar">
           <div className="space-y-4">
             <h3 className="text-[10px] font-black text-orange-500 uppercase tracking-[0.2em]">Configurações de Aliança</h3>
-            
             <div className="grid grid-cols-2 gap-4">
               <div 
                 className={`p-4 rounded-2xl border transition-all cursor-pointer ${allStates ? 'bg-orange-600/10 border-orange-500' : 'bg-slate-800/30 border-slate-700 hover:border-slate-500'}`}
@@ -107,7 +106,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
             </div>
           </div>
 
-          {/* Seletores Geográficos e Técnicos */}
           <div className="space-y-6 bg-slate-800/20 p-6 rounded-3xl border border-slate-800">
             <div className={allStates ? 'opacity-20 pointer-events-none' : ''}>
               <label className="block mb-2">
@@ -164,40 +162,28 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
             </label>
           </div>
 
-          {/* Preview de Estrutura SEO */}
           <div className="bg-black/40 p-6 rounded-3xl border border-white/5 space-y-4">
             <h3 className="text-white text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
               Flame Work Intelligence Preview
             </h3>
-            
             <div className="space-y-3">
               <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-800">
-                <p className="text-[9px] text-slate-500 mb-1 font-bold uppercase">Título Dinâmico (H1):</p>
-                <p className="text-xs text-blue-400 font-bold">
-                  {form.specialty} em {allCities ? 'Todas as Cidades' : (useCustomCity ? customCity : form.city)} - {allStates ? 'Brasil' : form.state} | IA HOSPITAL
-                </p>
-              </div>
-              <div className="bg-slate-900/50 p-3 rounded-xl border border-slate-800">
-                <p className="text-[9px] text-slate-500 mb-1 font-bold uppercase">URL Canônica Estimada:</p>
-                <p className="text-[10px] text-orange-300 font-mono break-all italic">{getCanonicalUrl()}</p>
+                <p className="text-[9px] text-slate-500 mb-1 font-bold uppercase">Nova URL (Automática):</p>
+                <p className="text-[10px] text-orange-300 font-mono break-all italic">{getRelativePath()}</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Ação de Publicação */}
         <div className="p-6 bg-slate-950 border-t border-slate-800">
           <button 
             onClick={handleApply}
             className="w-full py-4 bg-orange-600 hover:bg-orange-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-orange-900/40 active:scale-95 flex items-center justify-center gap-3"
           >
-            Publicar Cluster de Páginas
+            Publicar Cluster & Mudar URL
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
           </button>
-          <p className="text-[9px] text-slate-600 text-center mt-4 font-bold uppercase tracking-tighter">
-            Estratégia SEO Local: 100% Google Search Compliance
-          </p>
         </div>
       </div>
     </div>
