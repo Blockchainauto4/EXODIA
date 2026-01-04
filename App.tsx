@@ -23,7 +23,6 @@ const App: React.FC = () => {
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [apiTier, setApiTier] = useState<'BASIC' | 'PRO'>('BASIC');
 
-  // Verifica o nível da API baseado na presença de uma chave de usuário
   const checkApiTier = useCallback(async () => {
     if (window.aistudio) {
       const hasKey = await window.aistudio.hasSelectedApiKey();
@@ -35,8 +34,17 @@ const App: React.FC = () => {
 
   const updateSEOMetadata = useCallback((loc: UserLocation) => {
     const title = `${loc.specialty} Perto de Mim em ${loc.city} - ${loc.state} | IA HOSPITAL`;
+    const description = `Busca ${loc.specialty?.toLowerCase()} próximo de mim em ${loc.city}? O IA HOSPITAL oferece orientação médica inteligente e triagem por IA na sua região agora.`;
+    
     document.title = title;
     
+    // Update Meta Description for SEO bots
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', description);
+    }
+    
+    // Update Canonical
     let canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
       const slugCity = loc.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
@@ -46,27 +54,19 @@ const App: React.FC = () => {
   }, []);
 
   const parseLocationFromUrl = useCallback(() => {
-    const params = new URLSearchParams(window.location.search);
     const pathParts = window.location.pathname.split('/').filter(p => p);
     
-    let city = params.get('cidade');
-    let state = params.get('estado');
-    let specialty = params.get('especialidade');
+    // Pattern: /atendimento/{state}/{city}/{specialty}
+    if (pathParts[0] === 'atendimento' && pathParts.length >= 2) {
+      const state = pathParts[1].toUpperCase();
+      const city = pathParts[2] 
+        ? pathParts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+        : 'Sua Cidade';
+      const specialty = pathParts[3]
+        ? pathParts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+        : 'Atendimento Médico';
 
-    if (pathParts.length >= 3 && pathParts[0] === 'atendimento') {
-      state = pathParts[1].toUpperCase();
-      city = pathParts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-      if (pathParts[3]) {
-        specialty = pathParts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-      }
-    }
-
-    if (city || state || specialty) {
-      return {
-        city: city || 'sua localidade',
-        state: state || 'Brasil',
-        specialty: specialty || 'Atendimento Médico'
-      };
+      return { city, state, specialty };
     }
     return null;
   }, []);
@@ -84,7 +84,7 @@ const App: React.FC = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const loc = { 
-            city: 'sua cidade atual', 
+            city: 'Sua Localização', 
             state: 'Brasil',
             specialty: 'Atendimento Médico',
             lat: position.coords.latitude, 
@@ -97,9 +97,7 @@ const App: React.FC = () => {
       );
     }
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [parseLocationFromUrl, updateSEOMetadata, checkApiTier]);
 
   const handleStartLiveAnalysis = async () => {
@@ -114,7 +112,6 @@ const App: React.FC = () => {
   const handleOpenSelectKey = async () => {
     if (window.aistudio?.openSelectKey) {
       await window.aistudio.openSelectKey();
-      // Assumimos sucesso imediatamente conforme regras de race condition
       await checkApiTier();
       setIsLiveAnalysisOpen(true);
     }
@@ -137,22 +134,16 @@ const App: React.FC = () => {
       <main className="flex-grow">
         <Hero location={location} onStartLive={handleStartLiveAnalysis} apiTier={apiTier} />
         
-        {/* Restrição de UI: Se não for PRO, mostra aviso sobre funções avançadas */}
         {apiTier === 'BASIC' && (
           <div className="max-w-7xl mx-auto px-4 mt-8">
-            <div className="bg-orange-50 border border-orange-200 p-4 rounded-2xl flex items-center justify-between">
+            <div className="bg-blue-50/50 border border-blue-100 p-4 rounded-2xl flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-xl">💡</span>
-                <p className="text-orange-800 text-sm font-medium">
-                  Você está no modo <span className="font-bold">Básico</span>. Para habilitar triagem por vídeo e áudio em tempo real, configure sua chave de API paga.
+                <span className="text-xl">🩺</span>
+                <p className="text-blue-900 text-sm font-medium">
+                  Modo de Orientação Básico Ativo. Para diagnóstico visual por IA em {location.city}, ative sua chave Pro.
                 </p>
               </div>
-              <button 
-                onClick={() => setIsTutorialOpen(true)}
-                className="text-xs font-black uppercase tracking-widest text-orange-600 hover:underline"
-              >
-                Como configurar
-              </button>
+              <button onClick={() => setIsTutorialOpen(true)} className="text-xs font-black uppercase tracking-widest text-blue-600 hover:underline">Configurar Pro</button>
             </div>
           </div>
         )}
@@ -163,26 +154,18 @@ const App: React.FC = () => {
         <SEOContent location={location} />
         <VoiceFAQ location={location} />
       </main>
-      <Footer onAdminOpen={() => setIsAdminOpen(true)} />
+      <Footer location={location} onAdminOpen={() => setIsAdminOpen(true)} />
       
       <button 
         onClick={() => setIsAdminOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 group"
-        title="Flame Work SEO Suite"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 group"
       >
         <span className="text-2xl group-hover:animate-bounce">🔥</span>
       </button>
 
       {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={handleApplyLocation} currentLocation={location} />}
-      
       {isLiveAnalysisOpen && <LiveAnalysis location={location} onClose={() => setIsLiveAnalysisOpen(false)} />}
-
-      {isTutorialOpen && (
-        <TutorialModal 
-          onClose={() => setIsTutorialOpen(false)} 
-          onOpenSelectKey={handleOpenSelectKey} 
-        />
-      )}
+      {isTutorialOpen && <TutorialModal onClose={() => setIsTutorialOpen(false)} onOpenSelectKey={handleOpenSelectKey} />}
     </div>
   );
 };
