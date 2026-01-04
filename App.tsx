@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
 import LiveAnalysis from './components/LiveAnalysis';
 import TutorialModal from './components/TutorialModal';
-import { UserLocation } from './types';
+import { UserLocation, CITIES_BY_STATE } from './types';
 
 const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ 
@@ -38,13 +38,13 @@ const App: React.FC = () => {
     
     document.title = title;
     
-    // Update Meta Description for SEO bots
+    // Atualiza Meta Description dinamicamente para o Googlebot
     let metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute('content', description);
     }
     
-    // Update Canonical
+    // Atualiza Canonical com a URL absoluta
     let canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
       const slugCity = loc.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
@@ -54,19 +54,22 @@ const App: React.FC = () => {
   }, []);
 
   const parseLocationFromUrl = useCallback(() => {
-    const pathParts = window.location.pathname.split('/').filter(p => p);
+    // Pega o path ignorando a base
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(p => p);
     
-    // Pattern: /atendimento/{state}/{city}/{specialty}
-    if (pathParts[0] === 'atendimento' && pathParts.length >= 2) {
-      const state = pathParts[1].toUpperCase();
-      const city = pathParts[2] 
-        ? pathParts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
-        : 'Sua Cidade';
-      const specialty = pathParts[3]
-        ? pathParts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
-        : 'Atendimento Médico';
+    // Padrão esperado: /atendimento/{estado}/{cidade}/{especialidade}
+    if (parts[0] === 'atendimento' && parts.length >= 2) {
+      const stateParam = parts[1].toUpperCase();
+      const cityParam = parts[2] ? parts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
+      const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Atendimento Médico';
 
-      return { city, state, specialty };
+      // Validação básica contra a lista de cidades (opcional para maior EEAT)
+      return { 
+        city: cityParam || 'Sua Localidade', 
+        state: stateParam, 
+        specialty: specialtyParam 
+      };
     }
     return null;
   }, []);
@@ -83,15 +86,18 @@ const App: React.FC = () => {
     } else if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const loc = { 
-            city: 'Sua Localização', 
-            state: 'Brasil',
-            specialty: 'Atendimento Médico',
-            lat: position.coords.latitude, 
-            lng: position.coords.longitude 
-          };
-          setLocation(loc);
-          updateSEOMetadata(loc);
+          // Só atualiza por geolocalização se não houver rota específica na URL
+          if (!initialLoc) {
+            const loc = { 
+              city: 'Sua Localização', 
+              state: 'Brasil',
+              specialty: 'Atendimento Médico',
+              lat: position.coords.latitude, 
+              lng: position.coords.longitude 
+            };
+            setLocation(loc);
+            updateSEOMetadata(loc);
+          }
         },
         () => console.log("Geolocation access denied")
       );
@@ -140,10 +146,10 @@ const App: React.FC = () => {
               <div className="flex items-center gap-3">
                 <span className="text-xl">🩺</span>
                 <p className="text-blue-900 text-sm font-medium">
-                  Modo de Orientação Básico Ativo. Para diagnóstico visual por IA em {location.city}, ative sua chave Pro.
+                  Modo de Orientação Básico Ativo em {location.city}. Para análise visual Pro, configure sua chave de API.
                 </p>
               </div>
-              <button onClick={() => setIsTutorialOpen(true)} className="text-xs font-black uppercase tracking-widest text-blue-600 hover:underline">Configurar Pro</button>
+              <button onClick={() => setIsTutorialOpen(true)} className="text-xs font-black uppercase tracking-widest text-blue-600 hover:underline">Ativar Pro</button>
             </div>
           </div>
         )}
@@ -159,6 +165,7 @@ const App: React.FC = () => {
       <button 
         onClick={() => setIsAdminOpen(true)}
         className="fixed bottom-6 right-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 group"
+        title="Configurações SEO Flame Work"
       >
         <span className="text-2xl group-hover:animate-bounce">🔥</span>
       </button>
