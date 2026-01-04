@@ -21,6 +21,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, apiTier, onAdminO
           <span className={`font-black text-xl tracking-tighter text-blue-900`}>IA HOSPITAL</span>
           <button 
             onClick={onOpenTutorial}
+            aria-label={`Mudar nível de API - Atualmente ${apiTier}`}
             className={`ml-2 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border transition-all ${
               apiTier === 'PRO' 
                 ? 'bg-blue-600 border-blue-600 text-white shadow-md' 
@@ -33,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, apiTier, onAdminO
         
         <nav className="hidden md:flex gap-6 items-center">
           <a href="#inicio" className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Início</a>
-          <a href="#assistente" className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Assistente</a>
+          <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Especialidades</button>
           <a href="#faq" className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">FAQ</a>
         </nav>
 
@@ -41,14 +42,15 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, apiTier, onAdminO
           <button 
             onClick={onAdminOpen}
             className="p-2 text-slate-400 hover:text-blue-600 transition-colors"
-            title="Flame Work SEO"
+            title="Acessar Configurações Flame Work SEO"
+            aria-label="Painel Administrativo SEO"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
             </svg>
           </button>
           
-          <div className="flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+          <div className="flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full border border-blue-100 shadow-sm">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span className="text-[10px] md:text-xs font-bold text-blue-700 uppercase tracking-wider whitespace-nowrap">
               {location.city}

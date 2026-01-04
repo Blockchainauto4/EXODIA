@@ -5,10 +5,11 @@ import { UserLocation } from '../types';
 interface HeroProps {
   location: UserLocation;
   onStartLive?: () => void;
+  onStartChat?: () => void;
   apiTier?: 'BASIC' | 'PRO';
 }
 
-const Hero: React.FC<HeroProps> = ({ location, onStartLive, apiTier }) => {
+const Hero: React.FC<HeroProps> = ({ location, onStartLive, onStartChat, apiTier }) => {
   return (
     <section id="inicio" className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
       <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-blue-50 to-transparent opacity-50 blur-3xl"></div>
@@ -29,17 +30,22 @@ const Hero: React.FC<HeroProps> = ({ location, onStartLive, apiTier }) => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <button 
               onClick={onStartLive}
+              aria-label={apiTier === 'PRO' ? 'Iniciar Consulta Médica Pro' : 'Ativar Modo Vídeo PRO'}
               className={`group relative px-8 py-5 text-white font-black uppercase tracking-widest rounded-2xl shadow-2xl transition-all flex items-center justify-center gap-3 overflow-hidden ${
                 apiTier === 'PRO' ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-500/30' : 'bg-slate-900 hover:bg-slate-800 shadow-slate-900/30'
               }`}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
               {apiTier === 'PRO' ? 'Iniciar Consulta Pro' : 'Ativar Modo Vídeo (PRO)'}
             </button>
-            <a href="#assistente" className="px-8 py-5 bg-white border-2 border-slate-200 hover:border-blue-600 text-slate-700 font-bold rounded-2xl transition-all text-center flex items-center justify-center gap-2 uppercase tracking-widest text-xs">
+            <button 
+              onClick={onStartChat}
+              aria-label="Abrir chat básico de orientação médica"
+              className="px-8 py-5 bg-white border-2 border-slate-200 hover:border-blue-600 text-slate-700 font-bold rounded-2xl transition-all text-center flex items-center justify-center gap-2 uppercase tracking-widest text-xs"
+            >
               Chat Básico (Livre)
-            </a>
+            </button>
           </div>
           
           <div className="mt-12 flex items-center justify-center md:justify-start gap-4 text-xs text-slate-500 font-bold uppercase tracking-widest">

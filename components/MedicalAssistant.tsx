@@ -3,9 +3,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getMedicalOrientation } from '../services/geminiService';
 import { Message, UserLocation } from '../types';
 
-const MedicalAssistant: React.FC<{ location: UserLocation }> = ({ location }) => {
+interface MedicalAssistantProps {
+  location: UserLocation;
+  onClose?: () => void;
+}
+
+const MedicalAssistant: React.FC<MedicalAssistantProps> = ({ location, onClose }) => {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: `Olá! Sou o assistente do IA HOSPITAL. Como posso ajudar com sua saúde na minha região de ${location.city} hoje? O atendimento está aberto agora e disponível onde estou agora.` }
+    { role: 'model', text: `Olá! Sou o assistente do IA HOSPITAL. Como posso ajudar com sua saúde na região de ${location.city} hoje? Estou disponível agora para te orientar.` }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -33,63 +38,81 @@ const MedicalAssistant: React.FC<{ location: UserLocation }> = ({ location }) =>
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden max-w-4xl mx-auto">
-      <div className="bg-blue-600 p-6 text-white flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold">Atendimento Próximo</h2>
-          <p className="text-blue-100 text-sm">Aberto agora para {location.city}</p>
+    <div className="bg-white flex flex-col h-[550px] w-full max-h-[80vh] shadow-2xl">
+      <div className="bg-blue-700 p-5 text-white flex items-center justify-between shrink-0 relative z-10">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold text-lg">IA</div>
+          <div>
+            <h2 className="text-sm font-black uppercase tracking-widest leading-tight">Triagem Inteligente</h2>
+            <p className="text-[10px] text-blue-100 font-bold uppercase tracking-tighter opacity-90">{location.city} • Online agora</p>
+          </div>
         </div>
-        <div className="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase">Na Minha Área</div>
+        {onClose && (
+          <button 
+            onClick={onClose} 
+            aria-label="Minimizar chat de orientação"
+            title="Minimizar"
+            className="p-2 hover:bg-white/10 rounded-xl transition-all hover:scale-105 active:scale-95"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+        )}
       </div>
 
-      <div ref={scrollRef} className="h-[400px] overflow-y-auto p-6 space-y-4 bg-slate-50">
+      <div ref={scrollRef} className="flex-grow overflow-y-auto p-5 space-y-5 bg-slate-50 custom-scrollbar">
         {messages.map((msg, idx) => (
-          <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] p-4 rounded-2xl ${
+          <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}>
+            <div className={`max-w-[88%] p-4 rounded-2xl text-xs leading-relaxed shadow-sm ${
               msg.role === 'user' 
-                ? 'bg-blue-600 text-white rounded-tr-none' 
-                : 'bg-white text-slate-700 shadow-sm border border-slate-200 rounded-tl-none'
+                ? 'bg-blue-700 text-white rounded-tr-none font-medium' 
+                : 'bg-white text-slate-800 border border-slate-200 rounded-tl-none font-medium'
             }`}>
-              <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+              <p className="whitespace-pre-wrap">{msg.text}</p>
             </div>
           </div>
         ))}
         {isLoading && (
           <div className="flex justify-start">
             <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 rounded-tl-none">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-blue-300 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-blue-300 rounded-full animate-bounce delay-100"></div>
-                <div className="w-2 h-2 bg-blue-300 rounded-full animate-bounce delay-200"></div>
+              <div className="flex gap-1.5">
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-100"></div>
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-200"></div>
               </div>
             </div>
           </div>
         )}
       </div>
 
-      <div className="p-4 bg-white border-t border-slate-100">
+      <div className="p-4 bg-white border-t border-slate-200 shrink-0 shadow-[0_-10px_30px_rgba(0,0,0,0.03)]">
         <div className="flex gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Descreva o que está sentindo agora..."
-            className="flex-grow p-4 bg-slate-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+            placeholder="Descreva seus sintomas aqui..."
+            className="flex-grow p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-700 outline-none transition-all text-xs font-bold text-slate-900"
+            aria-label="Descreva seus sintomas para a triagem médica"
           />
           <button 
             onClick={handleSend}
             disabled={isLoading}
-            className="p-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50"
+            aria-label="Enviar mensagem de triagem"
+            title="Enviar mensagem"
+            className="p-4 bg-blue-700 text-white rounded-2xl hover:bg-blue-800 transition-all shadow-lg shadow-blue-500/20 active:scale-95 disabled:opacity-50 flex items-center justify-center"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
             </svg>
           </button>
         </div>
-        <p className="mt-3 text-[10px] text-center text-slate-400 font-medium">
-          Atenção: Este serviço é apenas para orientação informativa. Em caso de emergência, ligue 192 ou vá ao hospital.
-        </p>
+        <div className="mt-3 flex items-center justify-center gap-2">
+          <div className="w-1.5 h-1.5 bg-green-600 rounded-full animate-pulse"></div>
+          <p className="text-[9px] text-center text-slate-500 font-black uppercase tracking-widest">
+            Apenas Orientação • Emergência? Ligue 192
+          </p>
+        </div>
       </div>
     </div>
   );
