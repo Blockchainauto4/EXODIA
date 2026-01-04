@@ -9,6 +9,7 @@ import { GoogleGenAI } from "@google/genai";
 const getModelForTier = async () => {
   if (window.aistudio) {
     const isPro = await window.aistudio.hasSelectedApiKey();
+    // Recomenda-se gemini-3-pro-preview para tarefas complexas de saúde
     return isPro ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
   }
   return 'gemini-3-flash-preview';
@@ -30,7 +31,7 @@ export const getMedicalOrientation = async (prompt: string, history: { role: str
         { parts: [{ text: prompt }] }
       ],
       config: {
-        systemInstruction: `Você é o assistente virtual sênior do IA HOSPITAL (Nível: ${modelName}). 
+        systemInstruction: `Você é o assistente virtual sênior do IA HOSPITAL. 
         Sua função é fornecer ORIENTAÇÃO MÉDICA e TRIAGEM PRELIMINAR de forma empática e profissional. 
         REGRAS CRÍTICAS:
         1. Você NÃO fornece diagnósticos definitivos nem prescrições.
@@ -39,18 +40,17 @@ export const getMedicalOrientation = async (prompt: string, history: { role: str
         4. Sempre mencione termos como "perto de mim", "na minha região" ou "na minha área" para reforçar a geolocalização.
         5. Reforce que o atendimento está disponível "onde você está agora".`,
         temperature: 0.7,
-        // Se for o modelo Pro, podemos aumentar o orçamento de pensamento para casos complexos
-        thinkingConfig: modelName === 'gemini-3-pro-preview' ? { thinkingBudget: 4000 } : undefined
+        // Configuração de pensamento para o modelo Pro
+        thinkingConfig: modelName === 'gemini-3-pro-preview' ? { thinkingBudget: 32768 } : undefined
       },
     });
 
-    return response.text;
+    return response.text || "Não consegui processar sua resposta agora. Por favor, tente descrever seus sintomas de outra forma.";
   } catch (error: any) {
-    console.error("Gemini Error:", error);
+    console.error("Gemini Service Error:", error);
     
-    // Tratamento específico para erro de chave/faturamento
-    if (error?.message?.includes("Requested entity was not found") || error?.message?.includes("API key not valid")) {
-      return "Detectamos um problema com as permissões da sua chave de API para este nível de consulta. Por favor, verifique se sua chave possui faturamento ativado no Google Cloud ou use o modo básico.";
+    if (error?.message?.includes("Requested entity was not found") || error?.message?.includes("404")) {
+      return "Detectamos um problema de acesso ao modelo Pro. Se você for o administrador, verifique o faturamento da chave de API no Google Cloud.";
     }
     
     return "Desculpe, tive um problema técnico. Se for uma emergência, procure um hospital agora ou ligue 192.";

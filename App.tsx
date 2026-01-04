@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
 import LiveAnalysis from './components/LiveAnalysis';
 import TutorialModal from './components/TutorialModal';
-import { UserLocation, CITIES_BY_STATE } from './types';
+import { UserLocation } from './types';
 
 const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ 
@@ -42,29 +42,33 @@ const App: React.FC = () => {
     let metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute('content', description);
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = "description";
+      meta.content = description;
+      document.getElementsByTagName('head')[0].appendChild(meta);
     }
     
-    // Atualiza Canonical com a URL absoluta
+    // Atualiza Canonical
     let canonical = document.querySelector('link[rel="canonical"]');
+    const slugCity = loc.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
+    const slugState = loc.state.toLowerCase();
+    const canonicalUrl = `https://iahospital.com.br/atendimento/${slugState}/${slugCity}`;
+    
     if (canonical) {
-      const slugCity = loc.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
-      const slugState = loc.state.toLowerCase();
-      canonical.setAttribute('href', `https://iahospital.com.br/atendimento/${slugState}/${slugCity}`);
+      canonical.setAttribute('href', canonicalUrl);
     }
   }, []);
 
   const parseLocationFromUrl = useCallback(() => {
-    // Pega o path ignorando a base
     const path = window.location.pathname;
     const parts = path.split('/').filter(p => p);
     
-    // Padrão esperado: /atendimento/{estado}/{cidade}/{especialidade}
     if (parts[0] === 'atendimento' && parts.length >= 2) {
       const stateParam = parts[1].toUpperCase();
       const cityParam = parts[2] ? parts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
       const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Atendimento Médico';
 
-      // Validação básica contra a lista de cidades (opcional para maior EEAT)
       return { 
         city: cityParam || 'Sua Localidade', 
         state: stateParam, 
@@ -74,36 +78,44 @@ const App: React.FC = () => {
     return null;
   }, []);
 
+  // Sincroniza estado inicial e ouve mudanças de URL (Popstate)
   useEffect(() => {
-    checkApiTier();
+    const syncLocation = () => {
+      const initialLoc = parseLocationFromUrl();
+      if (initialLoc) {
+        setLocation(initialLoc);
+        updateSEOMetadata(initialLoc);
+      }
+    };
+
+    syncLocation();
+    window.addEventListener('popstate', syncLocation);
+    
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
 
-    const initialLoc = parseLocationFromUrl();
-    if (initialLoc) {
-      setLocation(initialLoc);
-      updateSEOMetadata(initialLoc);
-    } else if (navigator.geolocation) {
+    // Se não houver rota, tenta geolocalização como fallback (mas não sobrepõe a URL)
+    if (!parseLocationFromUrl() && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // Só atualiza por geolocalização se não houver rota específica na URL
-          if (!initialLoc) {
-            const loc = { 
-              city: 'Sua Localização', 
-              state: 'Brasil',
-              specialty: 'Atendimento Médico',
-              lat: position.coords.latitude, 
-              lng: position.coords.longitude 
-            };
-            setLocation(loc);
-            updateSEOMetadata(loc);
-          }
-        },
-        () => console.log("Geolocation access denied")
+          const loc = { 
+            city: 'Sua Localização', 
+            state: 'Brasil',
+            specialty: 'Atendimento Médico',
+            lat: position.coords.latitude, 
+            lng: position.coords.longitude 
+          };
+          setLocation(loc);
+          updateSEOMetadata(loc);
+        }
       );
     }
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    checkApiTier();
+    return () => {
+      window.removeEventListener('popstate', syncLocation);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [parseLocationFromUrl, updateSEOMetadata, checkApiTier]);
 
   const handleStartLiveAnalysis = async () => {
