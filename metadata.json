@@ -2,6 +2,8 @@
   "name": "IA HOSPITAL - Orientação Médica Inteligente",
   "description": "Plataforma nacional de orientação médica por IA, otimizada para SEO local e atendimento 'perto de mim'.",
   "requestFramePermissions": [
-    "geolocation"
+    "geolocation",
+    "camera",
+    "microphone"
   ]
 }

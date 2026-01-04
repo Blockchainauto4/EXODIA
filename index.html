@@ -4,14 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atendimento Médico Perto de Mim: IA HOSPITAL - Orientação Médica Nacional</title>
+    <title>Atendimento Médicos Perto de Mim: IA HOSPITAL - Orientação Médica Nacional</title>
     <meta name="description" content="Busca atendimento médico perto de mim? O IA HOSPITAL oferece orientação médica inteligente e triagem por IA na sua região em todo o Brasil. Confira!">
     <link rel="canonical" href="https://iahospital.com.br/" />
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Segurança contra tela branca: Define process.env para o navegador -->
     <script>
-      window.process = window.process || { env: {} };
+      // Shim completo para process e environment
+      window.process = {
+        env: {
+          NODE_ENV: 'production'
+        },
+        cwd: () => '/',
+        browser: true
+      };
     </script>
 
     <script type="application/ld+json">
@@ -71,7 +77,6 @@
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
     <div id="root"></div>
-    <!-- Carrega o ponto de entrada da aplicação -->
     <script type="module" src="./index.tsx"></script>
 </body>
 </html>
