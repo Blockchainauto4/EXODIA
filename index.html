@@ -8,6 +8,12 @@
     <meta name="description" content="Busca atendimento médico perto de mim? O IA HOSPITAL oferece orientação médica inteligente e triagem por IA na sua região em todo o Brasil. Confira!">
     <link rel="canonical" href="https://iahospital.com.br/" />
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Segurança contra tela branca: Define process.env para o navegador -->
+    <script>
+      window.process = window.process || { env: {} };
+    </script>
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -26,40 +32,46 @@
       ]
     }
     </script>
-<script type="importmap">
+
+    <script type="importmap">
 {
   "imports": {
     "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
   }
 }
 </script>
-<style>
-  @keyframes slide-left {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
-  }
-  .animate-slide-left {
-    animation: slide-left 0.3s ease-out forwards;
-  }
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: #0f172a;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #334155;
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #f97316;
-  }
-</style>
+    
+    <style>
+      @keyframes slide-left {
+        from { transform: translateX(100%); }
+        to { transform: translateX(0); }
+      }
+      .animate-slide-left {
+        animation: slide-left 0.3s ease-out forwards;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #0f172a;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #f97316;
+      }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
     <div id="root"></div>
+    <!-- Carrega o ponto de entrada da aplicação -->
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>

@@ -1,14 +1,18 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 export const getMedicalOrientation = async (prompt: string, history: { role: string; text: string }[]) => {
+  // Inicializamos dentro da função para garantir que o process.env.API_KEY tenha sido injetado pelo ambiente
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: [
-        ...history.map(h => ({ role: h.role === 'user' ? 'user' : 'model', parts: [{ text: h.text }] })),
+        ...history.map(h => ({ 
+          role: h.role === 'user' ? 'user' : 'model', 
+          parts: [{ text: h.text }] 
+        })),
         { parts: [{ text: prompt }] }
       ],
       config: {
@@ -28,6 +32,6 @@ export const getMedicalOrientation = async (prompt: string, history: { role: str
     return response.text;
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "Desculpe, tive um problema técnico. Se for uma emergência, procure um hospital agora.";
+    return "Desculpe, tive um problema técnico ao acessar o serviço de IA. Se for uma emergência, procure um hospital agora ou ligue 192.";
   }
 };
