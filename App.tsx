@@ -23,11 +23,17 @@ const App: React.FC = () => {
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [apiTier, setApiTier] = useState<'BASIC' | 'PRO'>('BASIC');
 
+  // Verifica o tier da API de forma segura
   const checkApiTier = useCallback(async () => {
-    if (window.aistudio) {
-      const hasKey = await window.aistudio.hasSelectedApiKey();
-      setApiTier(hasKey ? 'PRO' : 'BASIC');
-      return hasKey;
+    try {
+      if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
+        const hasKey = await window.aistudio.hasSelectedApiKey();
+        const tier = hasKey ? 'PRO' : 'BASIC';
+        setApiTier(tier);
+        return hasKey;
+      }
+    } catch (e) {
+      console.warn("AI Studio API não detectada ou inacessível:", e);
     }
     return false;
   }, []);
@@ -38,7 +44,6 @@ const App: React.FC = () => {
     
     document.title = title;
     
-    // Atualiza Meta Description dinamicamente para o Googlebot
     let metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute('content', description);
@@ -49,7 +54,6 @@ const App: React.FC = () => {
       document.getElementsByTagName('head')[0].appendChild(meta);
     }
     
-    // Atualiza Canonical
     let canonical = document.querySelector('link[rel="canonical"]');
     const slugCity = loc.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
     const slugState = loc.state.toLowerCase();
@@ -78,7 +82,6 @@ const App: React.FC = () => {
     return null;
   }, []);
 
-  // Sincroniza estado inicial e ouve mudanças de URL (Popstate)
   useEffect(() => {
     const syncLocation = () => {
       const initialLoc = parseLocationFromUrl();
@@ -94,7 +97,6 @@ const App: React.FC = () => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
 
-    // Se não houver rota, tenta geolocalização como fallback (mas não sobrepõe a URL)
     if (!parseLocationFromUrl() && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -107,14 +109,19 @@ const App: React.FC = () => {
           };
           setLocation(loc);
           updateSEOMetadata(loc);
-        }
+        },
+        () => console.warn("Acesso à geolocalização negado")
       );
     }
 
-    checkApiTier();
+    // Polling inicial curto para detectar a chave caso o carregamento do host demore
+    const timer = setInterval(checkApiTier, 1000);
+    setTimeout(() => clearInterval(timer), 5000);
+
     return () => {
       window.removeEventListener('popstate', syncLocation);
       window.removeEventListener('scroll', handleScroll);
+      clearInterval(timer);
     };
   }, [parseLocationFromUrl, updateSEOMetadata, checkApiTier]);
 
@@ -128,10 +135,18 @@ const App: React.FC = () => {
   };
 
   const handleOpenSelectKey = async () => {
-    if (window.aistudio?.openSelectKey) {
-      await window.aistudio.openSelectKey();
-      await checkApiTier();
-      setIsLiveAnalysisOpen(true);
+    try {
+      if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
+        await window.aistudio.openSelectKey();
+        // Conforme regras: assumir sucesso e proceder
+        setApiTier('PRO');
+        setIsTutorialOpen(false);
+        setIsLiveAnalysisOpen(true);
+      } else {
+        alert("O seletor de chaves não está disponível no momento. Verifique se o ambiente suporta o AI Studio.");
+      }
+    } catch (e) {
+      console.error("Erro ao abrir seletor de chaves:", e);
     }
   };
 

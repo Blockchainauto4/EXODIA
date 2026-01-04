@@ -24,6 +24,7 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
   
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
+  const [volumeLevel, setVolumeLevel] = useState(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -35,49 +36,66 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
   const sourcesRef = useRef<Set<AudioBufferSourceNode>>(new Set());
   const transcriptionEndRef = useRef<HTMLDivElement>(null);
 
-  // Refs para acumular transcrição sem causar re-renders excessivos
+  // Acumuladores de texto para evitar problemas de sincronia
   const accumulatedInput = useRef('');
   const accumulatedOutput = useRef('');
 
   useEffect(() => {
-    transcriptionEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (transcriptionEndRef.current) {
+      transcriptionEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [history, currentInput, currentOutput]);
 
-  const handleAPIError = async (error: any) => {
-    console.error("Live API Error:", error);
-    setStatus('erro');
-    setErrorMessage(error?.message || "Erro de conexão com o servidor médico.");
+  const stopSession = () => {
+    setIsActive(false);
+    if (videoIntervalRef.current) window.clearInterval(videoIntervalRef.current);
+    
+    if (sessionRef.current) {
+      try { sessionRef.current.close(); } catch(e){}
+      sessionRef.current = null;
+    }
+    
+    sourcesRef.current.forEach(source => {
+      try { source.stop(); } catch (e) {}
+    });
+    sourcesRef.current.clear();
+    
+    if (audioContextInRef.current) audioContextInRef.current.close();
+    if (audioContextOutRef.current) audioContextOutRef.current.close();
+    
+    if (videoRef.current?.srcObject) {
+      const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
+      tracks.forEach(track => track.stop());
+    }
   };
 
   const startSession = async () => {
-    setStatus('conectando');
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-      if (videoRef.current) videoRef.current.srcObject = stream;
+      setStatus('conectando');
+      
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: true, 
+        video: { width: 640, height: 480 } 
+      });
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
 
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       audioContextInRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 16000 });
       audioContextOutRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
+      
+      const outputNode = audioContextOutRef.current.createGain();
+      outputNode.connect(audioContextOutRef.current.destination);
 
+      // Instanciação imediata antes de conectar
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const sessionPromise = ai.live.connect({
         model: 'gemini-2.5-flash-native-audio-preview-09-2025',
-        config: {
-          responseModalities: [Modality.AUDIO],
-          speechConfig: {
-            voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Zephyr' } }, // Voz mais profissional
-          },
-          systemInstruction: `Você é um Médico Especialista do IA HOSPITAL atendendo em ${location.city}. 
-          O usuário está em uma sessão de VÍDEO PRO.
-          Analise visualmente e auditivamente o paciente. 
-          Mantenha respostas curtas e focadas em triagem. 
-          Use termos clínicos e demonstre autoridade (EEAT).`,
-          inputAudioTranscription: {},
-          outputAudioTranscription: {},
-        },
         callbacks: {
           onopen: () => {
-            setIsActive(true);
             setStatus('analisando');
+            setIsActive(true);
             
             const source = audioContextInRef.current!.createMediaStreamSource(stream);
             const scriptProcessor = audioContextInRef.current!.createScriptProcessor(4096, 1, 1);
@@ -85,98 +103,126 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
             scriptProcessor.onaudioprocess = (e) => {
               if (isMuted) return;
               const inputData = e.inputBuffer.getChannelData(0);
+              
+              let sum = 0;
+              for(let i=0; i<inputData.length; i++) sum += inputData[i] * inputData[i];
+              setVolumeLevel(Math.sqrt(sum / inputData.length));
+
               const pcmBlob = createBlob(inputData);
-              sessionPromise.then(s => s.sendRealtimeInput({ media: pcmBlob }));
+              sessionPromise.then(session => {
+                session.sendRealtimeInput({ media: pcmBlob });
+              });
             };
+            
             source.connect(scriptProcessor);
             scriptProcessor.connect(audioContextInRef.current!.destination);
 
-            const ctx = canvasRef.current?.getContext('2d');
             videoIntervalRef.current = window.setInterval(() => {
-              if (videoRef.current && canvasRef.current && ctx && !isVideoOff) {
-                canvasRef.current.width = 320;
-                canvasRef.current.height = 240;
-                ctx.drawImage(videoRef.current, 0, 0, 320, 240);
-                canvasRef.current.toBlob(async (blob) => {
-                  if (blob) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      const base64 = (reader.result as string).split(',')[1];
-                      sessionPromise.then(s => s.sendRealtimeInput({ media: { data: base64, mimeType: 'image/jpeg' } }));
-                    };
-                    reader.readAsDataURL(blob);
-                  }
-                }, 'image/jpeg', 0.5);
-              }
+              if (isVideoOff || !canvasRef.current || !videoRef.current) return;
+              const ctx = canvasRef.current.getContext('2d');
+              if (!ctx) return;
+              
+              canvasRef.current.width = 320; // Reduzir resolução de envio para melhorar latência
+              canvasRef.current.height = 240;
+              ctx.drawImage(videoRef.current, 0, 0, 320, 240);
+              
+              canvasRef.current.toBlob(async (blob) => {
+                if (blob) {
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    const base64Data = (reader.result as string).split(',')[1];
+                    sessionPromise.then(session => {
+                      session.sendRealtimeInput({
+                        media: { data: base64Data, mimeType: 'image/jpeg' }
+                      });
+                    });
+                  };
+                  reader.readAsDataURL(blob);
+                }
+              }, 'image/jpeg', 0.5);
             }, 1000);
           },
           onmessage: async (message: LiveServerMessage) => {
-            // Processamento de Áudio
-            const base64Audio = message.serverContent?.modelTurn?.parts[0]?.inlineData?.data;
-            if (base64Audio && audioContextOutRef.current) {
-              const ctx = audioContextOutRef.current;
-              const scheduleTime = Math.max(nextStartTimeRef.current, ctx.currentTime + 0.05);
-              const audioBuffer = await decodeAudioData(decode(base64Audio), ctx, 24000, 1);
-              const source = ctx.createBufferSource();
-              source.buffer = audioBuffer;
-              source.connect(ctx.destination);
-              source.start(scheduleTime);
-              nextStartTimeRef.current = scheduleTime + audioBuffer.duration;
-              sourcesRef.current.add(source);
-              source.onended = () => sourcesRef.current.delete(source);
-            }
-
-            // Processamento de Transcrição
-            if (message.serverContent?.inputTranscription) {
-              accumulatedInput.current += message.serverContent.inputTranscription.text;
-              setCurrentInput(accumulatedInput.current);
-            }
+            // Transcrições de saída (IA)
             if (message.serverContent?.outputTranscription) {
               accumulatedOutput.current += message.serverContent.outputTranscription.text;
               setCurrentOutput(accumulatedOutput.current);
+            } 
+            // Transcrições de entrada (Usuário)
+            else if (message.serverContent?.inputTranscription) {
+              accumulatedInput.current += message.serverContent.inputTranscription.text;
+              setCurrentInput(accumulatedInput.current);
             }
 
-            // Finalização de Turno
+            // Fechamento de turno
             if (message.serverContent?.turnComplete) {
-              if (accumulatedInput.current || accumulatedOutput.current) {
-                setHistory(prev => [
-                  ...prev, 
-                  { role: 'user', text: accumulatedInput.current },
-                  { role: 'model', text: accumulatedOutput.current }
-                ].filter(t => t.text.trim() !== ''));
-                
-                accumulatedInput.current = '';
-                accumulatedOutput.current = '';
-                setCurrentInput('');
-                setCurrentOutput('');
+              const uText = accumulatedInput.current.trim();
+              const mText = accumulatedOutput.current.trim();
+              
+              if (uText || mText) {
+                setHistory(prev => {
+                  const newEntries: ChatTurn[] = [];
+                  if (uText) newEntries.push({ role: 'user', text: uText });
+                  if (mText) newEntries.push({ role: 'model', text: mText });
+                  return [...prev, ...newEntries];
+                });
               }
+              
+              accumulatedInput.current = '';
+              accumulatedOutput.current = '';
+              setCurrentInput('');
+              setCurrentOutput('');
             }
 
+            // Áudio
+            const audioData = message.serverContent?.modelTurn?.parts[0]?.inlineData?.data;
+            if (audioData && audioContextOutRef.current) {
+              const ctx = audioContextOutRef.current;
+              nextStartTimeRef.current = Math.max(nextStartTimeRef.current, ctx.currentTime);
+              const audioBuffer = await decodeAudioData(decode(audioData), ctx, 24000, 1);
+              const source = ctx.createBufferSource();
+              source.buffer = audioBuffer;
+              source.connect(outputNode);
+              source.onended = () => sourcesRef.current.delete(source);
+              source.start(nextStartTimeRef.current);
+              nextStartTimeRef.current += audioBuffer.duration;
+              sourcesRef.current.add(source);
+            }
+
+            // Interrupção
             if (message.serverContent?.interrupted) {
-              sourcesRef.current.forEach(s => { try { s.stop(); } catch(e){} });
+              sourcesRef.current.forEach(s => { try { s.stop(); } catch(e) {} });
               sourcesRef.current.clear();
               nextStartTimeRef.current = 0;
+              // Se foi interrompido, limpar o que a IA estava transcrevendo
               accumulatedOutput.current = '';
-              setCurrentOutput('(Médico interrompido pelo paciente)');
+              setCurrentOutput('(Interrompido)');
             }
           },
-          onclose: () => setIsActive(false),
-          onerror: (e) => handleAPIError(e),
+          onerror: (e) => {
+            setStatus('erro');
+            setErrorMessage('A conexão com o servidor médico PRO falhou. Verifique sua internet ou chave API.');
+          },
+          onclose: () => setIsActive(false)
         },
+        config: {
+          responseModalities: [Modality.AUDIO],
+          speechConfig: {
+            voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Zephyr' } }
+          },
+          systemInstruction: `Você é um Médico Especialista Sênior do IA HOSPITAL em ${location.city}.
+          Analise o paciente via vídeo e áudio. Seja empático, clínico e direto. 
+          Triagem educacional - não forneça diagnóstico final.`,
+          outputAudioTranscription: {},
+          inputAudioTranscription: {}
+        }
       });
-      sessionRef.current = await sessionPromise;
-    } catch (err) {
-      handleAPIError(err);
-    }
-  };
 
-  const stopSession = () => {
-    if (videoIntervalRef.current !== null) clearInterval(videoIntervalRef.current);
-    if (sessionRef.current) sessionRef.current.close();
-    const stream = videoRef.current?.srcObject as MediaStream;
-    stream?.getTracks().forEach(t => t.stop());
-    setIsActive(false);
-    onClose();
+      sessionRef.current = await sessionPromise;
+    } catch (err: any) {
+      setStatus('erro');
+      setErrorMessage(err.message || 'Erro ao inicializar hardware de mídia.');
+    }
   };
 
   useEffect(() => {
@@ -185,193 +231,164 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[200] bg-slate-950 flex flex-col lg:flex-row overflow-hidden animate-fade-in font-sans">
-      
-      {/* Área do Vídeo / Dashboard */}
-      <div className="relative flex-grow bg-black flex items-center justify-center overflow-hidden">
-        {status === 'erro' ? (
-          <div className="max-w-md p-10 bg-slate-900 border border-red-500/20 rounded-[2.5rem] text-center space-y-8 shadow-[0_0_50px_rgba(239,68,68,0.1)]">
-            <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mx-auto border border-red-500/20">
-              <span className="text-5xl">🚫</span>
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/95 backdrop-blur-2xl p-0 sm:p-4">
+      <div className="w-full max-w-7xl h-full sm:h-[92vh] flex flex-col bg-white rounded-none sm:rounded-[2.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/10">
+        
+        {/* Header Profissional */}
+        <div className="bg-slate-900 px-8 py-6 flex justify-between items-center shrink-0 border-b border-white/5">
+          <div className="flex items-center gap-6">
+            <div className="relative">
+              <div className={`w-4 h-4 rounded-full ${isActive ? 'bg-blue-500 animate-ping' : 'bg-red-500'} absolute inset-0 opacity-40`}></div>
+              <div className={`w-4 h-4 rounded-full ${isActive ? 'bg-blue-500' : 'bg-red-500'} relative z-10`}></div>
             </div>
             <div>
-              <h2 className="text-white font-black uppercase tracking-tighter text-3xl mb-2">Conexão Falhou</h2>
-              <p className="text-slate-400 text-sm leading-relaxed">{errorMessage}</p>
+              <h2 className="text-white font-black uppercase tracking-[0.2em] text-xs">Consulta Pro: Análise Multimodal</h2>
+              <p className="text-slate-500 text-[10px] font-bold uppercase mt-1 tracking-widest">{location.city} • Sala de Triagem Virtual</p>
             </div>
-            <button onClick={onClose} className="w-full py-5 bg-slate-800 hover:bg-slate-700 text-white font-black uppercase tracking-[0.2em] rounded-2xl text-[10px] transition-all">Voltar ao Início</button>
           </div>
-        ) : (
-          <>
-            <video 
-              ref={videoRef} 
-              autoPlay 
-              muted 
-              playsInline 
-              className={`w-full h-full object-cover transition-opacity duration-700 ${isVideoOff ? 'opacity-0' : 'opacity-60'}`} 
-            />
+          <button onClick={onClose} className="p-3 hover:bg-white/10 rounded-2xl text-slate-400 hover:text-white transition-all">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+
+        {/* Workspace */}
+        <div className="flex-grow flex flex-col lg:flex-row overflow-hidden">
+          
+          {/* Video Feed & Stats */}
+          <div className="lg:w-[60%] relative bg-black flex items-center justify-center overflow-hidden border-r border-slate-100">
+            <video ref={videoRef} autoPlay playsInline muted className={`w-full h-full object-cover transition-all duration-1000 ${isVideoOff ? 'opacity-0 scale-110 blur-2xl' : 'opacity-80'}`} />
+            
             {isVideoOff && (
-              <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
-                <div className="text-center">
-                  <div className="w-32 h-32 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/5">
-                    <span className="text-4xl text-slate-600">🎥</span>
-                  </div>
-                  <p className="text-slate-500 text-xs font-black uppercase tracking-widest">Câmera Desativada</p>
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 text-slate-600 bg-slate-900">
+                <div className="w-32 h-32 rounded-full bg-slate-800 flex items-center justify-center border border-white/5">
+                  <span className="text-4xl">📹</span>
                 </div>
+                <span className="font-black uppercase tracking-[0.3em] text-[10px]">Câmera Desativada pelo Paciente</span>
               </div>
             )}
-            
+
             <canvas ref={canvasRef} className="hidden" />
+
+            {/* HUD Elements */}
+            <div className="absolute top-8 left-8 flex flex-col gap-4">
+              <div className="bg-slate-950/60 backdrop-blur-xl px-4 py-2 rounded-xl border border-white/10 flex items-center gap-3">
+                <div className="flex gap-0.5 items-end h-4 w-6">
+                  {[...Array(5)].map((_, i) => (
+                    <div 
+                      key={i} 
+                      className="w-1 bg-blue-500 rounded-full transition-all duration-150" 
+                      style={{ height: `${isActive && !isMuted ? Math.random() * volumeLevel * 150 + 20 : 20}%` }}
+                    />
+                  ))}
+                </div>
+                <span className="text-[10px] text-blue-400 font-black uppercase tracking-widest">Audio Flux</span>
+              </div>
+            </div>
+
+            {/* Controls Overlay */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 bg-slate-950/40 backdrop-blur-2xl p-3 rounded-3xl border border-white/5">
+              <button 
+                onClick={() => setIsMuted(!isMuted)}
+                className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-2xl ${isMuted ? 'bg-red-600 text-white' : 'bg-white/10 text-white hover:bg-white/20'}`}
+              >
+                <span className="text-xl">{isMuted ? '🔇' : '🎤'}</span>
+              </button>
+              <button 
+                onClick={() => setIsVideoOff(!isVideoOff)}
+                className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-2xl ${isVideoOff ? 'bg-red-600 text-white' : 'bg-white/10 text-white hover:bg-white/20'}`}
+              >
+                <span className="text-xl">{isVideoOff ? '🚫' : '📹'}</span>
+              </button>
+              <div className="w-[1px] bg-white/10 mx-2"></div>
+              <button 
+                onClick={onClose}
+                className="w-14 h-14 bg-red-600/20 hover:bg-red-600 text-white rounded-2xl flex items-center justify-center transition-all shadow-2xl"
+              >
+                <span className="text-xl">📞</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Clinical Records & Chat */}
+          <div className="lg:w-[40%] flex flex-col bg-slate-50 overflow-hidden">
+            <div className="p-8 bg-white border-b border-slate-200 flex justify-between items-center">
+              <div>
+                <h3 className="text-slate-900 font-black uppercase text-xs tracking-widest">Transcrição em Tempo Real</h3>
+                <p className="text-[9px] text-slate-400 font-bold uppercase mt-1">Sessão Segura • {location.city}</p>
+              </div>
+              <div className="px-3 py-1 bg-blue-50 rounded-full border border-blue-100">
+                <span className="text-[9px] font-black text-blue-600 uppercase tracking-widest">Live</span>
+              </div>
+            </div>
             
-            {/* Efeitos de Scan e Interface Biométrica */}
-            {!isVideoOff && (
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="w-full h-[2px] bg-blue-500/40 absolute top-0 animate-scanner shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
-                <div className="absolute top-12 left-12 border-l-2 border-t-2 border-blue-500/20 w-16 h-16"></div>
-                <div className="absolute top-12 right-12 border-r-2 border-t-2 border-blue-500/20 w-16 h-16"></div>
-                <div className="absolute bottom-12 left-12 border-l-2 border-b-2 border-blue-500/20 w-16 h-16"></div>
-                <div className="absolute bottom-12 right-12 border-r-2 border-b-2 border-blue-500/20 w-16 h-16"></div>
-                
-                {/* Elementos HUD Fictícios para Estética */}
-                <div className="absolute top-12 left-32 hidden md:block">
-                  <div className="flex gap-1 mb-1">
-                    {[1,2,3,4,5,6].map(i => <div key={i} className="w-1 h-3 bg-blue-500/40 animate-pulse" style={{animationDelay: `${i*100}ms`}}></div>)}
+            <div className="flex-grow overflow-y-auto p-8 space-y-6 custom-scrollbar bg-slate-50/50">
+              {history.map((turn, i) => (
+                <div key={i} className={`flex flex-col ${turn.role === 'user' ? 'items-end' : 'items-start'} animate-fade-in`}>
+                  <p className="text-[9px] font-black mb-2 uppercase text-slate-400 tracking-widest px-2">
+                    {turn.role === 'user' ? 'Você' : 'Médico Especialista IA'}
+                  </p>
+                  <div className={`max-w-[90%] p-5 rounded-3xl text-sm leading-relaxed shadow-sm border ${
+                    turn.role === 'user' 
+                      ? 'bg-blue-600 text-white border-blue-500 rounded-tr-none' 
+                      : 'bg-white text-slate-700 border-slate-200 rounded-tl-none'
+                  }`}>
+                    {turn.text}
                   </div>
-                  <p className="text-[8px] font-mono text-blue-400 uppercase">Signal Stability: 98.4%</p>
                 </div>
-              </div>
-            )}
-
-            {/* Controles de Overlay */}
-            <div className="absolute bottom-10 left-0 right-0 px-10 flex justify-between items-end">
-              <div className="flex gap-4">
-                <button 
-                  onClick={() => setIsMuted(!isMuted)}
-                  className={`w-14 h-14 rounded-full flex items-center justify-center transition-all border ${isMuted ? 'bg-red-600 border-red-400' : 'bg-slate-900/80 backdrop-blur-xl border-white/10 text-white'}`}
-                >
-                  <span className="text-xl">{isMuted ? '🔇' : '🎤'}</span>
-                </button>
-                <button 
-                  onClick={() => setIsVideoOff(!isVideoOff)}
-                  className={`w-14 h-14 rounded-full flex items-center justify-center transition-all border ${isVideoOff ? 'bg-red-600 border-red-400' : 'bg-slate-900/80 backdrop-blur-xl border-white/10 text-white'}`}
-                >
-                  <span className="text-xl">{isVideoOff ? '🚫' : '📹'}</span>
-                </button>
-              </div>
+              ))}
               
-              <div className="hidden md:flex flex-col items-end">
-                <div className="bg-slate-900/80 backdrop-blur-xl px-5 py-3 rounded-2xl border border-white/10 mb-4">
-                  <p className="text-white text-[10px] font-black uppercase tracking-[0.2em] mb-1">Localização em Tempo Real</p>
-                  <p className="text-blue-400 text-xs font-bold uppercase">{location.city}, {location.state}</p>
+              {/* Buffers de fala atual */}
+              {(currentInput || currentOutput) && (
+                <div className="space-y-6">
+                  {currentInput && (
+                    <div className="flex flex-col items-end opacity-60">
+                      <p className="text-[9px] font-black mb-2 uppercase text-blue-500 tracking-widest px-2">Captando Voz...</p>
+                      <div className="max-w-[90%] p-5 rounded-3xl text-sm leading-relaxed bg-blue-600/10 text-blue-700 border border-blue-200 rounded-tr-none italic">
+                        {currentInput}
+                      </div>
+                    </div>
+                  )}
+                  {currentOutput && (
+                    <div className="flex flex-col items-start">
+                      <p className="text-[9px] font-black mb-2 uppercase text-slate-500 tracking-widest px-2">Analisando...</p>
+                      <div className="max-w-[90%] p-5 rounded-3xl text-sm leading-relaxed bg-white text-slate-700 shadow-lg border-2 border-blue-100 rounded-tl-none ring-4 ring-blue-50/50">
+                        {currentOutput}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
+              
+              {status === 'conectando' && (
+                <div className="flex flex-col items-center justify-center h-full text-slate-400 gap-6 opacity-40">
+                  <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em]">Habilitando Protocolos Médicos...</p>
+                </div>
+              )}
+
+              {status === 'erro' && (
+                <div className="p-8 bg-red-50 border-2 border-red-100 rounded-[2rem] text-center space-y-4">
+                  <div className="text-3xl">⚠️</div>
+                  <p className="text-red-600 text-xs font-black uppercase tracking-widest">Falha Técnica de Triagem</p>
+                  <p className="text-red-500 text-xs leading-relaxed font-medium">{errorMessage}</p>
+                  <button onClick={() => window.location.reload()} className="w-full py-4 bg-red-600 text-white text-[10px] font-black uppercase rounded-2xl hover:bg-red-700 transition-all shadow-xl shadow-red-200">Reconectar Canal</button>
+                </div>
+              )}
+              
+              <div ref={transcriptionEndRef} />
             </div>
 
-            <button 
-              onClick={stopSession} 
-              className="absolute top-10 right-10 bg-red-600 hover:bg-red-700 text-white p-4 rounded-2xl transition-all shadow-2xl hover:scale-105 active:scale-95 group flex items-center gap-3"
-            >
-              <span className="text-[10px] font-black uppercase tracking-widest hidden group-hover:block">Encerrar Sessão</span>
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-          </>
-        )}
-      </div>
-
-      {/* Painel Lateral: Transcrição e Dados Médicos */}
-      <div className="w-full lg:w-[450px] bg-slate-900 flex flex-col shadow-[-20px_0_50px_rgba(0,0,0,0.5)] z-10 border-l border-white/5">
-        
-        {/* Header do Painel */}
-        <div className="p-8 border-b border-white/5 bg-slate-950/50 flex justify-between items-center">
-          <div>
-            <h3 className="text-white font-black uppercase text-base tracking-tighter flex items-center gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full animate-ping"></span>
-              Análise Multimodal
-            </h3>
-            <p className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-1">IA HOSPITAL PRO v3.2</p>
-          </div>
-          <div className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full">
-            <span className="text-[9px] font-black text-blue-400 uppercase tracking-widest">Sincronizado</span>
-          </div>
-        </div>
-
-        {/* Histórico de Transcrição */}
-        <div className="flex-grow overflow-y-auto p-8 space-y-8 custom-scrollbar bg-gradient-to-b from-slate-900 to-slate-950">
-          
-          {history.length === 0 && !currentInput && !currentOutput && (
-            <div className="h-full flex flex-col items-center justify-center text-center opacity-30">
-              <div className="w-16 h-16 bg-slate-800 rounded-3xl flex items-center justify-center mb-4">
-                <span className="text-3xl">🩺</span>
+            <div className="p-8 bg-white border-t border-slate-200">
+              <div className="flex items-start gap-4 p-4 bg-blue-50/50 rounded-2xl border border-blue-100">
+                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0 text-xl">💡</div>
+                <p className="text-[10px] leading-relaxed text-blue-800 font-bold uppercase tracking-tight">
+                  Mostre sua garganta, lesões na pele ou exames para a câmera para uma análise assistida por computador em {location.city}.
+                </p>
               </div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-widest leading-relaxed">
-                Aguardando entrada de áudio do paciente...<br/>Inicie descrevendo seus sintomas.
-              </p>
-            </div>
-          )}
-
-          {history.map((t, i) => (
-            <div key={i} className={`flex flex-col ${t.role === 'user' ? 'items-end' : 'items-start'} animate-slide-up`}>
-              <span className={`text-[8px] font-black uppercase tracking-[0.2em] mb-2 px-1 ${
-                t.role === 'user' ? 'text-blue-500' : 'text-slate-500'
-              }`}>
-                {t.role === 'user' ? 'Paciente' : 'Especialista IA'}
-              </span>
-              <div className={`max-w-[95%] p-5 rounded-3xl text-[13px] leading-relaxed shadow-lg border transition-all ${
-                t.role === 'user' 
-                  ? 'bg-blue-600 text-white border-blue-500/50 rounded-tr-none' 
-                  : 'bg-slate-800/80 text-slate-200 border-white/5 rounded-tl-none backdrop-blur-sm'
-              }`}>
-                {t.text}
-              </div>
-            </div>
-          ))}
-
-          {/* Transcrição em Tempo Real (Live) */}
-          {currentInput && (
-            <div className="flex flex-col items-end animate-pulse">
-              <span className="text-[8px] font-black uppercase tracking-[0.2em] mb-2 text-blue-400">Captando Voz...</span>
-              <div className="max-w-[95%] p-5 rounded-3xl text-[13px] leading-relaxed bg-blue-600/30 text-blue-100 border border-blue-500/30 rounded-tr-none italic">
-                {currentInput}
-              </div>
-            </div>
-          )}
-
-          {currentOutput && (
-            <div className="flex flex-col items-start">
-              <span className="text-[8px] font-black uppercase tracking-[0.2em] mb-2 text-slate-500">Médico Falando...</span>
-              <div className="max-w-[95%] p-5 rounded-3xl text-[13px] leading-relaxed bg-slate-800 text-slate-100 border border-white/10 rounded-tl-none">
-                {currentOutput}
-              </div>
-            </div>
-          )}
-          
-          <div ref={transcriptionEndRef} />
-        </div>
-
-        {/* Footer do Painel com Avisos Clínicos */}
-        <div className="p-8 bg-slate-950 border-t border-white/5 space-y-4">
-          <div className="flex items-center gap-4 p-4 bg-orange-500/5 border border-orange-500/10 rounded-2xl">
-            <div className="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center text-xl shrink-0">⚠️</div>
-            <div>
-              <p className="text-orange-500 text-[9px] font-black uppercase tracking-[0.2em] mb-1">Diretriz de Segurança</p>
-              <p className="text-slate-500 text-[10px] leading-tight font-medium">Esta triagem não substitui atendimento hospitalar presencial em {location.city}.</p>
             </div>
           </div>
         </div>
       </div>
-      
-      <style>{`
-        @keyframes scanner { 0% { top: 0; opacity: 0.1; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0.1; } }
-        .animate-scanner { animation: scanner 4s ease-in-out infinite; }
-        .animate-fade-in { animation: fadeIn 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .animate-slide-up { animation: slideUp 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(59,130,246,0.2); }
-      `}</style>
     </div>
   );
 };
