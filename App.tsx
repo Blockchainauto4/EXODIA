@@ -8,6 +8,7 @@ import VoiceFAQ from './components/VoiceFAQ';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
 import LiveAnalysis from './components/LiveAnalysis';
+import TutorialModal from './components/TutorialModal';
 import { UserLocation } from './types';
 
 const App: React.FC = () => {
@@ -19,6 +20,15 @@ const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isLiveAnalysisOpen, setIsLiveAnalysisOpen] = useState(false);
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [apiTier, setApiTier] = useState<'BASIC' | 'PRO'>('BASIC');
+
+  const checkApiTier = useCallback(async () => {
+    if (window.aistudio) {
+      const hasKey = await window.aistudio.hasSelectedApiKey();
+      setApiTier(hasKey ? 'PRO' : 'BASIC');
+    }
+  }, []);
 
   const updateSEOMetadata = useCallback((loc: UserLocation) => {
     const title = `${loc.specialty} Perto de Mim em ${loc.city} - ${loc.state} | IA HOSPITAL`;
@@ -59,6 +69,7 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    checkApiTier();
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
 
@@ -83,20 +94,31 @@ const App: React.FC = () => {
       );
     }
 
-    const handlePopState = () => {
-      const loc = parseLocationFromUrl();
-      if (loc) {
-        setLocation(loc);
-        updateSEOMetadata(loc);
-      }
-    };
-    window.addEventListener('popstate', handlePopState);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('popstate', handlePopState);
     };
-  }, [parseLocationFromUrl, updateSEOMetadata]);
+  }, [parseLocationFromUrl, updateSEOMetadata, checkApiTier]);
+
+  const handleStartLiveAnalysis = async () => {
+    if (window.aistudio) {
+      const hasKey = await window.aistudio.hasSelectedApiKey();
+      if (!hasKey) {
+        setIsTutorialOpen(true);
+      } else {
+        setIsLiveAnalysisOpen(true);
+      }
+    } else {
+      setIsLiveAnalysisOpen(true);
+    }
+  };
+
+  const handleOpenSelectKey = async () => {
+    if (window.aistudio?.openSelectKey) {
+      await window.aistudio.openSelectKey();
+      await checkApiTier();
+      setIsLiveAnalysisOpen(true);
+    }
+  };
 
   const handleApplyLocation = useCallback((newLocation: UserLocation) => {
     setLocation(newLocation);
@@ -108,10 +130,12 @@ const App: React.FC = () => {
       <Header 
         isScrolled={isScrolled} 
         location={location} 
+        apiTier={apiTier}
         onAdminOpen={() => setIsAdminOpen(true)} 
+        onOpenTutorial={() => setIsTutorialOpen(true)}
       />
       <main className="flex-grow">
-        <Hero location={location} onStartLive={() => setIsLiveAnalysisOpen(true)} />
+        <Hero location={location} onStartLive={handleStartLiveAnalysis} apiTier={apiTier} />
         <div id="assistente" className="max-w-7xl mx-auto px-4 py-12">
           <MedicalAssistant location={location} />
         </div>
@@ -120,7 +144,6 @@ const App: React.FC = () => {
       </main>
       <Footer onAdminOpen={() => setIsAdminOpen(true)} />
       
-      {/* Botão Flutuante Flame Work */}
       <button 
         onClick={() => setIsAdminOpen(true)}
         className="fixed bottom-6 right-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 group"
@@ -132,6 +155,13 @@ const App: React.FC = () => {
       {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={handleApplyLocation} currentLocation={location} />}
       
       {isLiveAnalysisOpen && <LiveAnalysis location={location} onClose={() => setIsLiveAnalysisOpen(false)} />}
+
+      {isTutorialOpen && (
+        <TutorialModal 
+          onClose={() => setIsTutorialOpen(false)} 
+          onOpenSelectKey={handleOpenSelectKey} 
+        />
+      )}
     </div>
   );
 };
