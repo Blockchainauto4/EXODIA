@@ -12,13 +12,14 @@ import TutorialModal from './components/TutorialModal';
 import ProfessionalModal from './components/ProfessionalModal';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import AdminAuthModal from './components/AdminAuthModal';
+import ProcessingDashboard from './components/ProcessingDashboard';
 import { UserLocation } from './types';
 
 const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ 
     city: 'sua região', 
     state: 'Brasil',
-    specialty: 'Atendimento Médicos'
+    specialty: 'Atendimento Médico'
   });
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -27,151 +28,65 @@ const App: React.FC = () => {
   const [isLiveAnalysisOpen, setIsLiveAnalysisOpen] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [isProfModalOpen, setIsProfModalOpen] = useState(false);
+  const [isProcessingOpen, setIsProcessingOpen] = useState(false);
   const [apiTier, setApiTier] = useState<'BASIC' | 'PRO'>('BASIC');
 
-  // Verifica o tier da API de forma segura
-  const checkApiTier = useCallback(async () => {
-    try {
-      if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
-        const hasKey = await window.aistudio.hasSelectedApiKey();
-        const tier = hasKey ? 'PRO' : 'BASIC';
-        setApiTier(tier);
-        return hasKey;
-      }
-    } catch (e) {
-      console.warn("AI Studio API não detectada ou inacessível:", e);
-    }
-    return false;
-  }, []);
-
-  const updateSEOMetadata = useCallback((loc: UserLocation) => {
-    const title = `${loc.specialty} Perto de Mim em ${loc.city} - ${loc.state} | IA HOSPITAL`;
-    const description = `Busca ${loc.specialty?.toLowerCase()} próximo de mim em ${loc.city}? O IA HOSPITAL oferece orientação médica inteligente e triagem por IA na sua região agora.`;
-    
-    document.title = title;
-    
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', description);
-    } else {
-      const meta = document.createElement('meta');
-      meta.name = "description";
-      meta.content = description;
-      document.getElementsByTagName('head')[0].appendChild(meta);
-    }
-    
-    let canonical = document.querySelector('link[rel="canonical"]');
-    const slugCity = loc.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
-    const slugState = loc.state.toLowerCase();
-    const canonicalUrl = `https://iahospital.com.br/atendimento/${slugState}/${slugCity}`;
-    
-    if (canonical) {
-      canonical.setAttribute('href', canonicalUrl);
-    }
-  }, []);
-
-  const parseLocationFromUrl = useCallback(() => {
+  // Lógica de "Desvio" para Tags Antigas e Roteamento SEO
+  const handleRouting = useCallback(() => {
     const path = window.location.pathname;
-    const parts = path.split('/').filter(p => p);
     
+    // Desvio de tags antigas (Fallthrough de segurança no cliente)
+    if (path.startsWith('/tag/')) {
+      window.history.replaceState({}, '', '/');
+      return;
+    }
+
+    const parts = path.split('/').filter(p => p);
     if (parts[0] === 'atendimento' && parts.length >= 2) {
       const stateParam = parts[1].toUpperCase();
       const cityParam = parts[2] ? parts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
       const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Atendimento Médico';
 
-      return { 
+      setLocation({ 
         city: cityParam || 'Sua Localidade', 
         state: stateParam, 
         specialty: specialtyParam 
-      };
+      });
     }
-    return null;
+  }, []);
+
+  const checkApiTier = useCallback(async () => {
+    try {
+      if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
+        const hasKey = await window.aistudio.hasSelectedApiKey();
+        setApiTier(hasKey ? 'PRO' : 'BASIC');
+      }
+    } catch (e) {
+      console.warn("AI Studio API indisponível");
+    }
   }, []);
 
   useEffect(() => {
-    const syncLocation = () => {
-      const initialLoc = parseLocationFromUrl();
-      if (initialLoc) {
-        setLocation(initialLoc);
-        updateSEOMetadata(initialLoc);
-      }
-    };
-
-    syncLocation();
-    window.addEventListener('popstate', syncLocation);
+    handleRouting();
+    window.addEventListener('popstate', handleRouting);
     
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
 
-    if (!parseLocationFromUrl() && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const loc = { 
-            city: 'Sua Localização', 
-            state: 'Brasil',
-            specialty: 'Atendimento Médico',
-            lat: position.coords.latitude, 
-            lng: position.coords.longitude 
-          };
-          setLocation(loc);
-          updateSEOMetadata(loc);
-        },
-        () => console.warn("Acesso à geolocalização negado")
-      );
+    // Auto-localização inicial se estiver na home limpa
+    if (window.location.pathname === '/' && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        // Silenciosamente mantém a localização genérica para o SEO não flutuar muito no client-side
+      });
     }
 
-    const timer = setInterval(checkApiTier, 1000);
-    setTimeout(() => clearInterval(timer), 5000);
-
+    const timer = setInterval(checkApiTier, 2000);
     return () => {
-      window.removeEventListener('popstate', syncLocation);
+      window.removeEventListener('popstate', handleRouting);
       window.removeEventListener('scroll', handleScroll);
       clearInterval(timer);
     };
-  }, [parseLocationFromUrl, updateSEOMetadata, checkApiTier]);
-
-  const handleStartLiveAnalysis = async () => {
-    const isPro = await checkApiTier();
-    if (!isPro) {
-      setIsTutorialOpen(true);
-    } else {
-      setIsLiveAnalysisOpen(true);
-    }
-  };
-
-  const handleOpenSelectKey = async () => {
-    try {
-      if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
-        await window.aistudio.openSelectKey();
-        setApiTier('PRO');
-        setIsTutorialOpen(false);
-        setIsLiveAnalysisOpen(true);
-      } else {
-        alert("O seletor de chaves não está disponível no momento. Verifique se o ambiente suporta o AI Studio.");
-      }
-    } catch (e) {
-      console.error("Erro ao abrir seletor de chaves:", e);
-    }
-  };
-
-  const handleApplyLocation = useCallback((newLocation: UserLocation) => {
-    setLocation(newLocation);
-    updateSEOMetadata(newLocation);
-  }, [updateSEOMetadata]);
-
-  const handleAdminTrigger = () => {
-    if (isAuthorized) {
-      setIsAdminOpen(true);
-    } else {
-      setIsAuthOpen(true);
-    }
-  };
-
-  const handleAuthSuccess = () => {
-    setIsAuthorized(true);
-    setIsAuthOpen(false);
-    setIsAdminOpen(true);
-  };
+  }, [handleRouting, checkApiTier]);
 
   return (
     <div className="min-h-screen flex flex-col font-sans relative">
@@ -179,55 +94,41 @@ const App: React.FC = () => {
         isScrolled={isScrolled} 
         location={location} 
         apiTier={apiTier}
-        onAdminOpen={handleAdminTrigger} 
+        onAdminOpen={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)} 
         onOpenTutorial={() => setIsTutorialOpen(true)}
       />
+      
       <main className="flex-grow">
-        <Hero location={location} onStartLive={handleStartLiveAnalysis} apiTier={apiTier} />
-        
-        {apiTier === 'BASIC' && (
-          <div className="max-w-7xl mx-auto px-4 mt-8">
-            <div className="bg-blue-50/50 border border-blue-100 p-4 rounded-2xl flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-xl">🩺</span>
-                <p className="text-blue-900 text-sm font-medium">
-                  Modo de Orientação Básico Ativo em {location.city}. Para análise visual Pro, configure sua chave de API.
-                </p>
-              </div>
-              <button onClick={() => setIsTutorialOpen(true)} className="text-xs font-black uppercase tracking-widest text-blue-600 hover:underline">Ativar Pro</button>
-            </div>
-          </div>
-        )}
-
+        <Hero location={location} onStartLive={() => apiTier === 'PRO' ? setIsLiveAnalysisOpen(true) : setIsTutorialOpen(true)} apiTier={apiTier} />
         <div id="assistente" className="max-w-7xl mx-auto px-4 py-12">
           <MedicalAssistant location={location} />
         </div>
         <SEOContent location={location} />
         <VoiceFAQ location={location} />
       </main>
+
       <Footer 
         location={location} 
         isAuthorized={isAuthorized}
-        onAdminOpen={handleAdminTrigger} 
+        onAdminOpen={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)} 
         onProfOpen={() => setIsProfModalOpen(true)}
       />
       
-      {/* Botões Flutuantes */}
       <WhatsAppWidget />
       
-      {/* Trigger Admin (Oculto visualmente até autenticação ou via atalho manual) */}
+      {/* Gatilho Admin (Flame Work) */}
       <button 
-        onClick={handleAdminTrigger}
-        className={`fixed bottom-6 left-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 group ${isAuthorized ? 'opacity-100' : 'opacity-10'}`}
-        title="Configurações SEO Flame Work"
+        onClick={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
+        className={`fixed bottom-6 left-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 ${isAuthorized ? 'opacity-100' : 'opacity-20'}`}
       >
-        <span className="text-2xl group-hover:animate-bounce">🔥</span>
+        <span className="text-2xl">🔥</span>
       </button>
 
-      {isAuthOpen && <AdminAuthModal onClose={() => setIsAuthOpen(false)} onSuccess={handleAuthSuccess} />}
-      {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={handleApplyLocation} currentLocation={location} />}
+      {isAuthOpen && <AdminAuthModal onClose={() => setIsAuthOpen(false)} onSuccess={() => { setIsAuthorized(true); setIsAuthOpen(false); setIsAdminOpen(true); }} />}
+      {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={(loc) => setLocation(loc)} currentLocation={location} onOpenProcessing={() => { setIsAdminOpen(false); setIsProcessingOpen(true); }} />}
+      {isProcessingOpen && <ProcessingDashboard onClose={() => setIsProcessingOpen(false)} location={location} />}
       {isLiveAnalysisOpen && <LiveAnalysis location={location} onClose={() => setIsLiveAnalysisOpen(false)} />}
-      {isTutorialOpen && <TutorialModal onClose={() => setIsTutorialOpen(false)} onOpenSelectKey={handleOpenSelectKey} />}
+      {isTutorialOpen && <TutorialModal onClose={() => setIsTutorialOpen(false)} onOpenSelectKey={async () => { await window.aistudio.openSelectKey(); checkApiTier(); }} />}
       {isProfModalOpen && <ProfessionalModal onClose={() => setIsProfModalOpen(false)} />}
     </div>
   );

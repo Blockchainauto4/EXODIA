@@ -1,5 +1,12 @@
 
 {
+  "redirects": [
+    {
+      "source": "/tag/(.*)",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/atendimento/(.*)",
