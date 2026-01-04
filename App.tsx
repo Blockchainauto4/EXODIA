@@ -23,11 +23,14 @@ const App: React.FC = () => {
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [apiTier, setApiTier] = useState<'BASIC' | 'PRO'>('BASIC');
 
+  // Verifica o nível da API baseado na presença de uma chave de usuário
   const checkApiTier = useCallback(async () => {
     if (window.aistudio) {
       const hasKey = await window.aistudio.hasSelectedApiKey();
       setApiTier(hasKey ? 'PRO' : 'BASIC');
+      return hasKey;
     }
+    return false;
   }, []);
 
   const updateSEOMetadata = useCallback((loc: UserLocation) => {
@@ -100,13 +103,9 @@ const App: React.FC = () => {
   }, [parseLocationFromUrl, updateSEOMetadata, checkApiTier]);
 
   const handleStartLiveAnalysis = async () => {
-    if (window.aistudio) {
-      const hasKey = await window.aistudio.hasSelectedApiKey();
-      if (!hasKey) {
-        setIsTutorialOpen(true);
-      } else {
-        setIsLiveAnalysisOpen(true);
-      }
+    const isPro = await checkApiTier();
+    if (!isPro) {
+      setIsTutorialOpen(true);
     } else {
       setIsLiveAnalysisOpen(true);
     }
@@ -115,6 +114,7 @@ const App: React.FC = () => {
   const handleOpenSelectKey = async () => {
     if (window.aistudio?.openSelectKey) {
       await window.aistudio.openSelectKey();
+      // Assumimos sucesso imediatamente conforme regras de race condition
       await checkApiTier();
       setIsLiveAnalysisOpen(true);
     }
@@ -136,6 +136,27 @@ const App: React.FC = () => {
       />
       <main className="flex-grow">
         <Hero location={location} onStartLive={handleStartLiveAnalysis} apiTier={apiTier} />
+        
+        {/* Restrição de UI: Se não for PRO, mostra aviso sobre funções avançadas */}
+        {apiTier === 'BASIC' && (
+          <div className="max-w-7xl mx-auto px-4 mt-8">
+            <div className="bg-orange-50 border border-orange-200 p-4 rounded-2xl flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-xl">💡</span>
+                <p className="text-orange-800 text-sm font-medium">
+                  Você está no modo <span className="font-bold">Básico</span>. Para habilitar triagem por vídeo e áudio em tempo real, configure sua chave de API paga.
+                </p>
+              </div>
+              <button 
+                onClick={() => setIsTutorialOpen(true)}
+                className="text-xs font-black uppercase tracking-widest text-orange-600 hover:underline"
+              >
+                Como configurar
+              </button>
+            </div>
+          </div>
+        )}
+
         <div id="assistente" className="max-w-7xl mx-auto px-4 py-12">
           <MedicalAssistant location={location} />
         </div>
