@@ -9,18 +9,24 @@ import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
 import LiveAnalysis from './components/LiveAnalysis';
 import TutorialModal from './components/TutorialModal';
+import ProfessionalModal from './components/ProfessionalModal';
+import WhatsAppWidget from './components/WhatsAppWidget';
+import AdminAuthModal from './components/AdminAuthModal';
 import { UserLocation } from './types';
 
 const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ 
     city: 'sua região', 
     state: 'Brasil',
-    specialty: 'Atendimento Médico'
+    specialty: 'Atendimento Médicos'
   });
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [isLiveAnalysisOpen, setIsLiveAnalysisOpen] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [isProfModalOpen, setIsProfModalOpen] = useState(false);
   const [apiTier, setApiTier] = useState<'BASIC' | 'PRO'>('BASIC');
 
   // Verifica o tier da API de forma segura
@@ -114,7 +120,6 @@ const App: React.FC = () => {
       );
     }
 
-    // Polling inicial curto para detectar a chave caso o carregamento do host demore
     const timer = setInterval(checkApiTier, 1000);
     setTimeout(() => clearInterval(timer), 5000);
 
@@ -138,7 +143,6 @@ const App: React.FC = () => {
     try {
       if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
         await window.aistudio.openSelectKey();
-        // Conforme regras: assumir sucesso e proceder
         setApiTier('PRO');
         setIsTutorialOpen(false);
         setIsLiveAnalysisOpen(true);
@@ -155,13 +159,27 @@ const App: React.FC = () => {
     updateSEOMetadata(newLocation);
   }, [updateSEOMetadata]);
 
+  const handleAdminTrigger = () => {
+    if (isAuthorized) {
+      setIsAdminOpen(true);
+    } else {
+      setIsAuthOpen(true);
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setIsAuthorized(true);
+    setIsAuthOpen(false);
+    setIsAdminOpen(true);
+  };
+
   return (
     <div className="min-h-screen flex flex-col font-sans relative">
       <Header 
         isScrolled={isScrolled} 
         location={location} 
         apiTier={apiTier}
-        onAdminOpen={() => setIsAdminOpen(true)} 
+        onAdminOpen={handleAdminTrigger} 
         onOpenTutorial={() => setIsTutorialOpen(true)}
       />
       <main className="flex-grow">
@@ -187,19 +205,30 @@ const App: React.FC = () => {
         <SEOContent location={location} />
         <VoiceFAQ location={location} />
       </main>
-      <Footer location={location} onAdminOpen={() => setIsAdminOpen(true)} />
+      <Footer 
+        location={location} 
+        isAuthorized={isAuthorized}
+        onAdminOpen={handleAdminTrigger} 
+        onProfOpen={() => setIsProfModalOpen(true)}
+      />
       
+      {/* Botões Flutuantes */}
+      <WhatsAppWidget />
+      
+      {/* Trigger Admin (Oculto visualmente até autenticação ou via atalho manual) */}
       <button 
-        onClick={() => setIsAdminOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 group"
+        onClick={handleAdminTrigger}
+        className={`fixed bottom-6 left-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 group ${isAuthorized ? 'opacity-100' : 'opacity-10'}`}
         title="Configurações SEO Flame Work"
       >
         <span className="text-2xl group-hover:animate-bounce">🔥</span>
       </button>
 
+      {isAuthOpen && <AdminAuthModal onClose={() => setIsAuthOpen(false)} onSuccess={handleAuthSuccess} />}
       {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={handleApplyLocation} currentLocation={location} />}
       {isLiveAnalysisOpen && <LiveAnalysis location={location} onClose={() => setIsLiveAnalysisOpen(false)} />}
       {isTutorialOpen && <TutorialModal onClose={() => setIsTutorialOpen(false)} onOpenSelectKey={handleOpenSelectKey} />}
+      {isProfModalOpen && <ProfessionalModal onClose={() => setIsProfModalOpen(false)} />}
     </div>
   );
 };

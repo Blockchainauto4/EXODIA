@@ -38,9 +38,9 @@ export const getMedicalOrientation = async (prompt: string, history: { role: str
         2. Se o usuário apresentar sinais de emergência, oriente IMEDIATAMENTE a procurar o pronto-atendimento ou ligar 192.
         3. Use termos médicos corretos mas explique de forma simples.
         4. Sempre mencione termos como "perto de mim", "na minha região" ou "na minha área" para reforçar a geolocalização.
-        5. Reforce que o atendimento está disponível "onde você está agora".`,
+        5. Reforce que o atendimento está disponível "onde você está agora".
+        6. Informe ao usuário que, após a triagem, se necessário, ele poderá ser conectado a profissionais e clínicas parceiras cadastradas em sua localidade específica para uma consulta presencial ou telemedicina definitiva.`,
         temperature: 0.7,
-        // Configuração de pensamento para o modelo Pro
         thinkingConfig: modelName === 'gemini-3-pro-preview' ? { thinkingBudget: 32768 } : undefined
       },
     });
