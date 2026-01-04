@@ -3,26 +3,26 @@ import React from 'react';
 import { UserLocation } from '../types';
 
 const VoiceFAQ: React.FC<{ location: UserLocation }> = ({ location }) => {
-  const cityLower = location.city.toLowerCase();
-  const isCuiaba = cityLower.includes('cuiabá');
-  const isLucasRioVerde = cityLower.includes('lucas do rio verde');
+  const spec = location.specialty || 'Atendimento Médico';
+  const city = location.city;
   
+  // FAQs Dinâmicas baseadas na especialidade atual do cluster
   const faqs = [
     {
-      q: `Onde encontrar um nutricionista em ${location.city} perto de mim agora?`,
-      a: `Pelo IA HOSPITAL, você recebe orientação imediata. Se você está em ${location.city}, nossa triagem localiza especialistas próximos, seja para nutrição clínica ou funcional, facilitando que você encontre atendimento onde está agora.`
+      q: `Onde encontrar um ${spec.toLowerCase()} em ${city} perto de mim agora?`,
+      a: `O IA HOSPITAL localiza o atendimento de ${spec.toLowerCase()} mais próximo de sua localização atual em ${city}. Nossa triagem orienta sobre clínicas abertas e profissionais disponíveis para agendamento imediato na região.`
     },
     {
-      q: `Como agendar nutricionista em ${location.city} pelo convênio ou particular?`,
-      a: `O IA HOSPITAL informa sobre as opções em ${location.city}. Através da nossa IA, você descobre consultórios que atendem seu convênio ou oferecem consultas particulares, agilizando sua jornada de saúde.`
+      q: `Como funciona a triagem para ${spec.toLowerCase()} em ${city}?`,
+      a: `Nossa inteligência artificial analisa seus sintomas e histórico de saúde para fornecer uma orientação preliminar. Em ${city}, direcionamos você para o nível de cuidado adequado, seja uma consulta eletiva ou pronto-atendimento.`
     },
     {
-      q: `Qual o melhor nutricionista em ${location.city} para emagrecimento?`,
-      a: `O melhor nutricionista é aquele que atende seu perfil metabólico. Em ${location.city}, nossa tecnologia avalia sua necessidade para indicar clínicas renomadas, inclusive com suporte a exames de bioimpedância.`
+      q: `Qual o valor médio de uma consulta com ${spec.toLowerCase()} em ${city}?`,
+      a: `Os valores em ${city} variam conforme a experiência do profissional e a localização do consultório. Pelo IA HOSPITAL, você pode receber orientações sobre atendimentos particulares e por convênios disponíveis na sua área.`
     },
     {
-      q: `Tem nutricionista hospitalar em ${location.city}?`,
-      a: `Sim, o IA Hospital mapeia o atendimento em ${location.city}, incluindo suporte em nutrição hospitalar e clínica para casos complexos, disponível 24h para orientação inicial.`
+      q: `Existe atendimento de ${spec.toLowerCase()} por telemedicina em ${city}?`,
+      a: `Sim, muitos profissionais de ${city} integrados à nossa rede oferecem a modalidade de teleconsulta após a triagem inicial pela nossa plataforma, garantindo conforto e rapidez.`
     }
   ];
 
@@ -31,7 +31,7 @@ const VoiceFAQ: React.FC<{ location: UserLocation }> = ({ location }) => {
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tighter uppercase leading-none">Busca por Voz e Perguntas Frequentes</h2>
-          <p className="text-slate-500 font-bold italic text-sm tracking-tight">"Ok Google, tem nutricionista em {location.city} aqui perto?"</p>
+          <p className="text-slate-500 font-bold italic text-sm tracking-tight">"Ok Google, onde tem {spec.toLowerCase()} aqui perto em {city}?"</p>
         </div>
 
         <div className="grid grid-cols-1 gap-8">
@@ -47,13 +47,13 @@ const VoiceFAQ: React.FC<{ location: UserLocation }> = ({ location }) => {
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6">Explore Categorias em {location.city}:</p>
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6">Explore em {city}:</p>
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              `Nutricionista ${location.city} MT`,
-              `Bioimpedância ${location.city} perto de mim`, 
-              `Consultório de nutrição em ${location.city}`,
-              isLucasRioVerde ? 'IA Hospital Lucas do Rio Verde nutrição' : `IA Hospital ${location.city} nutrição`
+              `${spec} ${city} agendar`,
+              `Clínica de ${spec.toLowerCase()} perto de mim`, 
+              `${spec} em ${city} particular`,
+              `IA Hospital ${city} ${spec.toLowerCase()}`
             ].map(tag => (
               <span key={tag} className="text-[10px] font-bold text-blue-600/80 uppercase border border-blue-200 px-4 py-2 rounded-xl bg-white shadow-sm hover:bg-blue-50 transition-colors cursor-default">
                 {tag}
