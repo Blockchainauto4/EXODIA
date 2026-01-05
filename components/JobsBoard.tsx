@@ -6,7 +6,7 @@ interface JobsBoardProps {
   location: UserLocation;
 }
 
-// Base de dados expandida conforme solicitações recentes
+// Base de dados de vagas (JobPosting Schema compatível)
 const MOCK_JOBS: JobOpportunity[] = [
   {
     id: 'job-001',
@@ -22,6 +22,21 @@ const MOCK_JOBS: JobOpportunity[] = [
     salary: 'A combinar - Pagamento à vista',
     contactWhatsapp: '5541984950530',
     dates: ['06/01', '07/01', '09/01']
+  },
+  {
+    id: 'job-014',
+    title: 'Pediatra Sala de Parto - Plantão Noturno',
+    description: 'Vaga urgente para Pediatra em Sala de Parto no Hospital da Região Metropolitana de Porto Alegre. Necessário RQE.',
+    datePosted: '2025-01-05',
+    validThrough: '2025-01-06',
+    employmentType: 'TEMPORARY',
+    hiringOrganization: 'Hospital Região Metropolitana POA',
+    city: 'Porto Alegre',
+    state: 'RS',
+    specialty: 'Pediatria',
+    salary: 'A consultar',
+    contactWhatsapp: '5551995785365',
+    dates: ['05/01 (19h às 07h)']
   },
   {
     id: 'job-002',
@@ -53,110 +68,6 @@ const MOCK_JOBS: JobOpportunity[] = [
     contactWhatsapp: '5511972038222'
   },
   {
-    id: 'job-004',
-    title: 'Clínico - PS e Enfermaria',
-    description: 'Plantão em Pronto Socorro e Enfermaria no Hospital Santa Ana.',
-    datePosted: '2025-01-02',
-    validThrough: '2025-01-30',
-    employmentType: 'TEMPORARY',
-    hiringOrganization: 'Hospital Santa Ana',
-    city: 'São Caetano do Sul',
-    state: 'SP',
-    specialty: 'Clínica Geral',
-    salary: 'A consultar',
-    contactWhatsapp: '5511972038222'
-  },
-  {
-    id: 'job-005',
-    title: 'Médicos Especialistas (Ambulatorial)',
-    description: 'Vagas para diversas especialidades (Cardio, Ginecologia, Ortopedia, Pediatria, Psiquiatria, etc.) e exames (Ecocardiograma, Teste Ergométrico, USG) na rede Segmedic RJ.',
-    datePosted: '2025-01-02',
-    validThrough: '2025-02-28',
-    employmentType: 'FULL_TIME',
-    hiringOrganization: 'Segmedic – RJ',
-    city: 'Rio de Janeiro',
-    state: 'RJ',
-    specialty: 'Cardiologia',
-    salary: 'A combinar (PJ)',
-    contactUrl: 'mailto:relacionamentomedico@segmedic.com.br',
-    dates: ['Fluxo Contínuo']
-  },
-  {
-    id: 'job-006',
-    title: 'Pediatra UTI (Hospitalista)',
-    description: 'Atuação em UTI Pediátrica em Itapecerica da Serra. Sistema Tasy. Requisito: Residência completa ou subespecialidade (Nefro, Cardio, etc) com experiência em UTI.',
-    datePosted: '2025-01-02',
-    validThrough: '2025-02-15',
-    employmentType: 'TEMPORARY',
-    hiringOrganization: 'Hospital Itapecerica da Serra / IMED',
-    city: 'Itapecerica da Serra',
-    state: 'SP',
-    specialty: 'Pediatria',
-    salary: 'R$ 1.800 (12h sem) / R$ 2.000 (FDS)',
-    contactUrl: 'https://wa.me/message/TU4JWNEIFRD3J1',
-    dates: ['Escala 12h Semanal e FDS']
-  },
-  {
-    id: 'job-007',
-    title: 'Ginecologista (ESF)',
-    description: 'Vaga Fixa no Município de Icém/SP. Atendimento 4x na semana, 4h diárias. Exige especialização ou residência.',
-    datePosted: '2025-01-02',
-    validThrough: '2025-03-01',
-    employmentType: 'PART_TIME',
-    hiringOrganization: 'Município de Icém / Saúde',
-    city: 'Icém',
-    state: 'SP',
-    specialty: 'Ginecologia',
-    salary: 'Valor fixo/mensal (Sem descontos/NF)',
-    contactWhatsapp: '21983433895',
-    dates: ['4x na semana (4h/dia)']
-  },
-  {
-    id: 'job-008',
-    title: 'Médico Neonatologista',
-    description: 'Cobertura de vacâncias e vagas fixas na Santa Casa de Barra Mansa (SCBM). Rua Pinto Ribeiro, 205.',
-    datePosted: '2025-01-02',
-    validThrough: '2025-02-28',
-    employmentType: 'TEMPORARY',
-    hiringOrganization: 'Santa Casa de Barra Mansa | SCBM',
-    city: 'Barra Mansa',
-    state: 'RJ',
-    specialty: 'Neonatologia',
-    salary: 'A combinar',
-    contactWhatsapp: '5521994062776',
-    dates: ['08/01', '10/01', '11/01', '22/01', '31/01', 'Vagas Fixas Disp.']
-  },
-  {
-    id: 'job-009',
-    title: 'Pediatra (UBS)',
-    description: 'Atendimento em Unidade Básica de Saúde (UBS). Necessário RQE. Oportunidade na Região Central do RS.',
-    datePosted: '2025-01-02',
-    validThrough: '2025-04-01',
-    employmentType: 'FULL_TIME',
-    hiringOrganization: 'Rapimed - Gestão em Saúde',
-    city: 'Região Central',
-    state: 'RS',
-    specialty: 'Pediatria',
-    salary: 'A consultar',
-    contactWhatsapp: '5551992269297',
-    contactUrl: 'https://mkt.rapimed.com.br/medicos'
-  },
-  {
-    id: 'job-010',
-    title: 'Cirurgião Geral - Plantão',
-    description: 'Vaga para médico Cirurgião Geral no município de São Vicente/SP. Aceita residente. Pagamento à vista.',
-    datePosted: '2025-01-04',
-    validThrough: '2025-01-10',
-    employmentType: 'TEMPORARY',
-    hiringOrganization: 'IA HOSPITAL Parceiros',
-    city: 'São Vicente',
-    state: 'SP',
-    specialty: 'Cirurgia Geral',
-    salary: 'Pagamento à vista',
-    contactWhatsapp: '5541984950530',
-    dates: ['03/01 Noturno', '04/01 Noturno', '06/01 Noturno', '08/01 Diurno']
-  },
-  {
     id: 'job-011',
     title: 'Pediatra (UBS) - Noroeste RS',
     description: 'Necessário RQE. Atendimento 1x na semana em UBS. Demanda média de 12 a 20 consultas. Rapimed - Gestão em Saúde.',
@@ -167,21 +78,6 @@ const MOCK_JOBS: JobOpportunity[] = [
     city: 'Região Noroeste',
     state: 'RS',
     specialty: 'Pediatria',
-    salary: 'A consultar',
-    contactWhatsapp: '5551992269297',
-    contactUrl: 'https://mkt.rapimed.com.br/medicos'
-  },
-  {
-    id: 'job-012',
-    title: 'Psiquiatra (UBS) - Noroeste RS',
-    description: 'Necessário RQE. Atendimento 1x na semana em UBS. Demanda média de 12 a 15 consultas. Rapimed - Gestão em Saúde.',
-    datePosted: '2025-01-04',
-    validThrough: '2025-05-01',
-    employmentType: 'PART_TIME',
-    hiringOrganization: 'Rapimed - Gestão em Saúde',
-    city: 'Região Noroeste',
-    state: 'RS',
-    specialty: 'Psiquiatria',
     salary: 'A consultar',
     contactWhatsapp: '5551992269297',
     contactUrl: 'https://mkt.rapimed.com.br/medicos'
@@ -207,25 +103,11 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
   const normalize = (str: string) => 
     str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 
-  // Filtro dinâmico: mostra vagas se a cidade bater ou se o usuário estiver em "sua região"
   const filteredJobs = MOCK_JOBS.filter(job => {
     const cityMatch = location.city === 'sua região' || normalize(job.city) === normalize(location.city);
-    
     const isGenericSpecialty = !location.specialty || 
-                               location.specialty === 'Atendimento Médica' || 
-                               location.specialty === 'Atendimento Médica' || 
-                               location.specialty === 'Atendimento Médico' ||
-                               location.specialty === 'Atendimento';
-
-    const specialtyMatch = isGenericSpecialty || 
-                          normalize(job.specialty) === normalize(location.specialty || '') ||
-                          (job.hiringOrganization.includes('Segmedic') && location.specialty && [
-                            'Cardiologia', 'Pediatria', 'Ginecologia', 'Ortopedia', 'Psiquiatria', 'Nutrologia',
-                            'Alergologia', 'Angiologia', 'Cirurgia Geral', 'Endocrinologia', 'Gastroenterologia',
-                            'Geriatria', 'Hematologia', 'Infectologia', 'Mastologia', 'Nefrologia', 'Neuropediatria',
-                            'Otorrinolaringologia', 'Pneumologia', 'Proctologia', 'Reumatologia', 'Urologia'
-                          ].some(s => normalize(s) === normalize(location.specialty || '')));
-
+                               ['Atendimento Médica', 'Atendimento Médico', 'Atendimento'].some(s => location.specialty?.includes(s));
+    const specialtyMatch = isGenericSpecialty || normalize(job.specialty) === normalize(location.specialty || '');
     const stateMatch = location.state === 'Brasil' || job.state.toLowerCase() === location.state.toLowerCase();
     
     return cityMatch && specialtyMatch && stateMatch;
@@ -241,15 +123,15 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
             <span className="text-2xl" aria-hidden="true">🚨</span>
           </div>
           <div>
-            <h2 className="text-white font-black uppercase tracking-tighter text-2xl leading-none">Vagas & Plantões Disponíveis</h2>
-            <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Oportunidades em {location.city}</p>
+            <h2 className="text-white font-black uppercase tracking-tighter text-2xl leading-none">Plantão Aberto Agora</h2>
+            <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Oportunidades Urgentes em {location.city}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredJobs.map(job => (
             <div key={job.id} className="relative bg-white rounded-[2.5rem] p-8 shadow-2xl border-t-8 border-red-600 animate-fade-in group hover:scale-[1.02] transition-all flex flex-col h-full">
-              {/* Google Job Posting Schema Injection */}
+              {/* Schema JSON-LD para Google Jobs e SEO Local */}
               <script type="application/ld+json">
                 {JSON.stringify({
                   "@context": "https://schema.org/",
@@ -262,7 +144,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                   "hiringOrganization": {
                     "@type": "Organization",
                     "name": job.hiringOrganization,
-                    "sameAs": job.contactUrl || "https://iahospital.com.br"
+                    "logo": "https://iahospital.com.br/logo.png"
                   },
                   "jobLocation": {
                     "@type": "Place",
@@ -272,26 +154,35 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                       "addressRegion": job.state,
                       "addressCountry": "BR"
                     }
+                  },
+                  "baseSalary": {
+                    "@type": "MonetaryAmount",
+                    "currency": "BRL",
+                    "value": {
+                      "@type": "QuantitativeValue",
+                      "unitText": "HOUR"
+                    }
                   }
                 })}
               </script>
 
               <div className="mb-6">
                 <span className="bg-red-100 text-red-700 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 inline-block">
-                  {job.hiringOrganization} • {job.city}/{job.state}
+                   {job.city}/{job.state} • Disponível Hoje
                 </span>
                 <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight">{job.title}</h3>
+                <p className="text-[10px] font-bold text-slate-400 uppercase mt-1">{job.hiringOrganization}</p>
               </div>
 
               <div className="space-y-4 mb-8 flex-grow">
-                {job.dates && job.dates.length > 0 && (
+                {job.dates && (
                   <div className="flex items-start gap-3">
-                    <span className="text-xl" aria-hidden="true">📅</span>
+                    <span className="text-xl">📅</span>
                     <div>
-                      <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Escala / Disponibilidade</p>
-                      <div className="flex flex-wrap gap-2 mt-2">
+                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Data / Horário</p>
+                      <div className="flex flex-wrap gap-2 mt-1">
                         {job.dates.map(d => (
-                          <span key={d} className="bg-slate-100 px-3 py-1 rounded-lg text-[10px] font-bold text-slate-700">{d}</span>
+                          <span key={d} className="bg-slate-100 px-2 py-1 rounded text-[10px] font-black text-slate-700">{d}</span>
                         ))}
                       </div>
                     </div>
@@ -299,16 +190,16 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                 )}
                 
                 <div className="flex items-center gap-3">
-                  <span className="text-xl" aria-hidden="true">💰</span>
+                  <span className="text-xl">💰</span>
                   <div>
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Condição / Valor</p>
-                    <p className="text-sm font-bold text-emerald-600">{job.salary}</p>
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Remuneração</p>
+                    <p className="text-sm font-black text-emerald-600">{job.salary}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="text-xl" aria-hidden="true">ℹ️</span>
-                  <div className="text-xs text-slate-600 leading-relaxed">
+                  <span className="text-xl">ℹ️</span>
+                  <div className="text-[11px] text-slate-600 leading-relaxed font-medium">
                     {job.description}
                   </div>
                 </div>
@@ -316,12 +207,12 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
 
               <div className="pt-6 border-t border-slate-100 mt-auto">
                 <a 
-                  href={job.contactWhatsapp ? `https://wa.me/${job.contactWhatsapp}?text=Ol%C3%A1,%20tenho%20interesse%20na%20vaga%20de%20${job.title}%20em%20${job.city}` : job.contactUrl}
+                  href={`https://wa.me/${job.contactWhatsapp}?text=Ol%C3%A1,%20vi%20a%20vaga%20de%20${job.title}%20em%20${job.city}%20no%20IA%20HOSPITAL%20e%20tenho%20interesse.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-emerald-900/20 transition-all text-xs"
+                  className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 shadow-xl transition-all text-xs"
                 >
-                  Candidatar-se / Contato
+                  Falar no WhatsApp
                 </a>
               </div>
             </div>

@@ -20,7 +20,7 @@ const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ 
     city: 'sua região', 
     state: 'Brasil',
-    specialty: 'Atendimento Médica'
+    specialty: 'Atendimento Médico'
   });
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -46,7 +46,7 @@ const App: React.FC = () => {
     if (parts[0] === 'atendimento' && parts.length >= 2) {
       const stateParam = parts[1].toUpperCase();
       const cityParam = parts[2] ? parts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
-      const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Pediatria';
+      const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Atendimento Médico';
       setLocation({ city: cityParam || 'Sua Localidade', state: stateParam, specialty: specialtyParam });
     }
   }, []);
@@ -65,10 +65,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const spec = location.specialty || 'Atendimento Médico';
-    const city = location.city === 'sua região' ? 'Nacional' : location.city;
+    const city = location.city === 'sua região' ? 'na sua cidade' : location.city;
     const state = location.state === 'Brasil' ? '' : `, ${location.state}`;
     
-    document.title = `${spec} Perto de Mim em ${city}${state} | IA HOSPITAL`;
+    // Título otimizado para variações de busca local
+    document.title = `${spec} Perto de Mim em ${city}${state} | Aberto Agora 24h`;
     
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
@@ -84,7 +85,8 @@ const App: React.FC = () => {
       description.setAttribute('name', 'description');
       document.head.appendChild(description);
     }
-    description.setAttribute('content', `Vaga de ${spec.toLowerCase()} perto de mim em ${city}? O IA HOSPITAL oferece triagem inteligente e oportunidades de plantão em ${city}${state}.`);
+    // Descrição com forte apelo de urgência e geolocalização
+    description.setAttribute('content', `Precisa de ${spec.toLowerCase()} em ${city}${state} agora? Atendimento médico próximo de você, no seu bairro, com triagem inteligente 24 horas. Marque sua consulta ou encontre um pronto atendimento hoje.`);
   }, [location]);
 
   return (
@@ -101,7 +103,6 @@ const App: React.FC = () => {
           onStartChat={() => setIsChatOpen(true)}
         />
         
-        {/* Seção de Vagas para Google Jobs */}
         <JobsBoard location={location} />
 
         <SEOContent location={location} />

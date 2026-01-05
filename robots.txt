@@ -1,4 +1,25 @@
+# IA HOSPITAL - Robots.txt
+# Flame Work SEO Engine v3.1 - Configuração otimizada para SEO Local e Proteção de Conteúdo
+
+# Impede o uso do conteúdo para treinamento de modelos de IA (OpenAI, Google, Anthropic, etc)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+# Permite indexação total para motores de busca (Google, Bing, Yahoo)
 User-agent: *
 Allow: /
 
+# Localização do Mapa do Site
 Sitemap: https://iahospital.com.br/sitemap.xml
