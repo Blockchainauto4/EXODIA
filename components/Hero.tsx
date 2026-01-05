@@ -45,7 +45,14 @@ const Hero: React.FC<HeroProps> = ({ location, onStartChat }) => {
           <div className="mt-12 flex items-center justify-center md:justify-start gap-4 text-xs text-slate-500 font-bold uppercase tracking-widest">
             <div className="flex -space-x-2">
               {[1,2,3,4,5].map(i => (
-                <img key={i} className="w-10 h-10 rounded-full border-4 border-white shadow-sm" src={`https://picsum.photos/seed/${i+50}/100/100`} alt="Paciente Atendido" />
+                <img 
+                  key={i} 
+                  width="40" 
+                  height="40" 
+                  className="w-10 h-10 rounded-full border-4 border-white shadow-sm" 
+                  src={`https://picsum.photos/seed/${i+50}/100/100`} 
+                  alt="Paciente Atendido" 
+                />
               ))}
             </div>
             <span className="max-w-[150px] leading-tight text-xs">Apoiado por Inteligência Artificial Médica Avançada</span>

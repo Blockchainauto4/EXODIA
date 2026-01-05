@@ -96,7 +96,12 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
               </p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full border-2 border-white/20 overflow-hidden">
-                  <img src={`https://picsum.photos/seed/${city}/100/100`} alt={`Usuário em ${city}`} />
+                  <img 
+                    width="48" 
+                    height="48" 
+                    src={`https://picsum.photos/seed/${city}/100/100`} 
+                    alt={`Usuário em ${city}`} 
+                  />
                 </div>
                 <div>
                   <p className="text-xs font-black uppercase tracking-widest">Paciente de {city}</p>
