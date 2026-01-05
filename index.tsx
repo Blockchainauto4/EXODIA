@@ -14,3 +14,10 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+// Remove o loader de progresso inicial após a hidratação/montagem
+const loader = document.getElementById('initial-loader');
+if (loader) {
+  loader.style.opacity = '0';
+  setTimeout(() => loader.remove(), 300);
+}

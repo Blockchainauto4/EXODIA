@@ -47,7 +47,7 @@ const App: React.FC = () => {
         setApiTier(hasKey ? 'PRO' : 'BASIC');
       }
     } catch (e) {
-      console.warn("API AI Studio não carregada");
+      console.warn("Aguardando inicialização do ambiente AI Studio...");
     }
   }, []);
 
@@ -80,6 +80,19 @@ const App: React.FC = () => {
       clearInterval(tierInterval);
     };
   }, [handleRouting, checkApiTier]);
+
+  const handleOpenSelectKey = async () => {
+    if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
+      try {
+        await window.aistudio.openSelectKey();
+        checkApiTier();
+      } catch (err) {
+        console.error("Erro ao abrir seletor de chave:", err);
+      }
+    } else {
+      console.error("Ambiente AI Studio não disponível.");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col font-sans relative">
@@ -151,7 +164,7 @@ const App: React.FC = () => {
       {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={(loc) => setLocation(loc)} currentLocation={location} onOpenProcessing={() => { setIsAdminOpen(false); setIsProcessingOpen(true); }} />}
       {isProcessingOpen && <ProcessingDashboard onClose={() => setIsProcessingOpen(false)} location={location} />}
       {isLiveAnalysisOpen && <LiveAnalysis location={location} onClose={() => setIsLiveAnalysisOpen(false)} />}
-      {isTutorialOpen && <TutorialModal onClose={() => setIsTutorialOpen(false)} onOpenSelectKey={async () => { await window.aistudio.openSelectKey(); checkApiTier(); }} />}
+      {isTutorialOpen && <TutorialModal onClose={() => setIsTutorialOpen(false)} onOpenSelectKey={handleOpenSelectKey} />}
       {isProfModalOpen && <ProfessionalModal onClose={() => setIsProfModalOpen(false)} />}
     </div>
   );

@@ -71,6 +71,11 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
     try {
       setStatus('conectando');
       
+      const apiKey = process.env.API_KEY;
+      if (!apiKey) {
+        throw new Error("API Key não encontrada. Por favor, selecione sua chave PRO.");
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({ 
         audio: true, 
         video: { width: 640, height: 480 } 
@@ -86,7 +91,7 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
       const outputNode = audioContextOutRef.current.createGain();
       outputNode.connect(audioContextOutRef.current.destination);
 
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey });
       const sessionPromise = ai.live.connect({
         model: 'gemini-2.5-flash-native-audio-preview-09-2025',
         callbacks: {
@@ -108,7 +113,7 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
               const pcmBlob = createBlob(inputData);
               sessionPromise.then(session => {
                 session.sendRealtimeInput({ media: pcmBlob });
-              });
+              }).catch(err => console.error("Erro ao enviar audio:", err));
             };
             
             source.connect(scriptProcessor);
@@ -132,7 +137,7 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
                       session.sendRealtimeInput({
                         media: { data: base64Data, mimeType: 'image/jpeg' }
                       });
-                    });
+                    }).catch(err => console.error("Erro ao enviar frame:", err));
                   };
                   reader.readAsDataURL(blob);
                 }
@@ -170,16 +175,21 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
 
             const audioData = message.serverContent?.modelTurn?.parts[0]?.inlineData?.data;
             if (audioData && audioContextOutRef.current) {
-              const ctx = audioContextOutRef.current;
-              nextStartTimeRef.current = Math.max(nextStartTimeRef.current, ctx.currentTime);
-              const audioBuffer = await decodeAudioData(decode(audioData), ctx, 24000, 1);
-              const source = ctx.createBufferSource();
-              source.buffer = audioBuffer;
-              source.connect(outputNode);
-              source.onended = () => sourcesRef.current.delete(source);
-              source.start(nextStartTimeRef.current);
-              nextStartTimeRef.current += audioBuffer.duration;
-              sourcesRef.current.add(source);
+              try {
+                const ctx = audioContextOutRef.current;
+                nextStartTimeRef.current = Math.max(nextStartTimeRef.current, ctx.currentTime);
+                const decodedBytes = decode(audioData);
+                const audioBuffer = await decodeAudioData(decodedBytes, ctx, 24000, 1);
+                const source = ctx.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(outputNode);
+                source.onended = () => sourcesRef.current.delete(source);
+                source.start(nextStartTimeRef.current);
+                nextStartTimeRef.current += audioBuffer.duration;
+                sourcesRef.current.add(source);
+              } catch (decodeErr) {
+                console.error("Erro ao decodificar áudio recebido:", decodeErr);
+              }
             }
 
             if (message.serverContent?.interrupted) {
@@ -191,10 +201,13 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
             }
           },
           onerror: (e) => {
+            console.error("Erro na sessão Live:", e);
             setStatus('erro');
             setErrorMessage('A conexão com o servidor médico PRO falhou.');
           },
-          onclose: () => setIsActive(false)
+          onclose: () => {
+            setIsActive(false);
+          }
         },
         config: {
           responseModalities: [Modality.AUDIO],
@@ -209,8 +222,9 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
 
       sessionRef.current = await sessionPromise;
     } catch (err: any) {
+      console.error("Falha ao iniciar sessão:", err);
       setStatus('erro');
-      setErrorMessage(err.message || 'Erro ao inicializar hardware de mídia.');
+      setErrorMessage(err.message || 'Erro ao inicializar hardware de mídia ou conexão.');
     }
   };
 
@@ -243,52 +257,88 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
         </div>
 
         <div className="flex-grow flex flex-col lg:flex-row overflow-hidden">
-          <div className="lg:w-[60%] relative bg-black flex items-center justify-center overflow-hidden border-r border-slate-100">
-            <video ref={videoRef} autoPlay playsInline muted className={`w-full h-full object-cover transition-all duration-1000 ${isVideoOff ? 'opacity-0 scale-110 blur-2xl' : 'opacity-80'}`} />
-            
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 bg-slate-950/40 backdrop-blur-2xl p-3 rounded-3xl border border-white/5">
-              <button 
-                onClick={() => setIsMuted(!isMuted)}
-                aria-label={isMuted ? "Ativar microfone" : "Silenciar microfone"}
-                className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-2xl ${isMuted ? 'bg-red-600 text-white' : 'bg-white/10 text-white hover:bg-white/20'}`}
-              >
-                <span className="text-xl" aria-hidden="true">{isMuted ? '🔇' : '🎤'}</span>
-              </button>
-              <button 
-                onClick={() => setIsVideoOff(!isVideoOff)}
-                aria-label={isVideoOff ? "Ativar câmera" : "Desativar câmera"}
-                className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-2xl ${isVideoOff ? 'bg-red-600 text-white' : 'bg-white/10 text-white hover:bg-white/20'}`}
-              >
-                <span className="text-xl" aria-hidden="true">{isVideoOff ? '🚫' : '📹'}</span>
-              </button>
-              <div className="w-[1px] bg-white/10 mx-2"></div>
+          {status === 'erro' ? (
+            <div className="w-full h-full flex flex-col items-center justify-center p-12 text-center bg-slate-50">
+              <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-3xl mb-6">⚠️</div>
+              <h2 className="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tighter">Falha na Conexão</h2>
+              <p className="text-slate-500 max-w-md mb-8">{errorMessage}</p>
               <button 
                 onClick={onClose}
-                aria-label="Encerrar consulta"
-                className="w-14 h-14 bg-red-600/20 hover:bg-red-600 text-white rounded-2xl flex items-center justify-center transition-all shadow-2xl"
+                className="px-12 py-5 bg-slate-900 text-white font-black uppercase tracking-widest rounded-2xl hover:bg-black transition-all"
               >
-                <span className="text-xl" aria-hidden="true">📞</span>
+                Voltar ao Início
               </button>
             </div>
-          </div>
-
-          <div className="lg:w-[40%] flex flex-col bg-slate-50 overflow-hidden">
-            <div className="p-8 bg-white border-b border-slate-200">
-              <h3 className="text-slate-900 font-black uppercase text-xs tracking-widest">Triagem em Tempo Real</h3>
-            </div>
-            
-            <div className="flex-grow overflow-y-auto p-8 space-y-6 custom-scrollbar">
-              {history.map((turn, i) => (
-                <div key={i} className={`flex flex-col ${turn.role === 'user' ? 'items-end' : 'items-start'}`}>
-                  <p className="text-[9px] font-black mb-2 uppercase text-slate-400 tracking-widest">{turn.role === 'user' ? 'Você' : 'IA'}</p>
-                  <div className={`max-w-[90%] p-5 rounded-3xl text-sm leading-relaxed border ${turn.role === 'user' ? 'bg-blue-600 text-white' : 'bg-white text-slate-700'}`}>
-                    {turn.text}
-                  </div>
+          ) : (
+            <>
+              <div className="lg:w-[60%] relative bg-black flex items-center justify-center overflow-hidden border-r border-slate-100">
+                <video ref={videoRef} autoPlay playsInline muted className={`w-full h-full object-cover transition-all duration-1000 ${isVideoOff ? 'opacity-0 scale-110 blur-2xl' : 'opacity-80'}`} />
+                
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 bg-slate-950/40 backdrop-blur-2xl p-3 rounded-3xl border border-white/5">
+                  <button 
+                    onClick={() => setIsMuted(!isMuted)}
+                    aria-label={isMuted ? "Ativar microfone" : "Silenciar microfone"}
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-2xl ${isMuted ? 'bg-red-600 text-white' : 'bg-white/10 text-white hover:bg-white/20'}`}
+                  >
+                    <span className="text-xl" aria-hidden="true">{isMuted ? '🔇' : '🎤'}</span>
+                  </button>
+                  <button 
+                    onClick={() => setIsVideoOff(!isVideoOff)}
+                    aria-label={isVideoOff ? "Ativar câmera" : "Desativar câmera"}
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-2xl ${isVideoOff ? 'bg-red-600 text-white' : 'bg-white/10 text-white hover:bg-white/20'}`}
+                  >
+                    <span className="text-xl" aria-hidden="true">{isVideoOff ? '🚫' : '📹'}</span>
+                  </button>
+                  <div className="w-[1px] bg-white/10 mx-2"></div>
+                  <button 
+                    onClick={onClose}
+                    aria-label="Encerrar consulta"
+                    className="w-14 h-14 bg-red-600/20 hover:bg-red-600 text-white rounded-2xl flex items-center justify-center transition-all shadow-2xl"
+                  >
+                    <span className="text-xl" aria-hidden="true">📞</span>
+                  </button>
                 </div>
-              ))}
-              <div ref={transcriptionEndRef} />
-            </div>
-          </div>
+              </div>
+
+              <div className="lg:w-[40%] flex flex-col bg-slate-50 overflow-hidden">
+                <div className="p-8 bg-white border-b border-slate-200">
+                  <h3 className="text-slate-900 font-black uppercase text-xs tracking-widest">Triagem em Tempo Real</h3>
+                </div>
+                
+                <div className="flex-grow overflow-y-auto p-8 space-y-6 custom-scrollbar">
+                  {history.map((turn, i) => (
+                    <div key={i} className={`flex flex-col ${turn.role === 'user' ? 'items-end' : 'items-start'}`}>
+                      <p className="text-[9px] font-black mb-2 uppercase text-slate-400 tracking-widest">{turn.role === 'user' ? 'Você' : 'IA'}</p>
+                      <div className={`max-w-[90%] p-5 rounded-3xl text-sm leading-relaxed border ${turn.role === 'user' ? 'bg-blue-600 text-white' : 'bg-white text-slate-700'}`}>
+                        {turn.text}
+                      </div>
+                    </div>
+                  ))}
+                  {(currentInput || currentOutput) && (
+                    <div className="flex flex-col space-y-4">
+                      {currentInput && (
+                        <div className="flex flex-col items-end opacity-50">
+                          <p className="text-[9px] font-black mb-2 uppercase text-slate-400 tracking-widest">Você (ouvindo...)</p>
+                          <div className="max-w-[90%] p-4 rounded-3xl text-sm leading-relaxed bg-blue-100 text-blue-900 border border-blue-200">
+                            {currentInput}
+                          </div>
+                        </div>
+                      )}
+                      {currentOutput && (
+                        <div className="flex flex-col items-start opacity-50">
+                          <p className="text-[9px] font-black mb-2 uppercase text-slate-400 tracking-widest">IA (falando...)</p>
+                          <div className="max-w-[90%] p-4 rounded-3xl text-sm leading-relaxed bg-white text-slate-700 border border-slate-200">
+                            {currentOutput}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <div ref={transcriptionEndRef} />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -7,17 +7,27 @@ import { GoogleGenAI } from "@google/genai";
  * Tarefas complexas (Raciocínio Clínico Avançado) usam Pro se disponível.
  */
 const getModelForTier = async () => {
-  if (window.aistudio) {
-    const isPro = await window.aistudio.hasSelectedApiKey();
-    // Recomenda-se gemini-3-pro-preview para tarefas complexas de saúde
-    return isPro ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
+  if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
+    try {
+      const isPro = await window.aistudio.hasSelectedApiKey();
+      return isPro ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
+    } catch (e) {
+      return 'gemini-3-flash-preview';
+    }
   }
   return 'gemini-3-flash-preview';
 };
 
 export const getMedicalOrientation = async (prompt: string, history: { role: string; text: string }[]) => {
+  const apiKey = process.env.API_KEY;
+  
+  if (!apiKey) {
+    console.error("API_KEY não configurada no ambiente.");
+    return "O serviço de IA está temporariamente indisponível devido a um erro de configuração de chave. Se for uma emergência, ligue 192.";
+  }
+
   // CRITICAL: Instanciar sempre antes da chamada para capturar a chave mais recente do ambiente
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey });
   const modelName = await getModelForTier();
   
   try {

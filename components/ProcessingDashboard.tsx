@@ -69,6 +69,7 @@ const ProcessingDashboard: React.FC<ProcessingDashboardProps> = ({ onClose, loca
 
           <button 
             onClick={onClose}
+            aria-label="Fechar painel de indexação"
             className="w-full py-4 border-2 border-white/5 text-slate-500 hover:text-white hover:border-white/10 rounded-2xl font-black uppercase tracking-widest transition-all"
           >
             Fechar Dashboard
@@ -115,6 +116,7 @@ const ProcessingDashboard: React.FC<ProcessingDashboardProps> = ({ onClose, loca
             <button 
               onClick={runIndexingProcess}
               disabled={isProcessing}
+              aria-label={isProcessing ? "Processamento em curso" : "Executar indexação instantânea"}
               className={`w-full py-6 rounded-2xl font-black uppercase tracking-widest text-lg transition-all shadow-2xl ${isProcessing ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-orange-600 hover:bg-orange-500 text-white shadow-orange-950/40 hover:scale-[1.01]'}`}
             >
               {isProcessing ? 'Processando URLs...' : 'Iniciar Indexação Inteligente'}

@@ -31,7 +31,7 @@
       .p-placeholder { height: 20px; background: #f1f5f9; border-radius: 6px; margin-bottom: 12px; width: 70%; margin-left: 15%; }
 
       /* Loader de progresso no topo */
-      #initial-loader { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: #e2e8f0; z-index: 100; overflow: hidden; }
+      #initial-loader { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: #e2e8f0; z-index: 100; overflow: hidden; transition: opacity 0.3s ease; }
       #initial-loader::after { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 30%; background: var(--blue-600); animation: slide 1.5s infinite linear; }
       @keyframes slide { from { left: -30%; } to { left: 100%; } }
 
@@ -42,7 +42,17 @@
     </style>
 
     <script>
-      window.process = { env: { NODE_ENV: 'production' }, cwd: () => '/', browser: true };
+      // Polyfill robusto para process.env em navegadores
+      (function() {
+        if (typeof window !== 'undefined') {
+          window.process = window.process || {};
+          window.process.env = window.process.env || {};
+          window.process.env.NODE_ENV = window.process.env.NODE_ENV || 'production';
+          window.process.env.API_KEY = window.process.env.API_KEY || '';
+          window.process.cwd = window.process.cwd || function() { return '/'; };
+          window.process.browser = true;
+        }
+      })();
     </script>
 
     <!-- Tailwind JIT via CDN carregado de forma assíncrona para não bloquear o FCP -->

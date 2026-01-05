@@ -10,15 +10,24 @@ interface AdminPanelProps {
 }
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocation, onOpenProcessing }) => {
+  // Inicialização segura do formulário com fallback para especialidades válidas
   const [form, setForm] = useState<UserLocation>({
     state: currentLocation.state === 'Brasil' ? 'SP' : currentLocation.state,
     city: currentLocation.city === 'sua região' ? 'São Paulo' : currentLocation.city,
-    specialty: currentLocation.specialty || 'Atendimento Médico'
+    specialty: SPECIALTIES.includes(currentLocation.specialty || '') ? currentLocation.specialty : SPECIALTIES[0]
   });
 
+  // Garante que a cidade seja válida ao trocar o estado
+  useEffect(() => {
+    const stateCities = CITIES_BY_STATE[form.state] || [];
+    if (!stateCities.includes(form.city)) {
+      setForm(prev => ({ ...prev, city: stateCities[0] || '' }));
+    }
+  }, [form.state]);
+
   const handleApply = () => {
-    const slugCity = form.city.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
-    const slugSpec = form.specialty?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
+    const slugCity = (form.city || 'geral').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
+    const slugSpec = (form.specialty || 'atendimento-medico').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-');
     const newPath = `/atendimento/${form.state.toLowerCase()}/${slugCity}/${slugSpec}`;
     
     window.history.pushState({}, '', newPath);
@@ -40,8 +49,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
             </h2>
             <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mt-1">SEO Engine v3.1</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full text-slate-400 hover:text-white">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          <button 
+            onClick={onClose} 
+            aria-label="Fechar painel administrativo"
+            className="p-2 hover:bg-white/5 rounded-full text-slate-400 hover:text-white transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
 
@@ -49,6 +62,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
           
           <button 
             onClick={onOpenProcessing}
+            aria-label="Abrir painel de processamento de indexação"
             className="w-full p-6 bg-gradient-to-br from-orange-600 to-red-600 text-white rounded-[2rem] border border-orange-400/20 shadow-xl shadow-orange-950/20 flex items-center justify-between group hover:scale-[1.02] transition-all"
           >
             <div className="text-left">
@@ -56,7 +70,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
               <p className="text-[10px] opacity-70 mt-1">Processar URLs & Auditoria Gemini</p>
             </div>
             <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20">
-              <span className="text-xl">⚡</span>
+              <span className="text-xl" aria-hidden="true">⚡</span>
             </div>
           </button>
 
@@ -64,9 +78,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
             <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-widest border-b border-white/5 pb-2">Configurações de Localidade</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Estado (UF)</label>
+                <label htmlFor="select-state" className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Estado (UF)</label>
                 <select 
-                  className="w-full p-3 bg-slate-950 border border-white/5 rounded-xl text-white text-xs font-bold"
+                  id="select-state"
+                  className="w-full p-3 bg-slate-950 border border-white/5 rounded-xl text-white text-xs font-bold focus:ring-2 focus:ring-orange-500 outline-none"
                   value={form.state}
                   onChange={e => setForm({...form, state: e.target.value})}
                 >
@@ -74,9 +89,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Cidade</label>
+                <label htmlFor="select-city" className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Cidade</label>
                 <select 
-                  className="w-full p-3 bg-slate-950 border border-white/5 rounded-xl text-white text-xs font-bold"
+                  id="select-city"
+                  className="w-full p-3 bg-slate-950 border border-white/5 rounded-xl text-white text-xs font-bold focus:ring-2 focus:ring-orange-500 outline-none"
                   value={form.city}
                   onChange={e => setForm({...form, city: e.target.value})}
                 >
@@ -86,9 +102,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
             </div>
             
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Especialidade Médica</label>
+              <label htmlFor="select-specialty" className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Especialidade Médica</label>
               <select 
-                className="w-full p-3 bg-slate-950 border border-white/5 rounded-xl text-white text-xs font-bold"
+                id="select-specialty"
+                className="w-full p-3 bg-slate-950 border border-white/5 rounded-xl text-white text-xs font-bold focus:ring-2 focus:ring-orange-500 outline-none"
                 value={form.specialty}
                 onChange={e => setForm({...form, specialty: e.target.value})}
               >
@@ -101,7 +118,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
             <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Preview de URL Canônica</h4>
             <div className="bg-slate-950 p-3 rounded-lg border border-white/5 overflow-x-auto">
               <code className="text-[10px] text-emerald-400 whitespace-nowrap">
-                iahospital.com.br/atendimento/{form.state.toLowerCase()}/{form.city.toLowerCase().replace(/ /g, '-')}/{form.specialty?.toLowerCase().replace(/ /g, '-')}
+                iahospital.com.br/atendimento/{form.state.toLowerCase()}/{(form.city || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-')}/{(form.specialty || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ /g, '-')}
               </code>
             </div>
           </div>
@@ -110,7 +127,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
         <div className="pt-8 border-t border-white/5 flex gap-4">
           <button 
             onClick={handleApply}
-            className="flex-grow py-5 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-blue-900/40"
+            aria-label="Aplicar e salvar novas configurações de SEO"
+            className="flex-grow py-5 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-blue-900/40 active:scale-95"
           >
             Aplicar & Salvar
           </button>
