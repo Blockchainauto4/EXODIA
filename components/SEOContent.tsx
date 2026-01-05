@@ -52,7 +52,7 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
               </div>
 
               <div className="mb-8">
-                <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">Termos de Busca Relevantes:</p>
+                <p className="text-xs font-black text-slate-700 uppercase tracking-widest mb-4">Termos de Busca Relevantes:</p>
                 <div className="flex flex-wrap gap-2">
                   {[
                     `${spec} particular ${city}`,
@@ -64,7 +64,7 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
                 </div>
               </div>
 
-              <p className="text-slate-500 text-xs leading-relaxed italic border-t border-slate-200 pt-6">
+              <p className="text-slate-700 text-xs leading-relaxed italic border-t border-slate-200 pt-6">
                 A triagem do IA Hospital em {city} não substitui a consulta presencial. Em caso de emergência, ligue 192.
               </p>
             </div>
@@ -83,7 +83,7 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
                 ].map((item, i) => (
                   <div key={i} className="p-5 bg-white/5 border border-white/10 rounded-2xl hover:border-blue-500 transition-all">
                     <p className="font-bold text-sm mb-1">{item.t}</p>
-                    <p className="text-xs text-slate-400 font-medium">{item.d}</p>
+                    <p className="text-xs text-slate-300 font-medium">{item.d}</p>
                   </div>
                 ))}
               </div>

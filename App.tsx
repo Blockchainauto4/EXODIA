@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import MedicalAssistant from './components/MedicalAssistant';
 import SEOContent from './components/SEOContent';
 import VoiceFAQ from './components/VoiceFAQ';
+import JobsBoard from './components/JobsBoard';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
 import ProfessionalModal from './components/ProfessionalModal';
@@ -18,7 +20,7 @@ const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ 
     city: 'sua região', 
     state: 'Brasil',
-    specialty: 'Atendimento Médico'
+    specialty: 'Atendimento Médica'
   });
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -44,7 +46,7 @@ const App: React.FC = () => {
     if (parts[0] === 'atendimento' && parts.length >= 2) {
       const stateParam = parts[1].toUpperCase();
       const cityParam = parts[2] ? parts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
-      const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Atendimento Médico';
+      const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Pediatria';
       setLocation({ city: cityParam || 'Sua Localidade', state: stateParam, specialty: specialtyParam });
     }
   }, []);
@@ -61,7 +63,6 @@ const App: React.FC = () => {
     };
   }, [handleRouting]);
 
-  // Efeito para SEO: Título e Canonical Dinâmicos
   useEffect(() => {
     const spec = location.specialty || 'Atendimento Médico';
     const city = location.city === 'sua região' ? 'Nacional' : location.city;
@@ -83,7 +84,7 @@ const App: React.FC = () => {
       description.setAttribute('name', 'description');
       document.head.appendChild(description);
     }
-    description.setAttribute('content', `Busca por ${spec.toLowerCase()} perto de mim em ${city}? O IA HOSPITAL oferece triagem inteligente e orientação médica na sua região. Atendimento agora em ${city}${state}.`);
+    description.setAttribute('content', `Vaga de ${spec.toLowerCase()} perto de mim em ${city}? O IA HOSPITAL oferece triagem inteligente e oportunidades de plantão em ${city}${state}.`);
   }, [location]);
 
   return (
@@ -100,6 +101,9 @@ const App: React.FC = () => {
           onStartChat={() => setIsChatOpen(true)}
         />
         
+        {/* Seção de Vagas para Google Jobs */}
+        <JobsBoard location={location} />
+
         <SEOContent location={location} />
         <VoiceFAQ location={location} />
       </main>
@@ -112,7 +116,6 @@ const App: React.FC = () => {
         onOpenLegal={(type, title) => setLegalModal({ open: true, type, title })}
       />
       
-      {/* Balão do Chat Flutuante (Foco Principal agora) */}
       <div className="fixed bottom-24 left-6 z-[100] flex flex-col items-start gap-4">
         {isChatOpen && (
           <div className="w-[calc(100vw-3rem)] sm:w-[400px] animate-slide-up shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-[2.5rem] overflow-hidden border-2 border-slate-200 bg-white">
