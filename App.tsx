@@ -14,7 +14,7 @@ import AdminAuthModal from './components/AdminAuthModal';
 import ProcessingDashboard from './components/ProcessingDashboard';
 import LegalModal from './components/LegalModal';
 import CookieConsent from './components/CookieConsent';
-import { UserLocation } from './types';
+import { UserLocation, LegalModalType } from './types';
 
 const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ 
@@ -30,7 +30,7 @@ const App: React.FC = () => {
   const [isProcessingOpen, setIsProcessingOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   
-  const [legalModal, setLegalModal] = useState<{ open: boolean; title: string; type: 'privacy' | 'terms' | 'data' }>({
+  const [legalModal, setLegalModal] = useState<{ open: boolean; title: string; type: LegalModalType }>({
     open: false,
     title: '',
     type: 'privacy'
@@ -68,7 +68,6 @@ const App: React.FC = () => {
     const city = location.city === 'sua região' ? 'na sua cidade' : location.city;
     const state = location.state === 'Brasil' ? '' : `, ${location.state}`;
     
-    // Título otimizado para variações de busca local
     document.title = `${spec} Perto de Mim em ${city}${state} | Aberto Agora 24h`;
     
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -85,7 +84,6 @@ const App: React.FC = () => {
       description.setAttribute('name', 'description');
       document.head.appendChild(description);
     }
-    // Descrição com forte apelo de urgência e geolocalização
     description.setAttribute('content', `Precisa de ${spec.toLowerCase()} em ${city}${state} agora? Atendimento médico próximo de você, no seu bairro, com triagem inteligente 24 horas. Marque sua consulta ou encontre um pronto atendimento hoje.`);
   }, [location]);
 
@@ -125,12 +123,11 @@ const App: React.FC = () => {
         )}
         <button 
           onClick={() => setIsChatOpen(!isChatOpen)}
-          aria-label={isChatOpen ? "Fechar assistente médico" : "Abrir assistente médico"}
           className={`w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-[101] border-2 border-white/20 ${
             isChatOpen ? 'bg-slate-900 text-white' : 'bg-blue-600 text-white shadow-blue-500/40'
           }`}
         >
-          <span className="text-2xl" aria-hidden="true">{isChatOpen ? '✕' : '💬'}</span>
+          <span className="text-2xl">{isChatOpen ? '✕' : '💬'}</span>
         </button>
       </div>
 
@@ -139,10 +136,9 @@ const App: React.FC = () => {
       
       <button 
         onClick={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
-        aria-label="Acessar Painel Flame Work SEO"
         className={`fixed bottom-6 left-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 ${isAuthorized ? 'opacity-100' : 'opacity-30'}`}
       >
-        <span className="text-2xl" aria-hidden="true">🔥</span>
+        <span className="text-2xl">🔥</span>
       </button>
 
       {legalModal.open && <LegalModal title={legalModal.title} type={legalModal.type} onClose={() => setLegalModal({ ...legalModal, open: false })} />}

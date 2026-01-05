@@ -70,18 +70,18 @@ const MOCK_JOBS: JobOpportunity[] = [
   },
   {
     id: 'job-017',
-    title: 'Emergencista - Plantão Hospitalar',
-    description: 'Vaga para médico Emergencista no Hospital Regional em Paranaguá. Necessário RQE.',
+    title: 'Emergencista - Plantão Imediato',
+    description: '🚨 VAGA URGENTE: Emergencista para o Hospital Regional em Paranaguá. Necessário RQE. Falar com Julio.',
     datePosted: '2025-01-05',
     validThrough: '2025-01-30',
     employmentType: 'TEMPORARY',
-    hiringOrganization: 'Hospital Regional do Litoral',
+    hiringOrganization: 'Hospital Regional em Paranaguá (Litoral)',
     city: 'Paranaguá',
     state: 'PR',
     specialty: 'Emergencista',
     salary: 'A consultar',
     contactWhatsapp: '5541991462236',
-    dates: ['Plantões a combinar']
+    dates: ['Plantões no Litoral / PR']
   },
   {
     id: 'job-002',
@@ -99,37 +99,8 @@ const MOCK_JOBS: JobOpportunity[] = [
     dates: ['05/01 (7h-13h)', '05/01 (13h-19h)', '06/01 (7h-13h)', '08/01 (19-07h)', '09/01 (7-13h)']
   },
   {
-    id: 'job-003',
-    title: 'Clínico - Pronto Socorro (PS)',
-    description: 'Plantão em Pronto Socorro no Hospital das Acácias. Requisitos: 6 meses de graduação e ACLS.',
-    datePosted: '2025-01-02',
-    validThrough: '2025-01-30',
-    employmentType: 'TEMPORARY',
-    hiringOrganization: 'Hospital das Acácias',
-    city: 'Santo André',
-    state: 'SP',
-    specialty: 'Clínica Geral',
-    salary: 'A consultar',
-    contactWhatsapp: '5511972038222'
-  },
-  {
-    id: 'job-011',
-    title: 'Pediatra (UBS) - Noroeste RS',
-    description: 'Necessário RQE. Atendimento 1x na semana em UBS. Demanda média de 12 a 20 consultas. Rapimed - Gestão em Saúde.',
-    datePosted: '2025-01-04',
-    validThrough: '2025-05-01',
-    employmentType: 'PART_TIME',
-    hiringOrganization: 'Rapimed - Gestão em Saúde',
-    city: 'Região Noroeste',
-    state: 'RS',
-    specialty: 'Pediatria',
-    salary: 'A consultar',
-    contactWhatsapp: '5551992269297',
-    contactUrl: 'https://mkt.rapimed.com.br/medicos'
-  },
-  {
     id: 'job-013',
-    title: 'Cirurgião Geral - Plantão',
+    title: 'Cirurgião Geral - Plantão Litoral',
     description: 'Hospital Regional do Litoral em Paranaguá/PR. Necessário RQE ou título de especialista. Vagas para plantões diurnos e 24h.',
     datePosted: '2025-01-04',
     validThrough: '2025-01-30',
@@ -163,19 +134,43 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
   return (
     <section className="py-16 bg-slate-900 overflow-hidden" id="vagas">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center gap-3 mb-10">
-          <div className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center text-white animate-pulse shadow-lg shadow-red-900/40">
-            <span className="text-2xl" aria-hidden="true">🚨</span>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center text-white animate-pulse shadow-lg shadow-red-900/40">
+              <span className="text-2xl" aria-hidden="true">🚨</span>
+            </div>
+            <div>
+              <h2 className="text-white font-black uppercase tracking-tighter text-3xl leading-none">Enterprise Registry</h2>
+              <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Oportunidades Estratégicas em {location.city}</p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-white font-black uppercase tracking-tighter text-2xl leading-none">Plantão Aberto Agora</h2>
-            <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Oportunidades Urgentes em {location.city}</p>
+
+          {/* Institutional Seats Badge */}
+          <div className="bg-slate-800/50 border border-white/10 rounded-2xl p-4 flex items-center gap-6 shadow-2xl">
+            <div className="flex -space-x-3">
+              {[1,2,3].map(i => (
+                <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400">
+                  {i}
+                </div>
+              ))}
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">Seats Available</p>
+              <p className="text-white font-black text-sm uppercase tracking-tighter">
+                {filteredJobs.length} Assentos Profissionais <span className="text-emerald-500">• {location.city}</span>
+              </p>
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredJobs.map(job => (
-            <div key={job.id} className="relative bg-white rounded-[2.5rem] p-8 shadow-2xl border-t-8 border-red-600 animate-fade-in group hover:scale-[1.02] transition-all flex flex-col h-full">
+            <div key={job.id} className="relative bg-white rounded-[2.5rem] p-8 shadow-2xl border-t-8 border-red-600 animate-fade-in group hover:scale-[1.02] transition-all flex flex-col h-full overflow-hidden">
+              {/* Institutional Watermark */}
+              <div className="absolute top-10 right-[-30px] opacity-[0.03] rotate-45 pointer-events-none select-none">
+                <span className="text-8xl font-black uppercase">ENTERPRISE</span>
+              </div>
+
               {/* Schema JSON-LD para Google Jobs e SEO Local */}
               <script type="application/ld+json">
                 {JSON.stringify({
@@ -211,20 +206,25 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                 })}
               </script>
 
-              <div className="mb-6">
-                <span className="bg-red-100 text-red-700 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 inline-block">
-                   {job.city}/{job.state} • Disponível Hoje
-                </span>
+              <div className="mb-6 relative z-10">
+                <div className="flex justify-between items-start mb-4">
+                  <span className="bg-slate-100 text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest inline-block border border-slate-200">
+                    ID: {job.id.split('-')[1]} • {job.city}
+                  </span>
+                  {job.id === 'job-017' && (
+                    <span className="bg-orange-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter animate-bounce shadow-lg shadow-orange-500/20">Urgente</span>
+                  )}
+                </div>
                 <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight">{job.title}</h3>
-                <p className="text-[10px] font-bold text-slate-400 uppercase mt-1">{job.hiringOrganization}</p>
+                <p className="text-[10px] font-bold text-blue-600 uppercase mt-1 tracking-widest">{job.hiringOrganization}</p>
               </div>
 
-              <div className="space-y-4 mb-8 flex-grow">
+              <div className="space-y-4 mb-8 flex-grow relative z-10">
                 {job.dates && (
                   <div className="flex items-start gap-3">
                     <span className="text-xl">📅</span>
                     <div>
-                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Data / Horário</p>
+                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Enterprise Schedule</p>
                       <div className="flex flex-wrap gap-2 mt-1">
                         {job.dates.map(d => (
                           <span key={d} className="bg-slate-100 px-2 py-1 rounded text-[10px] font-black text-slate-700">{d}</span>
@@ -237,7 +237,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                 <div className="flex items-center gap-3">
                   <span className="text-xl">💰</span>
                   <div>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Remuneração</p>
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Assento Remunerado</p>
                     <p className="text-sm font-black text-emerald-600">{job.salary}</p>
                   </div>
                 </div>
@@ -250,14 +250,14 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-slate-100 mt-auto">
+              <div className="pt-6 border-t border-slate-100 mt-auto relative z-10">
                 <a 
-                  href={`https://wa.me/${job.contactWhatsapp}?text=Ol%C3%A1,%20vi%20a%20vaga%20de%20${job.title}%20em%20${job.city}%20no%20IA%20HOSPITAL%20e%20tenho%20interesse.`}
+                  href={`https://wa.me/${job.contactWhatsapp}?text=Ol%C3%A1,%20vi%20o%20assento%20profissional%20de%20${job.title}%20em%20${job.city}%20no%20IA%20HOSPITAL%20e%20quero%20me%20credenciar.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 shadow-xl transition-all text-xs"
+                  className="w-full py-4 bg-slate-900 hover:bg-black text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 shadow-xl transition-all text-xs"
                 >
-                  Falar no WhatsApp
+                  Solicitar Credenciamento
                 </a>
               </div>
             </div>

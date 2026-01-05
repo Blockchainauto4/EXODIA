@@ -1,79 +1,92 @@
+
 import React from 'react';
-import { UserLocation, BRAZIL_STATES } from '../types';
+import { UserLocation, BRAZIL_STATES, LegalModalType } from '../types';
 
 interface FooterProps {
   onAdminOpen?: () => void;
   onProfOpen?: () => void;
-  onOpenLegal?: (type: 'privacy' | 'terms' | 'data', title: string) => void;
+  onOpenLegal?: (type: LegalModalType, title: string) => void;
   location?: UserLocation;
   isAuthorized?: boolean;
 }
 
 const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, location, isAuthorized }) => {
   return (
-    <footer className="bg-slate-950 text-white py-16">
+    <footer className="bg-slate-950 text-white py-20 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Banner para Profissionais */}
-        <div className="mb-16 bg-blue-600/10 border border-blue-500/20 rounded-[2.5rem] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-3xl -z-0"></div>
-          <div className="text-center md:text-left relative z-10">
-            <h3 className="text-2xl font-black uppercase tracking-tighter mb-2 text-white">Para Profissionais de Saúde</h3>
-            <p className="text-slate-300 text-sm max-w-md">
-              Deseja receber indicações de pacientes triados pela nossa IA em <span className="text-blue-400 font-bold">{location?.city || 'sua região'}</span>? Cadastre sua unidade.
+        {/* Enterprise Credential Banner */}
+        <div className="mb-20 bg-gradient-to-br from-slate-900 to-black border border-white/10 rounded-[3rem] p-10 md:p-14 flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 blur-[120px] -z-0"></div>
+          <div className="text-center lg:text-left relative z-10 max-w-2xl">
+            <span className="inline-block px-4 py-1.5 bg-blue-600/20 text-blue-400 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-6 border border-blue-500/20">Enterprise Division</span>
+            <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4 text-white leading-none">Credenciamento de Unidades</h3>
+            <p className="text-slate-400 text-base font-medium leading-relaxed">
+              Expanda sua operação médica em <span className="text-white font-bold">{location?.city || 'sua região'}</span> integrando-se à governança do IA HOSPITAL. Oferecemos assentos profissionais limitados para especialistas e clínicas de alta performance.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 relative z-10">
-            <button onClick={onProfOpen} className="px-10 py-5 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-blue-500/20 whitespace-nowrap">
-              Cadastrar Unidade
+          <div className="flex flex-col sm:flex-row gap-4 relative z-10 shrink-0">
+            <button onClick={onProfOpen} className="px-12 py-6 bg-white text-slate-950 font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap">
+              Solicitar Assento
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 mb-6 text-white">
-              <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold">IA</div>
-              <span className="font-bold text-xl uppercase tracking-tighter">IA HOSPITAL</span>
+            <div className="flex items-center gap-3 mb-8 text-white">
+              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-black text-lg shadow-lg shadow-blue-500/20">IA</div>
+              <span className="font-black text-2xl uppercase tracking-tighter">IA HOSPITAL</span>
             </div>
-            <p className="text-slate-300 max-w-sm mb-6">
-              Plataforma brasileira pioneira em triagem médica por IA em {location?.city || 'todo o Brasil'}. Orientação educativa centrada no paciente.
+            <p className="text-slate-400 max-w-sm mb-8 font-medium leading-relaxed italic">
+              "Governança, Tecnologia e Segurança em Saúde. Uma visão enterprise transmitida por <span className="text-white font-bold">Bruno Audric Bittencourt Rizk</span> para todo o Brasil."
             </p>
+            <div className="flex items-center gap-6">
+              <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group hover:border-blue-500 transition-all shadow-xl">
+                <span className="text-2xl group-hover:scale-110 transition-transform">🏢</span>
+              </div>
+              <div>
+                <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-tight mb-1">
+                  Institutional Governance
+                </p>
+                <p className="text-[8px] text-blue-500 font-black uppercase tracking-[0.2em]">Rizk Certified Enterprise</p>
+              </div>
+            </div>
           </div>
           
           <div>
-            <h4 className="font-bold mb-6 text-blue-400 text-sm uppercase tracking-widest">Acesso Rápido</h4>
-            <ul className="space-y-4 text-slate-300 text-sm">
-              <li><a href="#inicio" className="hover:text-white transition-colors">Orientação Médica</a></li>
-              <li><a href="#orientacao" className="hover:text-white transition-colors">Especialidades</a></li>
-              <li><button onClick={onProfOpen} className="hover:text-white transition-colors text-left font-bold text-blue-400">Área do Profissional</button></li>
+            <h4 className="font-black mb-8 text-white text-xs uppercase tracking-[0.2em]">Strategic Links</h4>
+            <ul className="space-y-4 text-slate-400 text-sm font-bold uppercase tracking-widest">
+              <li><button onClick={() => onOpenLegal?.('about', 'Visão Institucional')} className="hover:text-blue-400 transition-colors">Enterprise Vision</button></li>
+              <li><button onClick={() => onOpenLegal?.('about', 'Board of Directors')} className="hover:text-blue-400 transition-colors">The Board</button></li>
+              <li><button onClick={onProfOpen} className="hover:text-blue-400 transition-colors text-left text-blue-500">Professional Seats</button></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-bold mb-6 text-blue-400 text-sm uppercase tracking-widest">Jurídico & Dados</h4>
-            <ul className="space-y-4 text-slate-300 text-sm">
-              <li><button onClick={() => onOpenLegal?.('privacy', 'Política de Privacidade')} className="hover:text-white transition-colors text-left">Privacidade</button></li>
-              <li><button onClick={() => onOpenLegal?.('terms', 'Termos de Uso')} className="hover:text-white transition-colors text-left">Termos de Uso</button></li>
-              <li><button onClick={() => onOpenLegal?.('data', 'Captura de Dados')} className="hover:text-white transition-colors text-left">Tratamento de Dados</button></li>
-              <li><button onClick={onAdminOpen} className="hover:text-white transition-colors text-left uppercase text-xs font-black tracking-widest text-slate-400">Admin Dashboard</button></li>
+            <h4 className="font-black mb-8 text-white text-xs uppercase tracking-[0.2em]">Security & Compliance</h4>
+            <ul className="space-y-4 text-slate-400 text-sm font-bold uppercase tracking-widest">
+              <li><button onClick={() => onOpenLegal?.('privacy', 'Data Privacy Protocol')} className="hover:text-blue-400 transition-colors text-left">Privacy Policy</button></li>
+              <li><button onClick={() => onOpenLegal?.('terms', 'Governance Terms')} className="hover:text-blue-400 transition-colors text-left">Usage Terms</button></li>
+              <li><button onClick={() => onOpenLegal?.('data', 'Cyber Resilience')} className="hover:text-blue-400 transition-colors text-left">Data Security</button></li>
+              <li><button onClick={onAdminOpen} className="hover:text-white transition-colors text-left opacity-30 text-[9px]">Flame Engine 3.1</button></li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-            © 2024 IA HOSPITAL • Flame Work Local SEO Engine
+        <div className="border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
+          <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
+            © 2024 IA HOSPITAL ENTERPRISE • FLAME WORK ENGINE
           </p>
-          <div className="flex gap-6 text-xs uppercase font-black tracking-[0.2em] text-slate-400">
-            <button onClick={() => onOpenLegal?.('privacy', 'Política de Privacidade')} className="hover:text-white transition-colors">Privacidade</button>
-            <button onClick={() => onOpenLegal?.('terms', 'Termos de Uso')} className="hover:text-white transition-colors">Termos</button>
-            <span className="cursor-default text-slate-300">EEAT Compliance</span>
+          <div className="flex gap-8 text-[10px] uppercase font-black tracking-[0.2em] text-slate-500">
+            <button onClick={() => onOpenLegal?.('privacy', 'Privacy')} className="hover:text-white transition-colors">GDPR</button>
+            <button onClick={() => onOpenLegal?.('terms', 'Terms')} className="hover:text-white transition-colors">HIPAA</button>
+            <span className="cursor-default text-emerald-500">SOC2 COMPLIANT</span>
           </div>
         </div>
         
-        <div className="mt-8 p-6 bg-white/5 rounded-2xl border border-white/5">
-          <p className="text-xs text-slate-300 leading-relaxed text-center uppercase tracking-tighter font-medium">
-            IMPORTANTE: Este serviço fornece apenas orientação médica educativa. Em caso de emergência, ligue imediatamente para o SAMU (192) em {location?.city}.
+        <div className="mt-12 p-8 bg-slate-900/50 rounded-3xl border border-white/5 backdrop-blur-sm">
+          <p className="text-[10px] text-slate-400 leading-relaxed text-center uppercase tracking-widest font-black">
+            AVISO INSTITUCIONAL: A triagem fornecida é de natureza educativa. Protocolos de emergência devem ser acionados via 192 em {location?.city}. Transmissão criptografada sob padrão Rizk Enterprise-256.
           </p>
         </div>
       </div>
