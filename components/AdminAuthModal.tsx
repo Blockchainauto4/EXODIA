@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 interface AdminAuthModalProps {
@@ -12,7 +11,6 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ onClose, onSuccess }) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Senha mestre solicitada
     if (password === 'IAHOSPITAL#2024') {
       onSuccess();
     } else {
@@ -29,12 +27,12 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ onClose, onSuccess }) =
             🔥
           </div>
           <h2 className="text-white font-black uppercase tracking-tighter text-xl">Acesso Restrito</h2>
-          <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mt-2">Flame Work Local SEO Engine</p>
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2">Flame Work Local SEO Engine</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Senha Administrativa</label>
+            <label className="text-xs font-black text-slate-300 uppercase tracking-widest ml-1">Senha Administrativa</label>
             <input 
               type="password"
               autoFocus
@@ -43,7 +41,7 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ onClose, onSuccess }) =
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {error && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest text-center mt-2 animate-bounce">Senha Incorreta</p>}
+            {error && <p className="text-red-500 text-xs font-bold uppercase tracking-widest text-center mt-2 animate-bounce">Senha Incorreta</p>}
           </div>
 
           <div className="flex flex-col gap-3 pt-4">
@@ -63,7 +61,7 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ onClose, onSuccess }) =
           </div>
         </form>
 
-        <p className="text-[9px] text-slate-600 text-center mt-8 uppercase font-bold">
+        <p className="text-xs text-slate-600 text-center mt-8 uppercase font-bold tracking-tight">
           Sua conexão é criptografada e protegida.
         </p>
       </div>
