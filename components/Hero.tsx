@@ -13,7 +13,7 @@ const Hero: React.FC<HeroProps> = ({ location, onStartChat }) => {
       
       <div className="max-w-7xl mx-auto px-4 text-center md:text-left">
         <div className="max-w-4xl mx-auto md:mx-0">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black tracking-[0.2em] uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-blue-100 text-blue-700 text-xs font-black tracking-[0.2em] uppercase">
             <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
             Orientação Inteligente Online
           </div>
@@ -48,7 +48,7 @@ const Hero: React.FC<HeroProps> = ({ location, onStartChat }) => {
                 <img key={i} className="w-10 h-10 rounded-full border-4 border-white shadow-sm" src={`https://picsum.photos/seed/${i+50}/100/100`} alt="Paciente Atendido" />
               ))}
             </div>
-            <span className="max-w-[150px] leading-tight text-[10px]">Apoiado por Inteligência Artificial Médica Avançada</span>
+            <span className="max-w-[150px] leading-tight text-xs">Apoiado por Inteligência Artificial Médica Avançada</span>
           </div>
         </div>
       </div>

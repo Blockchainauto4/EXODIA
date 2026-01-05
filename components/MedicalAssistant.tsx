@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { getMedicalOrientation } from '../services/geminiService';
 import { Message, UserLocation } from '../types';
@@ -44,7 +43,7 @@ const MedicalAssistant: React.FC<MedicalAssistantProps> = ({ location, onClose }
           <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold text-lg">IA</div>
           <div>
             <h2 className="text-sm font-black uppercase tracking-widest leading-tight">Triagem Inteligente</h2>
-            <p className="text-[10px] text-blue-100 font-bold uppercase tracking-tighter opacity-90">{location.city} • Online agora</p>
+            <p className="text-xs text-blue-100 font-bold uppercase tracking-tighter opacity-90">{location.city} • Online agora</p>
           </div>
         </div>
         {onClose && (
@@ -109,7 +108,7 @@ const MedicalAssistant: React.FC<MedicalAssistantProps> = ({ location, onClose }
         </div>
         <div className="mt-3 flex items-center justify-center gap-2">
           <div className="w-1.5 h-1.5 bg-green-600 rounded-full animate-pulse"></div>
-          <p className="text-[9px] text-center text-slate-500 font-black uppercase tracking-widest">
+          <p className="text-xs text-center text-slate-500 font-black uppercase tracking-widest">
             Apenas Orientação • Emergência? Ligue 192
           </p>
         </div>

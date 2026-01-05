@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { UserLocation, BRAZIL_STATES } from '../types';
 
@@ -11,8 +10,6 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, location, isAuthorized }) => {
-  const whatsappUrl = "https://wa.me/5511932046970?text=Sou%20profissional%20e%20quero%20me%20cadastrar%20no%20IA%20Hospital";
-
   return (
     <footer className="bg-slate-950 text-white py-16">
       <div className="max-w-7xl mx-auto px-4">
@@ -46,7 +43,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, l
           <div>
             <h4 className="font-bold mb-6 text-blue-400 text-sm uppercase tracking-widest">Acesso Rápido</h4>
             <ul className="space-y-4 text-slate-400 text-sm">
-              <li><a href="#assistente" className="hover:text-white transition-colors">Orientação Médica</a></li>
+              <li><a href="#inicio" className="hover:text-white transition-colors">Orientação Médica</a></li>
               <li><a href="#orientacao" className="hover:text-white transition-colors">Especialidades</a></li>
               <li><button onClick={onProfOpen} className="hover:text-white transition-colors text-left font-bold text-blue-400">Área do Profissional</button></li>
             </ul>
@@ -58,24 +55,24 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, l
               <li><button onClick={() => onOpenLegal?.('privacy', 'Política de Privacidade')} className="hover:text-white transition-colors text-left">Privacidade</button></li>
               <li><button onClick={() => onOpenLegal?.('terms', 'Termos de Uso')} className="hover:text-white transition-colors text-left">Termos de Uso</button></li>
               <li><button onClick={() => onOpenLegal?.('data', 'Captura de Dados')} className="hover:text-white transition-colors text-left">Tratamento de Dados</button></li>
-              <li><button onClick={onAdminOpen} className="hover:text-white transition-colors text-left uppercase text-[10px] font-black tracking-widest opacity-30">Admin Dashboard</button></li>
+              <li><button onClick={onAdminOpen} className="hover:text-white transition-colors text-left uppercase text-xs font-black tracking-widest opacity-40">Admin Dashboard</button></li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">
             © 2024 IA HOSPITAL • Flame Work Local SEO Engine
           </p>
-          <div className="flex gap-6 text-[9px] uppercase font-black tracking-[0.2em] text-slate-600">
-            <button onClick={() => onOpenLegal?.('privacy', 'Política de Privacidade')}>Privacidade</button>
-            <button onClick={() => onOpenLegal?.('terms', 'Termos de Uso')}>Termos</button>
-            <span>EEAT Compliance</span>
+          <div className="flex gap-6 text-xs uppercase font-black tracking-[0.2em] text-slate-500">
+            <button onClick={() => onOpenLegal?.('privacy', 'Política de Privacidade')} className="hover:text-white transition-colors">Privacidade</button>
+            <button onClick={() => onOpenLegal?.('terms', 'Termos de Uso')} className="hover:text-white transition-colors">Termos</button>
+            <span className="cursor-default">EEAT Compliance</span>
           </div>
         </div>
         
         <div className="mt-8 p-6 bg-white/5 rounded-2xl border border-white/5">
-          <p className="text-[9px] text-slate-500 leading-relaxed text-center uppercase tracking-tighter">
+          <p className="text-xs text-slate-400 leading-relaxed text-center uppercase tracking-tighter font-medium">
             IMPORTANTE: Este serviço fornece apenas orientação médica educativa. Em caso de emergência, ligue imediatamente para o SAMU (192) em {location?.city}.
           </p>
         </div>

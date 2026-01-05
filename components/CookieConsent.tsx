@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 const CookieConsent: React.FC<{ onOpenPrivacy: () => void }> = ({ onOpenPrivacy }) => {
@@ -25,7 +24,7 @@ const CookieConsent: React.FC<{ onOpenPrivacy: () => void }> = ({ onOpenPrivacy 
         <div className="flex items-start gap-6">
           <div className="w-16 h-16 bg-blue-600 rounded-3xl flex items-center justify-center text-3xl shrink-0 shadow-lg shadow-blue-500/40 border border-blue-400/30">🍪</div>
           <div className="text-left">
-            <h4 className="text-blue-400 font-black uppercase tracking-[0.2em] text-[10px] mb-2">Conformidade LGPD & Segurança</h4>
+            <h4 className="text-blue-400 font-black uppercase tracking-[0.2em] text-xs mb-2">Conformidade LGPD & Segurança</h4>
             <h3 className="text-white font-bold text-xl mb-2 tracking-tight">Experiência Médica Personalizada</h3>
             <p className="text-slate-100 text-sm leading-relaxed max-w-2xl font-bold">
               Utilizamos cookies técnicos e geolocalização para processar seu atendimento <span className="text-white font-black underline decoration-blue-500 underline-offset-4">onde você está agora</span>. Isso é essencial para triagens precisas e seguras. Ao continuar, você aceita nossa <button onClick={onOpenPrivacy} className="text-blue-400 font-black underline hover:text-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">Política de Privacidade</button>.
@@ -43,7 +42,7 @@ const CookieConsent: React.FC<{ onOpenPrivacy: () => void }> = ({ onOpenPrivacy 
           <button 
             onClick={onOpenPrivacy}
             aria-label="Ver configurações de privacidade"
-            className="flex-grow lg:flex-none px-10 py-5 bg-white/10 hover:bg-white/20 text-white font-black uppercase tracking-widest text-[10px] rounded-2xl transition-all border-2 border-white/20 hover:scale-[1.02]"
+            className="flex-grow lg:flex-none px-10 py-5 bg-white/10 hover:bg-white/20 text-white font-black uppercase tracking-widest text-xs rounded-2xl transition-all border-2 border-white/20 hover:scale-[1.02]"
           >
             Configurações
           </button>
