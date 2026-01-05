@@ -1,16 +1,13 @@
-
 import React from 'react';
 import { UserLocation } from '../types';
 
 interface HeaderProps {
   isScrolled: boolean;
   location: UserLocation;
-  apiTier: 'BASIC' | 'PRO';
   onAdminOpen: () => void;
-  onOpenTutorial: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isScrolled, location, apiTier, onAdminOpen, onOpenTutorial }) => {
+const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen }) => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
@@ -19,22 +16,11 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, apiTier, onAdminO
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/20">IA</div>
           <span className={`font-black text-xl tracking-tighter text-blue-900`}>IA HOSPITAL</span>
-          <button 
-            onClick={onOpenTutorial}
-            aria-label={`Mudar nível de API - Atualmente ${apiTier}`}
-            className={`ml-2 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border transition-all ${
-              apiTier === 'PRO' 
-                ? 'bg-blue-600 border-blue-600 text-white shadow-md' 
-                : 'bg-slate-100 border-slate-200 text-slate-500'
-            }`}
-          >
-            {apiTier} TIER
-          </button>
         </div>
         
         <nav className="hidden md:flex gap-6 items-center">
           <a href="#inicio" className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Início</a>
-          <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Especialidades</button>
+          <a href="#orientacao" className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Especialidades</a>
           <a href="#faq" className="text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">FAQ</a>
         </nav>
 

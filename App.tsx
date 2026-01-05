@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -7,8 +6,6 @@ import SEOContent from './components/SEOContent';
 import VoiceFAQ from './components/VoiceFAQ';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
-import LiveAnalysis from './components/LiveAnalysis';
-import TutorialModal from './components/TutorialModal';
 import ProfessionalModal from './components/ProfessionalModal';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import AdminAuthModal from './components/AdminAuthModal';
@@ -27,29 +24,15 @@ const App: React.FC = () => {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isLiveAnalysisOpen, setIsLiveAnalysisOpen] = useState(false);
-  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [isProfModalOpen, setIsProfModalOpen] = useState(false);
   const [isProcessingOpen, setIsProcessingOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [apiTier, setApiTier] = useState<'BASIC' | 'PRO'>('BASIC');
   
   const [legalModal, setLegalModal] = useState<{ open: boolean; title: string; type: 'privacy' | 'terms' | 'data' }>({
     open: false,
     title: '',
     type: 'privacy'
   });
-
-  const checkApiTier = useCallback(async () => {
-    try {
-      if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
-        const hasKey = await window.aistudio.hasSelectedApiKey();
-        setApiTier(hasKey ? 'PRO' : 'BASIC');
-      }
-    } catch (e) {
-      console.warn("Aguardando inicialização do ambiente AI Studio...");
-    }
-  }, []);
 
   const handleRouting = useCallback(() => {
     const path = window.location.pathname;
@@ -72,44 +55,49 @@ const App: React.FC = () => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     
-    const tierInterval = setInterval(checkApiTier, 2000);
-
     return () => {
       window.removeEventListener('popstate', handleRouting);
       window.removeEventListener('scroll', handleScroll);
-      clearInterval(tierInterval);
     };
-  }, [handleRouting, checkApiTier]);
+  }, [handleRouting]);
 
-  const handleOpenSelectKey = async () => {
-    if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
-      try {
-        await window.aistudio.openSelectKey();
-        checkApiTier();
-      } catch (err) {
-        console.error("Erro ao abrir seletor de chave:", err);
-      }
-    } else {
-      console.error("Ambiente AI Studio não disponível.");
+  // Efeito para SEO: Título e Canonical Dinâmicos
+  useEffect(() => {
+    const spec = location.specialty || 'Atendimento Médico';
+    const city = location.city === 'sua região' ? 'Nacional' : location.city;
+    const state = location.state === 'Brasil' ? '' : `, ${location.state}`;
+    
+    document.title = `${spec} Perto de Mim em ${city}${state} | IA HOSPITAL`;
+    
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
     }
-  };
+    canonical.setAttribute('href', window.location.href.split('?')[0]);
+    
+    let description = document.querySelector('meta[name="description"]');
+    if (!description) {
+      description = document.createElement('meta');
+      description.setAttribute('name', 'description');
+      document.head.appendChild(description);
+    }
+    description.setAttribute('content', `Busca por ${spec.toLowerCase()} perto de mim em ${city}? O IA HOSPITAL oferece triagem inteligente e orientação médica na sua região. Atendimento agora em ${city}${state}.`);
+  }, [location]);
 
   return (
     <div className="min-h-screen flex flex-col font-sans relative">
       <Header 
         isScrolled={isScrolled} 
         location={location} 
-        apiTier={apiTier}
         onAdminOpen={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)} 
-        onOpenTutorial={() => setIsTutorialOpen(true)}
       />
       
       <main className="flex-grow">
         <Hero 
           location={location} 
-          onStartLive={() => apiTier === 'PRO' ? setIsLiveAnalysisOpen(true) : setIsTutorialOpen(true)} 
           onStartChat={() => setIsChatOpen(true)}
-          apiTier={apiTier} 
         />
         
         <SEOContent location={location} />
@@ -124,7 +112,7 @@ const App: React.FC = () => {
         onOpenLegal={(type, title) => setLegalModal({ open: true, type, title })}
       />
       
-      {/* Balão do Chat Flutuante (Lado Esquerdo) */}
+      {/* Balão do Chat Flutuante (Foco Principal agora) */}
       <div className="fixed bottom-24 left-6 z-[100] flex flex-col items-start gap-4">
         {isChatOpen && (
           <div className="w-[calc(100vw-3rem)] sm:w-[400px] animate-slide-up shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-[2.5rem] overflow-hidden border-2 border-slate-200 bg-white">
@@ -134,26 +122,20 @@ const App: React.FC = () => {
         <button 
           onClick={() => setIsChatOpen(!isChatOpen)}
           aria-label={isChatOpen ? "Fechar assistente médico" : "Abrir assistente médico"}
-          title={isChatOpen ? "Fechar" : "Falar com IA"}
           className={`w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-[101] border-2 border-white/20 ${
             isChatOpen ? 'bg-slate-900 text-white' : 'bg-blue-600 text-white shadow-blue-500/40'
           }`}
         >
           <span className="text-2xl" aria-hidden="true">{isChatOpen ? '✕' : '💬'}</span>
-          {!isChatOpen && (
-            <div className="absolute -top-1 -right-1 w-6 h-6 bg-red-600 rounded-full border-2 border-white animate-pulse flex items-center justify-center text-[10px] font-bold">1</div>
-          )}
         </button>
       </div>
 
       <WhatsAppWidget />
       <CookieConsent onOpenPrivacy={() => setLegalModal({ open: true, type: 'privacy', title: 'Política de Privacidade' })} />
       
-      {/* Gatilho Admin (Flame Work) - Lado Esquerdo, abaixo do chat */}
       <button 
         onClick={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
         aria-label="Acessar Painel Flame Work SEO"
-        title="Admin SEO"
         className={`fixed bottom-6 left-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 ${isAuthorized ? 'opacity-100' : 'opacity-30'}`}
       >
         <span className="text-2xl" aria-hidden="true">🔥</span>
@@ -163,8 +145,6 @@ const App: React.FC = () => {
       {isAuthOpen && <AdminAuthModal onClose={() => setIsAuthOpen(false)} onSuccess={() => { setIsAuthorized(true); setIsAuthOpen(false); setIsAdminOpen(true); }} />}
       {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={(loc) => setLocation(loc)} currentLocation={location} onOpenProcessing={() => { setIsAdminOpen(false); setIsProcessingOpen(true); }} />}
       {isProcessingOpen && <ProcessingDashboard onClose={() => setIsProcessingOpen(false)} location={location} />}
-      {isLiveAnalysisOpen && <LiveAnalysis location={location} onClose={() => setIsLiveAnalysisOpen(false)} />}
-      {isTutorialOpen && <TutorialModal onClose={() => setIsTutorialOpen(false)} onOpenSelectKey={handleOpenSelectKey} />}
       {isProfModalOpen && <ProfessionalModal onClose={() => setIsProfModalOpen(false)} />}
     </div>
   );
