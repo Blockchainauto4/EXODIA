@@ -3,62 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atendimento Médicos Perto de Mim: IA HOSPITAL - Orientação Médica Nacional</title>
+    <title>IA HOSPITAL - Orientação Médica Inteligente</title>
     <meta name="description" content="Busca atendimento médico perto de mim? O IA HOSPITAL oferece orientação médica inteligente e triagem por IA na sua região em todo o Brasil. Confira!">
     <link rel="canonical" href="https://iahospital.com.br/" />
     
-    <!-- Pre-conexão com domínios de terceiros -->
     <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://esm.sh" crossorigin>
-    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
-    <link rel="dns-prefetch" href="https://esm.sh">
 
-    <!-- Modulepreload para iniciar o download do JS antes mesmo do processamento do HTML -->
-    <link rel="modulepreload" href="./index.tsx">
-
-    <!-- Critical CSS Inline: Renderiza o esqueleto básico IMEDIATAMENTE antes do Tailwind/JS -->
     <style>
       :root { --blue-600: #2563eb; --slate-900: #0f172a; --slate-50: #f8fafc; }
       body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background-color: var(--slate-50); color: var(--slate-900); }
-      
-      /* Skeleton do Header */
       .header-skeleton { position: fixed; top: 0; left: 0; right: 0; height: 72px; background: white; border-bottom: 1px solid #e2e8f0; z-index: 50; display: flex; align-items: center; padding: 0 1rem; }
       .logo-box { width: 40px; height: 40px; background: var(--blue-600); border-radius: 8px; margin-right: 12px; }
-      
-      /* Skeleton do Hero */
       .hero-skeleton { padding-top: 120px; text-align: center; max-width: 800px; margin: 0 auto; }
       .h1-placeholder { height: 60px; background: #e2e8f0; border-radius: 12px; margin-bottom: 24px; width: 90%; margin-left: 5%; }
-      .p-placeholder { height: 20px; background: #f1f5f9; border-radius: 6px; margin-bottom: 12px; width: 70%; margin-left: 15%; }
-
-      /* Loader de progresso no topo */
       #initial-loader { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: #e2e8f0; z-index: 100; overflow: hidden; transition: opacity 0.3s ease; }
       #initial-loader::after { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 30%; background: var(--blue-600); animation: slide 1.5s infinite linear; }
       @keyframes slide { from { left: -30%; } to { left: 100%; } }
-
-      /* Esconde o conteúdo inicial até o React estar pronto para evitar layout shift */
       #root:empty + .skeleton-ui { display: block; }
-      #root:not(:empty) { opacity: 1; transition: opacity 0.3s ease; }
       #root:not(:empty) + .skeleton-ui { display: none; }
     </style>
 
     <script>
-      // Polyfill robusto para process.env em navegadores
       (function() {
-        if (typeof window !== 'undefined') {
-          window.process = window.process || {};
-          window.process.env = window.process.env || {};
-          window.process.env.NODE_ENV = window.process.env.NODE_ENV || 'production';
-          window.process.env.API_KEY = window.process.env.API_KEY || '';
-          window.process.cwd = window.process.cwd || function() { return '/'; };
-          window.process.browser = true;
-        }
+        window.process = { env: { NODE_ENV: 'production', API_KEY: '' }, cwd: () => '/', browser: true };
       })();
     </script>
 
-    <!-- Tailwind JIT via CDN carregado de forma assíncrona para não bloquear o FCP -->
-    <script src="https://cdn.tailwindcss.com" async></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      // Configuração do Tailwind (processada assim que o script carregar)
       window.addEventListener('DOMContentLoaded', () => {
         if (window.tailwind) {
           tailwind.config = {
@@ -78,47 +51,25 @@
     </script>
 
     <script type="importmap">
-    {
-      "imports": {
-        "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-        "react": "https://esm.sh/react@19.0.0",
-        "react-dom": "https://esm.sh/react-dom@19.0.0",
-        "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
-        "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-        "react/": "https://esm.sh/react@^19.2.3/"
-      }
-    }
-    </script>
-    
-    <style>
-      @keyframes slide-left { from { transform: translateX(100%); } to { transform: translateX(0); } }
-      @keyframes slide-up { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-      @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-      
-      .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-      .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
-      .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-      .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
-    </style>
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
     <div id="initial-loader"></div>
-    
     <div id="root"></div>
-
-    <!-- UI Temporária (Skeleton) para satisfazer o FCP enquanto o bundle carrega -->
     <div class="skeleton-ui">
-      <div class="header-skeleton">
-        <div class="logo-box"></div>
-        <div style="height: 20px; width: 120px; background: #f1f5f9; border-radius: 4px;"></div>
-      </div>
-      <div class="hero-skeleton">
-        <div class="h1-placeholder"></div>
-        <div class="p-placeholder"></div>
-        <div class="p-placeholder" style="width: 50%; margin-left: 25%;"></div>
-      </div>
+      <div class="header-skeleton"><div class="logo-box"></div></div>
+      <div class="hero-skeleton"><div class="h1-placeholder"></div></div>
     </div>
-
     <script type="module" src="./index.tsx"></script>
 </body>
 </html>
