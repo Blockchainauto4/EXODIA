@@ -24,6 +24,21 @@ const MOCK_JOBS: JobOpportunity[] = [
     dates: ['06/01', '07/01', '09/01']
   },
   {
+    id: 'job-020',
+    title: 'Ginecologia e Obstetrícia - Plantão Noturno',
+    description: '🚨 COBERTURA IMEDIATA: Plantão no Hospital Maternidade Theresa Sacchi de Moura. Local: Barra Mansa/RJ. Pagamento à vista.',
+    datePosted: '2025-01-05',
+    validThrough: '2025-01-06',
+    employmentType: 'TEMPORARY',
+    hiringOrganization: 'Hospital Maternidade Theresa Sacchi de Moura',
+    city: 'Barra Mansa',
+    state: 'RJ',
+    specialty: 'Ginecologia',
+    salary: 'Valor Líquido - Pagamento à Vista',
+    contactWhatsapp: '5521994165405',
+    dates: ['05/01 (19h às 07h)']
+  },
+  {
     id: 'job-014',
     title: 'Pediatra Sala de Parto - Plantão Noturno',
     description: 'Vaga urgente para Pediatra em Sala de Parto no Hospital da Região Metropolitana de Porto Alegre. Necessário RQE.',
@@ -241,7 +256,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                   <span className="bg-slate-100 text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest inline-block border border-slate-200">
                     ID: {job.id.split('-')[1]} • {job.city}
                   </span>
-                  {(job.id === 'job-017' || job.id === 'job-018' || job.id === 'job-019') && (
+                  {(job.id === 'job-017' || job.id === 'job-018' || job.id === 'job-019' || job.id === 'job-020') && (
                     <span className="bg-orange-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter animate-bounce shadow-lg shadow-orange-500/20">Urgente</span>
                   )}
                 </div>
