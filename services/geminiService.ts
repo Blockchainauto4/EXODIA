@@ -21,15 +21,17 @@ const getModelForTier = async () => {
 export const getMedicalOrientation = async (prompt: string, history: { role: string; text: string }[]) => {
   const apiKey = process.env.API_KEY;
   
-  if (!apiKey) {
-    console.error("API_KEY não configurada no ambiente.");
-    return "O serviço de IA está temporariamente indisponível devido a um erro de configuração de chave. Se for uma emergência, ligue 192.";
+  if (!apiKey || apiKey === '') {
+    console.error("ERRO CRÍTICO: API_KEY não encontrada em process.env. Verifique as configurações de ambiente.");
+    return "O serviço de IA está temporariamente indisponível (Chave de API não configurada). Por favor, informe ao suporte técnico. Se for uma emergência, ligue 192.";
   }
 
   // CRITICAL: Instanciar sempre antes da chamada para capturar a chave mais recente do ambiente
   const ai = new GoogleGenAI({ apiKey });
   const modelName = await getModelForTier();
   
+  console.debug(`Iniciando triagem com modelo: ${modelName}`);
+
   try {
     const response = await ai.models.generateContent({
       model: modelName,
@@ -61,14 +63,28 @@ export const getMedicalOrientation = async (prompt: string, history: { role: str
       },
     });
 
-    return response.text || "Não consegui processar sua resposta agora. Por favor, tente descrever seus sintomas de outra forma.";
+    if (!response || !response.text) {
+      throw new Error("Resposta vazia da API do Gemini.");
+    }
+
+    return response.text;
   } catch (error: any) {
     console.error("Gemini Service Error:", error);
     
-    if (error?.message?.includes("Requested entity was not found") || error?.message?.includes("404")) {
+    const errorMsg = error?.message || "";
+    
+    if (errorMsg.includes("Requested entity was not found") || errorMsg.includes("404")) {
       return "Detectamos um problema de acesso ao modelo Pro. Se você for o administrador, verifique o faturamento da chave de API no Google Cloud.";
     }
     
-    return "Desculpe, tive um problema técnico. Se for uma emergência, procure um hospital agora ou ligue 192.";
+    if (errorMsg.includes("API key not valid") || errorMsg.includes("403")) {
+      return "A chave de API configurada não é válida. Por favor, verifique as credenciais no painel de controle.";
+    }
+
+    if (errorMsg.includes("quota exceeded") || errorMsg.includes("429")) {
+      return "O limite de atendimentos simultâneos foi atingido. Por favor, tente novamente em alguns minutos.";
+    }
+    
+    return "Desculpe, tive um problema técnico ao processar sua solicitação. Por favor, tente novamente. Se os sintomas persistirem ou forem graves, procure um hospital agora ou ligue 192.";
   }
 };

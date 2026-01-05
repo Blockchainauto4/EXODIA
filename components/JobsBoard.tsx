@@ -84,6 +84,36 @@ const MOCK_JOBS: JobOpportunity[] = [
     dates: ['Plantões no Litoral / PR']
   },
   {
+    id: 'job-018',
+    title: 'Médico Rotina - UPA Jacarepaguá',
+    description: '🏥 VAGA DE ROTINA: Atendimento na UPA Jacarepaguá (Taquara). Necessário registro ativo. Falar com Isaias.',
+    datePosted: '2025-01-05',
+    validThrough: '2025-01-07',
+    employmentType: 'TEMPORARY',
+    hiringOrganization: 'UPA Jacarepaguá (Taquara)',
+    city: 'Rio de Janeiro',
+    state: 'RJ',
+    specialty: 'Clínica Geral',
+    salary: 'A consultar',
+    contactWhatsapp: '5521997825718',
+    dates: ['06/01 (Amanhã)']
+  },
+  {
+    id: 'job-019',
+    title: 'Neonatologia - Cobertura SCBM',
+    description: '✨ COBERTURA DE VACÂNCIAS: Plantões diurnos, noturnos e vagas fixas disponíveis na Santa Casa de Barra Mansa. Falar com Monique Almeida.',
+    datePosted: '2025-01-05',
+    validThrough: '2025-01-31',
+    employmentType: 'TEMPORARY',
+    hiringOrganization: 'Santa Casa de Barra Mansa (SCBM)',
+    city: 'Barra Mansa',
+    state: 'RJ',
+    specialty: 'Neonatologia',
+    salary: 'A consultar',
+    contactWhatsapp: '5521994062776',
+    dates: ['08/01', '10/01', '11/01', '22/01', '31/01']
+  },
+  {
     id: 'job-002',
     title: 'Hospitalista - Enfermaria',
     description: 'Enfermaria - visitador/hospitalista no Hospital Santa Clara. Requisitos: 6 meses de graduação e ACLS.',
@@ -211,7 +241,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                   <span className="bg-slate-100 text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest inline-block border border-slate-200">
                     ID: {job.id.split('-')[1]} • {job.city}
                   </span>
-                  {job.id === 'job-017' && (
+                  {(job.id === 'job-017' || job.id === 'job-018' || job.id === 'job-019') && (
                     <span className="bg-orange-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter animate-bounce shadow-lg shadow-orange-500/20">Urgente</span>
                   )}
                 </div>
