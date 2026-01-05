@@ -24,7 +24,8 @@ export interface JobOpportunity {
   state: string;
   specialty: string;
   salary?: string;
-  contactWhatsapp: string;
+  contactWhatsapp?: string;
+  contactUrl?: string;
   dates?: string[];
 }
 
@@ -51,21 +52,24 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   'PR': ['Curitiba', 'Londrina', 'Maringá'],
   'PE': ['Recife', 'Jaboatão dos Guararapes', 'Olinda'],
   'PI': ['Teresina', 'Parnaíba'],
-  'RJ': ['Rio de Janeiro', 'São Gonçalo', 'Niterói', 'Duque de Caxias'],
+  'RJ': [
+    'Rio de Janeiro', 'São Gonçalo', 'Niterói', 'Duque de Caxias', 'Nova Iguaçu', 
+    'Belford Roxo', 'São João de Meriti', 'Campos dos Goytacazes', 'Petrópolis', 'Volta Redonda', 'Barra Mansa'
+  ],
   'RN': ['Natal', 'Mossoró'],
-  'RS': ['Porto Alegre', 'Caxias do Sul'],
+  'RS': ['Porto Alegre', 'Caxias do Sul', 'Região Central', 'Região Noroeste'],
   'RO': ['Porto Velho', 'Ji-Paraná'],
   'RR': ['Boa Vista'],
   'SC': ['Florianópolis', 'Joinville', 'Blumenau'],
   'SP': [
     'São Paulo', 'Guarulhos', 'Campinas', 'José Bonifácio', 'Vila Matilde', 'Santo André', 
     'São Caetano do Sul', 'São Bernardo do Campo', 'Osasco', 'São José do Rio Preto', 
-    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí'
+    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'Icém', 'São Vicente'
   ],
   'SE': ['Aracaju'],
   'TO': ['Palmas']
 };
 
 export const SPECIALTIES = [
-  'Clínica Geral', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição'
+  'Clínica Geral', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Alergologia', 'Angiologia', 'Cirurgia Geral', 'Gastroenterologia', 'Hematologia', 'Infectologia', 'Mastologia', 'Nefrologia', 'Neuropediatria', 'Pneumologia', 'Proctologia', 'Reumatologia', 'Nutrologia', 'Neonatologia'
 ];
