@@ -49,7 +49,7 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   'MG': ['Belo Horizonte', 'Uberlândia', 'Contagem', 'Juiz de Fora'],
   'PA': ['Belém', 'Ananindeua', 'Santarém'],
   'PB': ['João Pessoa', 'Campina Grande'],
-  'PR': ['Curitiba', 'Londrina', 'Maringá', 'Paranaguá'],
+  'PR': ['Curitiba', 'Londrina', 'Maringá', 'Paranaguá', 'Lapa'],
   'PE': ['Recife', 'Jaboatão dos Guararapes', 'Olinda'],
   'PI': ['Teresina', 'Parnaíba'],
   'RJ': [
@@ -71,5 +71,5 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
 };
 
 export const SPECIALTIES = [
-  'Clínica Geral', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Alergologia', 'Angiologia', 'Cirurgia Geral', 'Gastroenterologia', 'Hematologia', 'Infectologia', 'Mastologia', 'Nefrologia', 'Neuropediatria', 'Pneumologia', 'Proctologia', 'Reumatologia', 'Nutrologia', 'Neonatologia'
+  'Clínica Geral', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Alergologia', 'Angiologia', 'Cirurgia Geral', 'Gastroenterologia', 'Hematologia', 'Infectologia', 'Mastologia', 'Nefrologia', 'Neuropediatria', 'Pneumologia', 'Proctologia', 'Reumatologia', 'Nutrologia', 'Neonatologia', 'Anestesiologia', 'Emergencista'
 ];
