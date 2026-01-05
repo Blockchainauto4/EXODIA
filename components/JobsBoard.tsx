@@ -185,6 +185,21 @@ const MOCK_JOBS: JobOpportunity[] = [
     salary: 'A consultar',
     contactWhatsapp: '5551992269297',
     contactUrl: 'https://mkt.rapimed.com.br/medicos'
+  },
+  {
+    id: 'job-013',
+    title: 'Cirurgião Geral - Plantão',
+    description: 'Hospital Regional do Litoral em Paranaguá/PR. Necessário RQE ou título de especialista. Vagas para plantões diurnos e 24h.',
+    datePosted: '2025-01-04',
+    validThrough: '2025-01-30',
+    employmentType: 'TEMPORARY',
+    hiringOrganization: 'Hospital Regional do Litoral',
+    city: 'Paranaguá',
+    state: 'PR',
+    specialty: 'Cirurgia Geral',
+    salary: 'R$ 1.800,00 / 12h',
+    contactWhatsapp: '554191039218',
+    dates: ['14/01 Diurno', '16/01 24h', '23/01 24h']
   }
 ];
 

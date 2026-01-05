@@ -49,7 +49,7 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   'MG': ['Belo Horizonte', 'Uberlândia', 'Contagem', 'Juiz de Fora'],
   'PA': ['Belém', 'Ananindeua', 'Santarém'],
   'PB': ['João Pessoa', 'Campina Grande'],
-  'PR': ['Curitiba', 'Londrina', 'Maringá'],
+  'PR': ['Curitiba', 'Londrina', 'Maringá', 'Paranaguá'],
   'PE': ['Recife', 'Jaboatão dos Guararapes', 'Olinda'],
   'PI': ['Teresina', 'Parnaíba'],
   'RJ': [
