@@ -6,14 +6,14 @@ interface JobsBoardProps {
   location: UserLocation;
 }
 
-// Mock de dados para demonstração baseado no exemplo enviado
+// Base de dados expandida conforme solicitações recentes
 const MOCK_JOBS: JobOpportunity[] = [
   {
     id: 'job-001',
     title: 'Pediatra - Plantão Hospitalar',
     description: 'Vaga para médico Pediatra em José Bonifácio/SP. Aceita residente. Pagamento à vista.',
     datePosted: '2024-12-30',
-    validThrough: '2025-01-10',
+    validThrough: '2025-01-20',
     employmentType: 'TEMPORARY',
     hiringOrganization: 'IA HOSPITAL Parceiros',
     city: 'José Bonifácio',
@@ -22,18 +22,62 @@ const MOCK_JOBS: JobOpportunity[] = [
     salary: 'A combinar - Pagamento à vista',
     contactWhatsapp: '5541984950530',
     dates: ['06/01', '07/01', '09/01']
+  },
+  {
+    id: 'job-002',
+    title: 'Hospitalista - Enfermaria',
+    description: 'Enfermaria - visitador/hospitalista no Hospital Santa Clara. Requisitos: 6 meses de graduação e ACLS.',
+    datePosted: '2025-01-02',
+    validThrough: '2025-01-10',
+    employmentType: 'TEMPORARY',
+    hiringOrganization: 'Hospital Santa Clara',
+    city: 'Vila Matilde',
+    state: 'SP',
+    specialty: 'Clínica Geral',
+    salary: 'À combinar',
+    contactWhatsapp: '5511972038222',
+    dates: ['05/01 (7h-13h)', '05/01 (13h-19h)', '06/01 (7h-13h)', '08/01 (19-07h)', '09/01 (7-13h)']
+  },
+  {
+    id: 'job-003',
+    title: 'Clínico - Pronto Socorro (PS)',
+    description: 'Plantão em Pronto Socorro no Hospital das Acácias. Requisitos: 6 meses de graduação e ACLS.',
+    datePosted: '2025-01-02',
+    validThrough: '2025-01-30',
+    employmentType: 'TEMPORARY',
+    hiringOrganization: 'Hospital das Acácias',
+    city: 'Santo André',
+    state: 'SP',
+    specialty: 'Clínica Geral',
+    salary: 'A consultar',
+    contactWhatsapp: '5511972038222'
+  },
+  {
+    id: 'job-004',
+    title: 'Clínico - PS e Enfermaria',
+    description: 'Plantão em Pronto Socorro e Enfermaria no Hospital Santa Ana.',
+    datePosted: '2025-01-02',
+    validThrough: '2025-01-30',
+    employmentType: 'TEMPORARY',
+    hiringOrganization: 'Hospital Santa Ana',
+    city: 'São Caetano do Sul',
+    state: 'SP',
+    specialty: 'Clínica Geral',
+    salary: 'A consultar',
+    contactWhatsapp: '5511972038222'
   }
 ];
 
 const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
-  // Função auxiliar para normalizar strings (remover acentos e colocar em minúsculas)
   const normalize = (str: string) => 
     str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 
-  // Filtro dinâmico robusto: Ignora acentos e espaços extras
+  // Se a especialidade não for definida, permitimos mostrar todas as de Clínica Geral como padrão
   const filteredJobs = MOCK_JOBS.filter(job => {
     const cityMatch = location.city === 'sua região' || normalize(job.city) === normalize(location.city);
-    const specialtyMatch = !location.specialty || normalize(job.specialty) === normalize(location.specialty);
+    const specialtyMatch = !location.specialty || 
+                          location.specialty === 'Atendimento Médica' || 
+                          normalize(job.specialty) === normalize(location.specialty);
     const stateMatch = location.state === 'Brasil' || job.state.toLowerCase() === location.state.toLowerCase();
     
     return cityMatch && specialtyMatch && stateMatch;
@@ -56,7 +100,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredJobs.map(job => (
-            <div key={job.id} className="relative bg-white rounded-[2.5rem] p-8 shadow-2xl border-t-8 border-red-600 animate-fade-in group hover:scale-[1.02] transition-all">
+            <div key={job.id} className="relative bg-white rounded-[2.5rem] p-8 shadow-2xl border-t-8 border-red-600 animate-fade-in group hover:scale-[1.02] transition-all flex flex-col h-full">
               {/* Google Job Posting Schema Injection */}
               <script type="application/ld+json">
                 {JSON.stringify({
@@ -80,66 +124,56 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                       "addressRegion": job.state,
                       "addressCountry": "BR"
                     }
-                  },
-                  "baseSalary": {
-                    "@type": "MonetaryAmount",
-                    "currency": "BRL",
-                    "value": {
-                      "@type": "QuantitativeValue",
-                      "value": 0,
-                      "unitText": "HOUR"
-                    }
                   }
                 })}
               </script>
 
               <div className="mb-6">
                 <span className="bg-red-100 text-red-700 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 inline-block">
-                  Vaga no Município de {job.city}/{job.state}
+                  {job.hiringOrganization} • {job.city}/{job.state}
                 </span>
-                <h3 className="text-3xl font-black text-slate-900 uppercase tracking-tighter">{job.specialty}</h3>
+                <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight">{job.title}</h3>
               </div>
 
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3">
-                  <span className="text-xl" aria-hidden="true">📅</span>
-                  <div>
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Datas Disponíveis</p>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {job.dates?.map(d => (
-                        <span key={d} className="bg-slate-100 px-3 py-1 rounded-lg text-xs font-bold text-slate-700">{d}</span>
-                      ))}
+              <div className="space-y-4 mb-8 flex-grow">
+                {job.dates && job.dates.length > 0 && (
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl" aria-hidden="true">📅</span>
+                    <div>
+                      <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Datas do Plantão</p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {job.dates.map(d => (
+                          <span key={d} className="bg-slate-100 px-3 py-1 rounded-lg text-[10px] font-bold text-slate-700">{d}</span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
                 
                 <div className="flex items-center gap-3">
                   <span className="text-xl" aria-hidden="true">💰</span>
                   <div>
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Pagamento</p>
-                    <p className="text-sm font-bold text-emerald-600 underline decoration-emerald-200">À VISTA</p>
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Condição</p>
+                    <p className="text-sm font-bold text-emerald-600">{job.salary}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <span className="text-xl" aria-hidden="true">🔹</span>
-                  <div>
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Observação</p>
-                    <p className="text-sm font-bold text-slate-700">Aceita residente</p>
+                <div className="flex items-start gap-3">
+                  <span className="text-xl" aria-hidden="true">ℹ️</span>
+                  <div className="text-xs text-slate-600 leading-relaxed">
+                    {job.description}
                   </div>
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-slate-100">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center mb-4">Interessados falar com Ellen</p>
+              <div className="pt-6 border-t border-slate-100 mt-auto">
                 <a 
-                  href={`https://wa.me/${job.contactWhatsapp}?text=Ol%C3%A1%20Ellen,%20tenho%20interesse%20no%20plant%C3%A3o%20de%20${job.specialty}%20em%20${job.city}`}
+                  href={`https://wa.me/${job.contactWhatsapp}?text=Ol%C3%A1,%20tenho%20interesse%20no%20plant%C3%A3o%20de%20${job.title}%20em%20${job.city}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-5 bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-emerald-900/20 transition-all"
+                  className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-emerald-900/20 transition-all text-xs"
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.675 1.438 5.662 1.439h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  Contatar Ellen
+                  Falar com Recrutamento
                 </a>
               </div>
             </div>

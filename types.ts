@@ -57,7 +57,11 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   'RO': ['Porto Velho', 'Ji-Paraná'],
   'RR': ['Boa Vista'],
   'SC': ['Florianópolis', 'Joinville', 'Blumenau'],
-  'SP': ['São Paulo', 'Guarulhos', 'Campinas', 'José Bonifácio', 'São José do Rio Preto', 'Ribeirão Preto', 'Santos'],
+  'SP': [
+    'São Paulo', 'Guarulhos', 'Campinas', 'José Bonifácio', 'Vila Matilde', 'Santo André', 
+    'São Caetano do Sul', 'São Bernardo do Campo', 'Osasco', 'São José do Rio Preto', 
+    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí'
+  ],
   'SE': ['Aracaju'],
   'TO': ['Palmas']
 };
