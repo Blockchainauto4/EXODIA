@@ -51,12 +51,12 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   'MG': ['Belo Horizonte', 'Uberlândia', 'Contagem', 'Juiz de Fora'],
   'PA': ['Belém', 'Ananindeua', 'Santarém'],
   'PB': ['João Pessoa', 'Campina Grande'],
-  'PR': ['Curitiba', 'Londrina', 'Maringá', 'Paranaguá', 'Lapa'],
+  'PR': ['Curitiba', 'Londrina', 'Maringá', 'Paranaguá', 'Lapa', 'Ivaí'],
   'PE': ['Recife', 'Jaboatão dos Guararapes', 'Olinda'],
   'PI': ['Teresina', 'Parnaíba'],
   'RJ': [
     'Rio de Janeiro', 'São Gonçalo', 'Niterói', 'Duque de Caxias', 'Nova Iguaçu', 
-    'Belford Roxo', 'São João de Meriti', 'Campos dos Goytacazes', 'Petrópolis', 'Volta Redonda', 'Barra Mansa'
+    'Belford Roxo', 'São João de Meriti', 'Campos dos Goytacazes', 'Petrópolis', 'Volta Redonda', 'Barra Mansa', 'Nilópolis'
   ],
   'RN': ['Natal', 'Mossoró'],
   'RS': ['Porto Alegre', 'Caxias do Sul', 'Região Central', 'Região Noroeste'],
@@ -66,12 +66,12 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   'SP': [
     'São Paulo', 'Guarulhos', 'Campinas', 'José Bonifácio', 'Vila Matilde', 'Santo André', 
     'São Caetano do Sul', 'São Bernardo do Campo', 'Osasco', 'São José do Rio Preto', 
-    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'Icém', 'São Vicente', 'Barra do Turvo'
+    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'Icém', 'São Vicente', 'Barra do Turvo', 'Campo Limpo Paulista'
   ],
   'SE': ['Aracaju'],
   'TO': ['Palmas']
 };
 
 export const SPECIALTIES = [
-  'Clínica Geral', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Alergologia', 'Angiologia', 'Cirurgia Geral', 'Gastroenterologia', 'Hematologia', 'Infectologia', 'Mastologia', 'Nefrologia', 'Neuropediatria', 'Pneumologia', 'Proctologia', 'Reumatologia', 'Nutrologia', 'Neonatologia', 'Anestesiologia', 'Emergencista', 'Farmácias'
+  'Clínica Geral', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Alergologia', 'Angiologia', 'Cirurgia Geral', 'Gastroenterologia', 'Hematologia', 'Infectologia', 'Mastologia', 'Nefrologia', 'Neuropediatria', 'Pneumologia', 'Proctologia', 'Reumatologia', 'Nutrologia', 'Neonatologia', 'Anestesiologia', 'Emergencista', 'Farmácias', 'Ecocardiograma', 'Teste Ergométrico', 'Ultrassonografia'
 ];

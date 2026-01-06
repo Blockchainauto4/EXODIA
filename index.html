@@ -11,6 +11,9 @@
     <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://esm.sh" crossorigin>
 
+    <!-- Mercado Pago SDK -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
     <style>
       :root { --blue-600: #2563eb; --slate-900: #0f172a; --slate-50: #f8fafc; }
       body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background-color: var(--slate-50); color: var(--slate-900); overflow-x: hidden; }
@@ -23,15 +26,16 @@
       @keyframes slide { from { left: -30%; } to { left: 100%; } }
       #root:empty + .skeleton-ui { display: block; }
       #root:not(:empty) + .skeleton-ui { display: none; }
+      .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 
     <script>
       (function() {
-        // Preserva variáveis existentes se houver, ou define padrão
         window.process = window.process || {};
         window.process.env = window.process.env || {};
         window.process.env.NODE_ENV = window.process.env.NODE_ENV || 'production';
-        // A API_KEY será injetada pelo sistema se disponível no ambiente
         window.process.env.API_KEY = window.process.env.API_KEY || '';
         window.process.cwd = () => '/';
         window.process.browser = true;
