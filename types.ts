@@ -83,12 +83,24 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   'SP': [
     'São Paulo', 'Guarulhos', 'Campinas', 'Pontal', 'José Bonifácio', 'Vila Matilde', 'Santo André', 
     'São Caetano do Sul', 'São Bernardo do Campo', 'Osasco', 'São José do Rio Preto', 
-    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'Icém', 'São Vicente', 'Barra do Turvo', 'Campo Limpo Paulista'
+    'Ribeirão Preto', 'Santos', 'Mogi Cresces', 'Jundiaí', 'Itapecerica da Serra', 'Icém', 'São Vicente', 'Barra do Turvo', 'Campo Limpo Paulista'
   ],
   'SE': ['Aracaju'],
   'TO': ['Palmas']
 };
 
 export const SPECIALTIES = [
-  'Clínica Geral', 'UPA 24h', 'Posto de Saúde', 'AMA', 'UBS', 'Pronto Socorro', 'Pronto Atendimento', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Farmácias', 'CAPS', 'Fisioterapia', 'Exames Laboratoriais'
+  'UPA Perto de Mim', 
+  'Posto de Saúde Próximo', 
+  'AMA Perto de Mim', 
+  'UBS Próxima', 
+  'Clínica Geral', 
+  'Cardiologia', 
+  'Pediatria', 
+  'Saúde Mental', 
+  'Ginecologia', 
+  'Ortopedia', 
+  'Pronto Socorro 24h',
+  'Fisioterapia',
+  'Nutrição'
 ];
