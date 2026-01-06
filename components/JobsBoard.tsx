@@ -5,6 +5,36 @@ import { initCheckoutPro } from '../services/paymentService';
 
 const MOCK_JOBS: JobOpportunity[] = [
   {
+    id: 'job-036',
+    title: 'Médico Pediatra - Altinópolis/SP',
+    description: '🚨 VAGA FIXA PARA PEDIATRIA - Altinópolis/SP. 🏥 Secretaria de Saúde de Altinópolis. 🗓️ Agenda flexível - segunda à sexta, 20hrs semanais. ✅ Pacientes agendados. 📚 Necessário PÓS completa. 🚗 Próximo a Ribeirão Preto.',
+    datePosted: '2025-01-24',
+    validThrough: '2025-07-30',
+    employmentType: 'FULL_TIME',
+    hiringOrganization: 'Secretaria de Saúde de Altinópolis',
+    city: 'Altinópolis',
+    state: 'SP',
+    specialty: 'Pediatria',
+    salary: 'Fixo (A consultar)',
+    contactWhatsapp: '5543988110408',
+    dates: ['Segunda a Sexta (20h)']
+  },
+  {
+    id: 'job-035',
+    title: 'Emergencista / Enfermaria - Hosp. Alexandre Zaio',
+    description: '🏥 HOSPITAL ALEXANDRE ZAIO - ZONA LESTE SP. 🩺 Emergencista (R E T A) 💰 R$1.800,00 (Líquido) | Enfermaria 💰 R$1650,00 (Líquido). Necessário residência médica ou RQE. Vínculo SCP. Unidade com estacionamento, refeição e conforto com Ar condicionado.',
+    datePosted: '2025-01-24',
+    validThrough: '2025-06-30',
+    employmentType: 'PART_TIME',
+    hiringOrganization: 'Hosp. Alexandre Zaio',
+    city: 'São Paulo',
+    state: 'SP',
+    specialty: 'Emergência',
+    salary: 'R$ 1.800,00 (Líquido)',
+    contactWhatsapp: '5511966007274',
+    dates: ['Plantões a combinar']
+  },
+  {
     id: 'job-034',
     title: 'Ortopedia / Anestesiologia - Lapa/PR',
     description: '🆘 PLANTÕES DISPONÍVEIS LAPA/PR. 🏥 Hospital Regional da Lapa São Sebastião. ✳️ ORTOPEDIA: Quarta 08h-20h. ✳️ ANESTESIOLOGIA: Terças 08h-20h (Fixo). Localizado a 60km de Curitiba.',
@@ -48,21 +78,6 @@ const MOCK_JOBS: JobOpportunity[] = [
     salary: 'Líquido / Mensal / Sem NF',
     contactWhatsapp: '5521964047883',
     dates: ['Segunda a Sexta']
-  },
-  {
-    id: 'job-030',
-    title: 'Ginecologista - UBS Ivaí',
-    description: '📍 Ivaí/PR. Atuação em Unidades Básicas de Saúde (UBS). Demanda ambulatorial, média de 3 pacientes/hora. Carga horária de 20 horas semanais via PJ.',
-    datePosted: '2025-01-16',
-    validThrough: '2025-02-28',
-    employmentType: 'CONTRACTOR',
-    hiringOrganization: 'Medprime',
-    city: 'Ivaí',
-    state: 'PR',
-    specialty: 'Ginecologia',
-    salary: 'R$ 18.000,00 / mês (PJ)',
-    contactWhatsapp: '554191462236',
-    dates: ['20h Semanais']
   }
 ];
 
@@ -79,8 +94,9 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
     str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 
   const filteredJobs = MOCK_JOBS.filter(job => {
-    const cityMatch = location.city === 'sua região' || normalize(job.city) === normalize(location.city);
-    const stateMatch = location.state === 'Brasil' || job.state.toLowerCase() === location.state.toLowerCase();
+    const isBrazilScope = location.state === 'Brasil';
+    const cityMatch = location.city === 'sua região' || normalize(job.city) === normalize(location.city) || (normalize(location.city).includes('sao paulo') && normalize(job.description).includes('zona leste'));
+    const stateMatch = isBrazilScope || job.state.toLowerCase() === location.state.toLowerCase();
     
     const currentSpec = normalize(location.specialty || '');
     const jobSpec = normalize(job.specialty);
@@ -89,12 +105,13 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
     const specialtyMatch = !location.specialty || 
                            jobSpec.includes(currentSpec) || 
                            jobDesc.includes(currentSpec) ||
+                           (currentSpec.includes('emergencia') && (jobDesc.includes('emergencista') || jobDesc.includes('pronto socorro'))) ||
                            (currentSpec.includes('ortopedia') && jobDesc.includes('ortopedia')) ||
                            (currentSpec.includes('anestesia') && jobDesc.includes('anestesia')) ||
                            (currentSpec.includes('caps') && jobDesc.includes('caps')) ||
                            (currentSpec.includes('upa') && jobDesc.includes('upa'));
 
-    return cityMatch && stateMatch && specialtyMatch;
+    return (cityMatch && stateMatch) && specialtyMatch;
   }).slice(0, 10);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -181,7 +198,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
               <div className="mb-6 relative z-10">
                 <div className="flex justify-between items-start mb-4">
                   <span className="bg-slate-100 text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-200">{job.city}/{job.state}</span>
-                  {(job.id === 'job-033' || job.id === 'job-034') && <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">ATENÇÃO</span>}
+                  {(job.id === 'job-033' || job.id === 'job-035' || job.id === 'job-036') && <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">ATENÇÃO</span>}
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight h-14 overflow-hidden">{job.title}</h3>
                 <p className="text-[10px] font-bold text-blue-600 uppercase mt-1 tracking-widest truncate">{job.hiringOrganization}</p>

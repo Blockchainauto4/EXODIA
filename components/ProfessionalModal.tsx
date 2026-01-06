@@ -24,6 +24,8 @@ const GENERATION_LOGS = [
   "Sincronizando com a Rede Regional de Triagem...",
   "Validando Chaves de Acesso CRM...",
   "Configurando Dashboard Flame SEO...",
+  "Integrando Módulos Selecionados...",
+  "Finalizando Deploy em Tempo Real...",
   "Sistema Pronto para Operação."
 ];
 
@@ -61,7 +63,6 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
     setIsSubmitting(true);
     setStep(3.5); // Estado intermediário de geração
     
-    // Simula a progressão de logs
     let logIdx = 0;
     const interval = setInterval(() => {
       logIdx++;
@@ -72,7 +73,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
         setIsSubmitting(false);
         setStep(4);
       }
-    }, 500);
+    }, 450);
   };
 
   const cities = CITIES_BY_STATE[formData.estado] || [];
@@ -171,7 +172,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
             <div className="space-y-6 animate-fade-in">
               <div className="space-y-2">
                 <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Especialidades Atendidas</h3>
-                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">O match regional de triagem é focado na localização exata da sua unidade.</p>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Selecione as categorias onde sua unidade será referência regional.</p>
               </div>
 
               <div className="grid grid-cols-2 gap-2 h-48 overflow-y-auto pr-2 custom-scrollbar">
@@ -202,7 +203,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   disabled={formData.categorias.length === 0}
                   className="flex-[2] py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl"
                 >
-                  Configurar Sistema
+                  Escolher Funções do Sistema
                 </button>
               </div>
             </div>
@@ -211,8 +212,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           {step === 3 && (
             <div className="space-y-6 animate-fade-in">
               <div className="space-y-2">
-                <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Personalização do Sistema</h3>
-                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Selecione as funções que deseja gerar em tempo real para sua unidade.</p>
+                <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Geração de Funções Personalizadas</h3>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Marque os módulos que você deseja que nossa IA gere agora para o seu sistema.</p>
               </div>
 
               <div className="space-y-3 h-64 overflow-y-auto pr-2 custom-scrollbar">
@@ -222,7 +223,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                     onClick={() => handleModuleToggle(module.id)}
                     className={`w-full p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left group ${
                       selectedModules.includes(module.id)
-                        ? 'bg-slate-900 border-slate-900 text-white'
+                        ? 'bg-slate-900 border-slate-900 text-white shadow-lg'
                         : 'bg-white border-slate-100 text-slate-600 hover:border-blue-200'
                     }`}
                   >
@@ -254,29 +255,31 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   disabled={selectedModules.length === 0 || isSubmitting}
                   className="flex-[2] py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3"
                 >
-                  Criar Sistema em Tempo Real
+                  Gerar Sistema Completo
                 </button>
               </div>
             </div>
           )}
 
           {step === 3.5 && (
-            <div className="py-20 text-center space-y-8 animate-fade-in flex flex-col items-center justify-center">
-              <div className="w-20 h-20 bg-slate-900 rounded-[2rem] flex items-center justify-center relative shadow-2xl">
-                <div className="absolute inset-0 border-4 border-blue-600 border-t-transparent rounded-[2rem] animate-spin"></div>
-                <span className="text-2xl">⚡</span>
+            <div className="py-16 text-center space-y-8 animate-fade-in flex flex-col items-center justify-center min-h-[400px]">
+              <div className="w-24 h-24 bg-slate-900 rounded-[2.5rem] flex items-center justify-center relative shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10">
+                <div className="absolute inset-0 border-4 border-blue-600 border-t-transparent rounded-[2.5rem] animate-spin"></div>
+                <span className="text-3xl animate-pulse">⚙️</span>
               </div>
               
               <div className="w-full max-w-sm space-y-4">
-                <h3 className="text-lg font-black uppercase tracking-tighter text-slate-900">Gerando Ambiente de Saúde</h3>
-                <div className="bg-slate-950 p-6 rounded-2xl font-mono text-[9px] text-emerald-400 text-left h-40 overflow-hidden flex flex-col justify-end">
+                <h3 className="text-xl font-black uppercase tracking-tighter text-slate-900 leading-none">Criando Ambiente Digital</h3>
+                <p className="text-[10px] text-blue-600 font-bold uppercase tracking-[0.2em]">Sua infraestrutura de saúde em {formData.cidade}</p>
+                
+                <div className="bg-slate-950 p-6 rounded-[2rem] font-mono text-[9px] text-emerald-400 text-left h-48 overflow-hidden flex flex-col justify-end shadow-inner border border-white/5">
                   {GENERATION_LOGS.slice(0, currentLogIdx + 1).map((log, i) => (
-                    <p key={i} className="mb-1 opacity-80 animate-fade-in">
-                      <span className="text-slate-600">{">"}</span> {log}
+                    <p key={i} className="mb-1.5 opacity-90 animate-fade-in flex items-center gap-2">
+                      <span className="text-emerald-800 font-black">✔</span> {log}
                     </p>
                   ))}
-                  <div className="w-full h-1 bg-slate-800 rounded-full mt-4 overflow-hidden">
-                    <div className="h-full bg-blue-600 transition-all duration-500" style={{ width: `${(currentLogIdx + 1) * (100 / GENERATION_LOGS.length)}%` }}></div>
+                  <div className="w-full h-1.5 bg-slate-800 rounded-full mt-6 overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 transition-all duration-300" style={{ width: `${(currentLogIdx + 1) * (100 / GENERATION_LOGS.length)}%` }}></div>
                   </div>
                 </div>
               </div>
@@ -285,25 +288,27 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
 
           {step === 4 && (
             <div className="py-12 text-center space-y-8 animate-fade-in">
-              <div className="relative mx-auto w-24 h-24">
-                <div className="absolute inset-0 bg-blue-100 rounded-full animate-ping opacity-20 scale-150"></div>
-                <div className="relative w-24 h-24 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-4xl shadow-2xl z-10">
-                  ✅
+              <div className="relative mx-auto w-28 h-28">
+                <div className="absolute inset-0 bg-emerald-100 rounded-full animate-ping opacity-20 scale-150"></div>
+                <div className="relative w-28 h-28 bg-emerald-100 text-emerald-600 rounded-[2.5rem] flex items-center justify-center text-5xl shadow-2xl z-10 border border-emerald-200">
+                  🎉
                 </div>
               </div>
               <div>
-                <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">Infraestrutura Ativa!</h2>
-                <p className="text-blue-600 font-bold uppercase text-[10px] tracking-widest mt-4">Unidade em {formData.cidade} operando em tempo real</p>
+                <h2 className="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">Infraestrutura Ativa!</h2>
+                <p className="text-emerald-600 font-bold uppercase text-[11px] tracking-widest mt-4">Tudo pronto para sua operação em {formData.cidade}</p>
               </div>
 
-              <div className="bg-slate-50 p-6 rounded-[2rem] border border-slate-200 text-left space-y-4">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Módulos em Produção:</p>
+              <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200 text-left space-y-5">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-2 h-2 bg-emerald-500 rounded-full"></span> Módulos Implementados:
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {selectedModules.map(m => {
                     const mod = SYSTEM_MODULES.find(sm => sm.id === m);
                     return (
-                      <span key={m} className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-[9px] font-black text-slate-600 uppercase shadow-sm">
-                        {mod?.icon} {mod?.name}
+                      <span key={m} className="px-4 py-2 bg-white border border-slate-200 rounded-2xl text-[10px] font-black text-slate-700 uppercase shadow-sm flex items-center gap-2">
+                        <span>{mod?.icon}</span> {mod?.name}
                       </span>
                     )
                   })}
@@ -312,9 +317,9 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
 
               <button 
                 onClick={onClose}
-                className="w-full py-5 bg-slate-900 hover:bg-black text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-2xl"
+                className="w-full py-6 bg-slate-900 hover:bg-black text-white font-black uppercase tracking-widest rounded-3xl transition-all shadow-2xl hover:scale-[1.02] active:scale-95 border-b-4 border-black"
               >
-                Acessar Meu Sistema IA
+                Acessar Meu Novo Sistema IA
               </button>
             </div>
           )}
