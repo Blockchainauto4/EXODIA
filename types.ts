@@ -76,12 +76,12 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
     'Belford Roxo', 'São João de Meriti', 'Campos dos Goytacazes', 'Petrópolis', 'Volta Redonda', 'Barra Mansa', 'Nilópolis'
   ],
   'RN': ['Natal', 'Mossoró'],
-  'RS': ['Porto Alegre', 'Caxias do Sul', 'Região Central', 'Região Noroeste'],
+  'RS': ['Porto Alegre', 'Caxias do Sul', 'Viamão', 'Região Central', 'Região Noroeste'],
   'RO': ['Porto Velho', 'Ji-Paraná'],
   'RR': ['Boa Vista'],
   'SC': ['Florianópolis', 'Joinville', 'Blumenau'],
   'SP': [
-    'São Paulo', 'Guarulhos', 'Campinas', 'José Bonifácio', 'Vila Matilde', 'Santo André', 
+    'São Paulo', 'Guarulhos', 'Campinas', 'Pontal', 'José Bonifácio', 'Vila Matilde', 'Santo André', 
     'São Caetano do Sul', 'São Bernardo do Campo', 'Osasco', 'São José do Rio Preto', 
     'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'Icém', 'São Vicente', 'Barra do Turvo', 'Campo Limpo Paulista'
   ],
@@ -90,5 +90,5 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
 };
 
 export const SPECIALTIES = [
-  'Clínica Geral', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Alergologia', 'Angiologia', 'Cirurgia Geral', 'Gastroenterologia', 'Hematologia', 'Infectologia', 'Mastologia', 'Nefrologia', 'Neuropediatria', 'Pneumologia', 'Proctologia', 'Reumatologia', 'Nutrologia', 'Neonatologia', 'Anestesiologia', 'Emergencista', 'Farmácias', 'Ecocardiograma', 'Teste Ergométrico', 'Ultrassonografia'
+  'Clínica Geral', 'UPA 24h', 'Posto de Saúde', 'AMA', 'UBS', 'Pronto Socorro', 'Pronto Atendimento', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Farmácias', 'CAPS', 'Fisioterapia', 'Exames Laboratoriais'
 ];

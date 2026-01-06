@@ -22,16 +22,13 @@ export const getMedicalOrientation = async (prompt: string, history: { role: str
   const apiKey = process.env.API_KEY;
   
   if (!apiKey || apiKey === '') {
-    console.error("ERRO CRÍTICO: API_KEY não encontrada em process.env. Verifique as configurações de ambiente.");
-    return "O serviço de IA está temporariamente indisponível (Chave de API não configurada). Por favor, informe ao suporte técnico. Se for uma emergência, ligue 192.";
+    console.error("ERRO CRÍTICO: API_KEY não encontrada em process.env.");
+    return "O serviço de IA está temporariamente indisponível. Se for uma emergência, ligue 192.";
   }
 
-  // CRITICAL: Instanciar sempre antes da chamada para capturar a chave mais recente do ambiente
   const ai = new GoogleGenAI({ apiKey });
   const modelName = await getModelForTier();
   
-  console.debug(`Iniciando triagem com modelo: ${modelName}`);
-
   try {
     const response = await ai.models.generateContent({
       model: modelName,
@@ -43,48 +40,31 @@ export const getMedicalOrientation = async (prompt: string, history: { role: str
         { parts: [{ text: prompt }] }
       ],
       config: {
-        systemInstruction: `Você é o assistente virtual sênior do IA HOSPITAL, plataforma idealizada por Bruno Audric Bittencourt Rizk, especialista em segurança mundial e física quântica.
+        systemInstruction: `Você é o assistente virtual sênior do IA HOSPITAL.
         
-        Sua função é fornecer ORIENTAÇÃO MÉDICA e TRIAGEM PRELIMINAR de forma empática, técnica e profissional.
+        Sua especialidade é ORIENTAÇÃO e TRIAGEM LOCAL.
         
-        CONTEXTO DERMATOLOGIA & NUTRIÇÃO:
-        - Reconheça que a saúde da pele (Dermatologia) muitas vezes reflete o estado nutricional do paciente.
-        - Entretanto, mantenha a clareza: se o usuário busca um problema de pele, foque em orientações dermatológicas, mencionando nutrição apenas como suporte complementar se for clinicamente relevante.
+        REGRAS DE GEOLOCALIZAÇÃO & REDE PÚBLICA:
+        1. Entenda que o usuário busca "perto de mim". Reforce termos como "na sua região", "na sua cidade", "no seu bairro".
+        2. Saiba diferenciar:
+           - UPA / Pronto Socorro: Casos de urgência e emergência 24h.
+           - UBS / Posto de Saúde: Consultas de rotina, vacinas, acompanhamento.
+           - AMA: Atendimento médico ambulatorial para casos de baixa complexidade.
+        3. Sempre que o usuário mencionar sintomas graves, priorize o encaminhamento para a UPA ou Pronto Socorro mais próximo.
+        4. Mencione que o IA Hospital ajuda a encontrar o atendimento ideal "onde você está agora".
         
-        REGRAS CRÍTICAS DE SEGURANÇA (PROTOCOLO RIZK):
-        1. Você NÃO fornece diagnósticos definitivos nem prescrições.
-        2. Se o usuário apresentar sinais de emergência (dor no peito, falta de ar grave, desmaio), oriente IMEDIATAMENTE a procurar o pronto-atendimento ou ligar 192.
-        3. Use termos médicos corretos mas explique de forma simples.
-        4. Sempre mencione termos como "perto de mim", "na minha região" ou "na minha área" para reforçar a geolocalização.
-        5. Reforce que o atendimento está disponível "onde você está agora".
-        6. Informe ao usuário que a plataforma transmite conhecimento médico educativo e que ele poderá ser conectado a profissionais parceiros em sua localidade após a triagem.`,
-        temperature: 0.7,
-        thinkingConfig: modelName === 'gemini-3-pro-preview' ? { thinkingBudget: 32768 } : undefined
+        PROTOCOLOS:
+        - Não dê diagnósticos.
+        - Não prescreva medicamentos.
+        - Em emergências graves, instrua ligar 192 (SAMU).
+        - Use linguagem empática e autoritativa (EEAT).`,
+        temperature: 0.7
       },
     });
 
-    if (!response || !response.text) {
-      throw new Error("Resposta vazia da API do Gemini.");
-    }
-
-    return response.text;
+    return response.text || "Desculpe, tive um erro ao processar. Tente novamente.";
   } catch (error: any) {
     console.error("Gemini Service Error:", error);
-    
-    const errorMsg = error?.message || "";
-    
-    if (errorMsg.includes("Requested entity was not found") || errorMsg.includes("404")) {
-      return "Detectamos um problema de acesso ao modelo Pro. Se você for o administrador, verifique o faturamento da chave de API no Google Cloud.";
-    }
-    
-    if (errorMsg.includes("API key not valid") || errorMsg.includes("403")) {
-      return "A chave de API configurada não é válida. Por favor, verifique as credenciais no painel de controle.";
-    }
-
-    if (errorMsg.includes("quota exceeded") || errorMsg.includes("429")) {
-      return "O limite de atendimentos simultâneos foi atingido. Por favor, tente novamente em alguns minutos.";
-    }
-    
-    return "Desculpe, tive um problema técnico ao processar sua solicitação. Por favor, tente novamente. Se os sintomas persistirem ou forem graves, procure um hospital agora ou ligue 192.";
+    return "Ocorreu um erro técnico. Em caso de necessidade urgente, procure a UPA ou Posto de Saúde mais próximo.";
   }
 };

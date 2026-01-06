@@ -8,20 +8,20 @@ const VoiceFAQ: React.FC<{ location: UserLocation }> = ({ location }) => {
   
   const faqs = [
     {
-      q: `Ok Google, onde encontrar um ${spec.toLowerCase()} em ${city} perto de mim agora?`,
-      a: `O IA HOSPITAL localiza instantaneamente o atendimento de ${spec.toLowerCase()} mais próximo de você em ${city}. Nossa triagem informa sobre clínicas abertas, consultórios locais e pronto atendimentos 24h na sua área.`
+      q: `Ok Google, onde tem uma UPA perto de mim em ${city} agora?`,
+      a: `O IA HOSPITAL localiza a UPA 24h mais próxima de você em ${city} para atendimentos de urgência. Você também pode conferir AMAs e Prontos Socorros abertos na sua região agora.`
     },
     {
-      q: `Tem algum médico de ${spec.toLowerCase()} atendendo hoje aqui perto?`,
-      a: `Sim, nossa base mapeia especialistas em ${city} com disponibilidade imediata. Você pode realizar a triagem online agora e ser direcionado para o melhor profissional ou unidade médica na sua vizinhança.`
+      q: `Siri, qual o Posto de Saúde (UBS) mais próximo aqui em ${city}?`,
+      a: `Encontramos as Unidades Básicas de Saúde (UBS) em ${city} facilitando seu acesso a consultas e vacinação. Realize nossa triagem digital gratuita para orientações rápidas antes de se deslocar.`
     },
     {
-      q: `Qual o valor de uma consulta de ${spec.toLowerCase()} na minha cidade?`,
-      a: `Os valores variam entre atendimento particular e convênio. No IA HOSPITAL em ${city}, orientamos você sobre as melhores opções de custo-benefício e clínicas com preços acessíveis na sua região.`
+      q: `Tem alguma AMA ou atendimento médico próximo em ${city} aberto hoje?`,
+      a: `Sim, existem diversas unidades de saúde, AMAs e clínicas em ${city}. O IA HOSPITAL ajuda você a identificar qual unidade de ${spec.toLowerCase()} está mais próxima do seu CEP atual.`
     },
     {
-      q: `Onde tem um hospital 24 horas aberto agora em ${city}?`,
-      a: `Para casos de emergência e urgência em ${city}, nossa IA identifica os hospitais e pronto atendimentos com funcionamento 24h mais próximos da sua localização atual.`
+      q: `Onde posso receber atendimento de emergência aqui perto em ${city}?`,
+      a: `Em casos de urgência em ${city}, direcione-se para a UPA 24h ou Pronto Socorro mais próximo. Se for uma emergência grave, ligue imediatamente para o SAMU no 192.`
     }
   ];
 
@@ -32,7 +32,7 @@ const VoiceFAQ: React.FC<{ location: UserLocation }> = ({ location }) => {
           <div className="inline-block p-3 bg-blue-100 rounded-2xl text-blue-600 mb-4 animate-bounce">
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
           </div>
-          <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tighter uppercase leading-none">Busca por Voz e Ajuda Local</h2>
+          <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tighter uppercase leading-none">Busca por Voz (UPA, UBS e Local)</h2>
           <p className="text-slate-600 font-bold italic text-base tracking-tight">"Onde tem atendimento médico perto daqui agora?"</p>
         </div>
 
@@ -49,15 +49,15 @@ const VoiceFAQ: React.FC<{ location: UserLocation }> = ({ location }) => {
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-8">Tags de Localidade em {city}:</p>
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-8">Tags de Utilidade Pública em {city}:</p>
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              `Especialista ${city}`,
-              `Clínica no meu bairro`, 
-              `Médico 24h aqui perto`,
-              `Plantão médico agora`,
-              `Atendimento rápido ${location.state}`,
-              `Consulta particular ${city}`
+              `UPA 24h ${city}`,
+              `Posto de Saúde aberto`, 
+              `AMA ${city} endereço`,
+              `UBS perto de mim`,
+              `Pronto Socorro local`,
+              `Telefone UPA ${city}`
             ].map(tag => (
               <span key={tag} className="text-[10px] font-black text-blue-800 uppercase border-2 border-blue-50 px-4 py-2 rounded-xl bg-white shadow-sm hover:bg-blue-600 hover:text-white transition-all cursor-default">
                 {tag}
