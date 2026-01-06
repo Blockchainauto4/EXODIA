@@ -5,6 +5,21 @@ import { initCheckoutPro } from '../services/paymentService';
 
 const MOCK_JOBS: JobOpportunity[] = [
   {
+    id: 'job-037',
+    title: 'Médico Ortopedista - Jaçanã/SP',
+    description: '🚨 VAGA FIXA PARA ORTOPEDISTA - JAÇANÃ/SP (ZONA NORTE). 🏥 Unidade Jaçanã. 🩺 Vagas fixas e coberturas. 🗓️ Baixo volume de atendimento. ⏰ Plantões de 12hrs ou 24hrs. ✅ Estacionamento, Refeitório e Conforto Médico. 🎓 ACEITAMOS RESIDENTES E PÓS GRADUADOS.',
+    datePosted: '2025-01-25',
+    validThrough: '2025-08-30',
+    employmentType: 'CONTRACTOR',
+    hiringOrganization: 'Unidade Jaçanã (ZN)',
+    city: 'São Paulo',
+    state: 'SP',
+    specialty: 'Ortopedia',
+    salary: 'Valor por Plantão (A consultar)',
+    contactWhatsapp: '5511966007274',
+    dates: ['12h ou 24h']
+  },
+  {
     id: 'job-036',
     title: 'Médico Pediatra - Altinópolis/SP',
     description: '🚨 VAGA FIXA PARA PEDIATRIA - Altinópolis/SP. 🏥 Secretaria de Saúde de Altinópolis. 🗓️ Agenda flexível - segunda à sexta, 20hrs semanais. ✅ Pacientes agendados. 📚 Necessário PÓS completa. 🚗 Próximo a Ribeirão Preto.',
@@ -63,21 +78,6 @@ const MOCK_JOBS: JobOpportunity[] = [
     salary: 'Mensal Fixo (Sem NF)',
     contactWhatsapp: '5521983433895',
     dates: ['3x a 5x na semana']
-  },
-  {
-    id: 'job-032',
-    title: 'Médico Pediatra - UBS Pontal',
-    description: '🩺 VAGA PARA MÉDICO PEDIATRA – PONTAL/SP. Local: Unidade Básica de Saúde (UBS). Segunda a sexta, 07h00 às 17:00h. Pagamento: Líquido, mensal, sem desconto e sem precisar emitir NF. Início imediato.',
-    datePosted: '2025-01-20',
-    validThrough: '2025-02-28',
-    employmentType: 'FULL_TIME',
-    hiringOrganization: 'UBS Pontal',
-    city: 'Pontal',
-    state: 'SP',
-    specialty: 'Pediatria',
-    salary: 'Líquido / Mensal / Sem NF',
-    contactWhatsapp: '5521964047883',
-    dates: ['Segunda a Sexta']
   }
 ];
 
@@ -95,7 +95,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
 
   const filteredJobs = MOCK_JOBS.filter(job => {
     const isBrazilScope = location.state === 'Brasil';
-    const cityMatch = location.city === 'sua região' || normalize(job.city) === normalize(location.city) || (normalize(location.city).includes('sao paulo') && normalize(job.description).includes('zona leste'));
+    const cityMatch = location.city === 'sua região' || normalize(job.city) === normalize(location.city) || (normalize(location.city).includes('sao paulo') && normalize(job.description).includes('zona norte'));
     const stateMatch = isBrazilScope || job.state.toLowerCase() === location.state.toLowerCase();
     
     const currentSpec = normalize(location.specialty || '');
@@ -198,7 +198,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
               <div className="mb-6 relative z-10">
                 <div className="flex justify-between items-start mb-4">
                   <span className="bg-slate-100 text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-200">{job.city}/{job.state}</span>
-                  {(job.id === 'job-033' || job.id === 'job-035' || job.id === 'job-036') && <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">ATENÇÃO</span>}
+                  {(job.id === 'job-033' || job.id === 'job-035' || job.id === 'job-036' || job.id === 'job-037') && <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">ATENÇÃO</span>}
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight h-14 overflow-hidden">{job.title}</h3>
                 <p className="text-[10px] font-bold text-blue-600 uppercase mt-1 tracking-widest truncate">{job.hiringOrganization}</p>

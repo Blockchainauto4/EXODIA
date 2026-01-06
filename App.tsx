@@ -134,6 +134,7 @@ const App: React.FC = () => {
         )}
         <button 
           onClick={() => setIsChatOpen(!isChatOpen)}
+          aria-label={isChatOpen ? "Fechar chat de triagem" : "Abrir chat de triagem inteligente"}
           className={`w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-[101] border-2 border-white/20 ${
             isChatOpen ? 'bg-slate-900 text-white' : 'bg-blue-600 text-white shadow-blue-500/40'
           }`}
@@ -147,6 +148,7 @@ const App: React.FC = () => {
       
       <button 
         onClick={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
+        aria-label="Abrir painel administrativo Flame Work"
         className={`fixed bottom-6 left-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 ${isAuthorized ? 'opacity-100' : 'opacity-30'}`}
       >
         <span className="text-2xl">🔥</span>
