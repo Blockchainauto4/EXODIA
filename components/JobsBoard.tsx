@@ -5,6 +5,21 @@ import { initCheckoutPro } from '../services/paymentService';
 
 const MOCK_JOBS: JobOpportunity[] = [
   {
+    id: 'job-034',
+    title: 'Ortopedia / Anestesiologia - Lapa/PR',
+    description: '🆘 PLANTÕES DISPONÍVEIS LAPA/PR. 🏥 Hospital Regional da Lapa São Sebastião. ✳️ ORTOPEDIA: Quarta 08h-20h. ✳️ ANESTESIOLOGIA: Terças 08h-20h (Fixo). Localizado a 60km de Curitiba.',
+    datePosted: '2025-01-22',
+    validThrough: '2025-05-30',
+    employmentType: 'PART_TIME',
+    hiringOrganization: 'Hospital Regional da Lapa São Sebastião',
+    city: 'Lapa',
+    state: 'PR',
+    specialty: 'Ortopedia',
+    salary: 'Valor do Plantão (Tabela Regional)',
+    contactWhatsapp: '5541997002421',
+    dates: ['Terças', 'Quartas']
+  },
+  {
     id: 'job-033',
     title: 'Médico Psiquiatra - Icém/SP',
     description: '🏥 VAGA PARA MÉDICO PSIQUIATRA MUNICÍPIO DE ICÉM/SP. ⚠️ Vaga Fixa. 🩺 Tipo de atendimento: Ambulatoriais e Caps. 📆 Carga horária: de 3X a 5X na semana. 💰 Pagamento: Mensal, fixo, sem desconto e sem precisar emitir NF.',
@@ -20,24 +35,9 @@ const MOCK_JOBS: JobOpportunity[] = [
     dates: ['3x a 5x na semana']
   },
   {
-    id: 'job-031',
-    title: 'Ginecologista/Obstetra - Hosp. Viamão',
-    description: 'Prezados! Me chamo Claudio Henriques, sou da empresa ProAtiva Saúde. Estamos em busca de profissionais parceiros para compor nossa escala de Médicos. Plantões 12hs e 24hs todos os dias. Aceita Residente.',
-    datePosted: '2025-01-20',
-    validThrough: '2025-03-31',
-    employmentType: 'CONTRACTOR',
-    hiringOrganization: 'ProAtiva Saúde',
-    city: 'Viamão',
-    state: 'RS',
-    specialty: 'Ginecologia',
-    salary: 'A combinar',
-    contactUrl: 'https://contate.me/5551992333139',
-    dates: ['Todos os dias']
-  },
-  {
     id: 'job-032',
     title: 'Médico Pediatra - UBS Pontal',
-    description: '🩺 VAGA PARA MÉDICO PEDIATRA – PONTAL/SP. Local: Unidade Básica de Saúde (UBS). Segunda a sexta, 07h00 às 17:00h. Pagamento: Líquido, mensal, sem desconto e sem precisar emitir NF. NÃO EXIGE RQE. Início imediato.',
+    description: '🩺 VAGA PARA MÉDICO PEDIATRA – PONTAL/SP. Local: Unidade Básica de Saúde (UBS). Segunda a sexta, 07h00 às 17:00h. Pagamento: Líquido, mensal, sem desconto e sem precisar emitir NF. Início imediato.',
     datePosted: '2025-01-20',
     validThrough: '2025-02-28',
     employmentType: 'FULL_TIME',
@@ -52,7 +52,7 @@ const MOCK_JOBS: JobOpportunity[] = [
   {
     id: 'job-030',
     title: 'Ginecologista - UBS Ivaí',
-    description: '📍 Ivaí/PR. Atuação em Unidades Básicas de Saúde (UBS). Demanda ambulatorial, média de 3 pacientes/hora. Carga horária de 20 horas semanais via PJ. Empresa: Medprime.',
+    description: '📍 Ivaí/PR. Atuação em Unidades Básicas de Saúde (UBS). Demanda ambulatorial, média de 3 pacientes/hora. Carga horária de 20 horas semanais via PJ.',
     datePosted: '2025-01-16',
     validThrough: '2025-02-28',
     employmentType: 'CONTRACTOR',
@@ -82,7 +82,6 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
     const cityMatch = location.city === 'sua região' || normalize(job.city) === normalize(location.city);
     const stateMatch = location.state === 'Brasil' || job.state.toLowerCase() === location.state.toLowerCase();
     
-    // Logica avançada de match contextual: Especialidade ou categoria presente na descrição (ex: CAPS)
     const currentSpec = normalize(location.specialty || '');
     const jobSpec = normalize(job.specialty);
     const jobDesc = normalize(job.description);
@@ -90,9 +89,10 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
     const specialtyMatch = !location.specialty || 
                            jobSpec.includes(currentSpec) || 
                            jobDesc.includes(currentSpec) ||
+                           (currentSpec.includes('ortopedia') && jobDesc.includes('ortopedia')) ||
+                           (currentSpec.includes('anestesia') && jobDesc.includes('anestesia')) ||
                            (currentSpec.includes('caps') && jobDesc.includes('caps')) ||
-                           (currentSpec.includes('upa') && jobDesc.includes('upa')) ||
-                           (currentSpec.includes('ama') && jobDesc.includes('ama'));
+                           (currentSpec.includes('upa') && jobDesc.includes('upa'));
 
     return cityMatch && stateMatch && specialtyMatch;
   }).slice(0, 10);
@@ -142,7 +142,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
             </div>
             <div>
               <h2 className="text-white font-black uppercase tracking-tighter text-3xl leading-none">Oportunidades Locais</h2>
-              <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Profissionais de Saúde em {location.city}</p>
+              <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Vagas em {location.city}</p>
             </div>
           </div>
 
@@ -151,7 +151,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
               onClick={handlePremiumPurchase}
               className="px-6 py-4 bg-gradient-to-r from-blue-600 to-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl hover:scale-105 transition-all flex items-center gap-2 border border-white/10"
             >
-              <span className="text-lg">💎</span> {paymentStatus || 'Impulsionar Vaga na Região'}
+              <span className="text-lg">💎</span> {paymentStatus || 'Anunciar Vaga Regional'}
             </button>
 
             <div className="flex items-center gap-2">
@@ -181,7 +181,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
               <div className="mb-6 relative z-10">
                 <div className="flex justify-between items-start mb-4">
                   <span className="bg-slate-100 text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-200">{job.city}/{job.state}</span>
-                  {job.id === 'job-033' && <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">VAGA FIXA</span>}
+                  {(job.id === 'job-033' || job.id === 'job-034') && <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">ATENÇÃO</span>}
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight h-14 overflow-hidden">{job.title}</h3>
                 <p className="text-[10px] font-bold text-blue-600 uppercase mt-1 tracking-widest truncate">{job.hiringOrganization}</p>
