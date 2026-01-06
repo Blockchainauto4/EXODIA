@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 interface AdminAuthModalProps {
@@ -27,16 +28,16 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ onClose, onSuccess }) =
             🔥
           </div>
           <h2 className="text-white font-black uppercase tracking-tighter text-xl">Acesso Restrito</h2>
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2">Flame Work Local SEO Engine</p>
+          <p className="text-slate-300 text-xs font-bold uppercase tracking-widest mt-2">Flame Work Local SEO Engine</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-xs font-black text-slate-300 uppercase tracking-widest ml-1">Senha Administrativa</label>
+            <label className="text-xs font-black text-slate-200 uppercase tracking-widest ml-1">Senha Administrativa</label>
             <input 
               type="password"
               autoFocus
-              className={`w-full p-4 bg-slate-950 border-2 rounded-2xl text-white outline-none transition-all ${error ? 'border-red-600' : 'border-white/5 focus:border-orange-600'}`}
+              className={`w-full p-4 bg-slate-950 border-2 rounded-2xl text-white outline-none transition-all ${error ? 'border-red-600' : 'border-white/10 focus:border-orange-600'}`}
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -47,21 +48,21 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ onClose, onSuccess }) =
           <div className="flex flex-col gap-3 pt-4">
             <button 
               type="submit"
-              className="w-full py-5 bg-orange-600 hover:bg-orange-500 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-orange-900/40"
+              className="w-full py-5 bg-orange-700 hover:bg-orange-600 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-orange-950/40 border-b-4 border-orange-900"
             >
               Autenticar
             </button>
             <button 
               type="button"
               onClick={onClose}
-              className="w-full py-4 bg-white/5 hover:bg-white/10 text-slate-400 font-bold uppercase tracking-widest rounded-2xl transition-all"
+              className="w-full py-4 bg-white/5 hover:bg-white/10 text-slate-300 font-bold uppercase tracking-widest rounded-2xl transition-all"
             >
               Cancelar
             </button>
           </div>
         </form>
 
-        <p className="text-xs text-slate-600 text-center mt-8 uppercase font-bold tracking-tight">
+        <p className="text-xs text-slate-400 text-center mt-8 uppercase font-bold tracking-tight">
           Sua conexão é criptografada e protegida.
         </p>
       </div>

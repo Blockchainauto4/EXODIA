@@ -64,7 +64,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Constrói os logs dinâmicos com base nos módulos escolhidos em tempo real
+    // Constrói os logs dinâmicos com base nos módulos escolhidos em tempo real para o médico
     const modulesLogs = selectedModules.map(m => {
       const mod = SYSTEM_MODULES.find(sm => sm.id === m);
       return `Provisionando Módulo: ${mod?.name}...`;
@@ -101,11 +101,11 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-black">DR</div>
                 <div>
-                  <h2 className="text-xl font-black uppercase tracking-tighter leading-none">Sistema sob Demanda</h2>
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Personalização em Tempo Real</p>
+                  <h2 className="text-xl font-black uppercase tracking-tighter leading-none">Arquitetura de Unidade</h2>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Configuração em Tempo Real</p>
                 </div>
               </div>
-              <button onClick={onClose} aria-label="Fechar credenciamento" className="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white">
+              <button onClick={onClose} aria-label="Fechar credenciamento médico" className="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               </button>
             </div>
@@ -121,13 +121,13 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           {step === 1 && (
             <div className="space-y-6 animate-fade-in">
               <div className="p-5 bg-blue-50 border border-blue-100 rounded-2xl">
-                <p className="text-[10px] font-black uppercase text-blue-700 tracking-widest mb-1">Passo 1: Profissional</p>
-                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter leading-none">Dados de Registro</h3>
+                <p className="text-[10px] font-black uppercase text-blue-700 tracking-widest mb-1">Passo 1: Identificação</p>
+                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter leading-none">Registro de Unidade</h3>
               </div>
 
               <div className="space-y-4">
                 <label className="block">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome Completo</span>
+                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome do Responsável</span>
                   <input 
                     type="text" 
                     placeholder="Ex: Dr. Bruno Rizk"
@@ -137,7 +137,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   />
                 </label>
                 <label className="block">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">CRM / UF</span>
+                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">CRM e Estado</span>
                   <input 
                     type="text" 
                     placeholder="000000-UF"
@@ -149,7 +149,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                 
                 <div className="grid grid-cols-2 gap-4">
                   <label className="block">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Estado</span>
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Estado (UF)</span>
                     <select 
                       className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-600 outline-none appearance-none font-bold text-sm"
                       value={formData.estado}
@@ -159,7 +159,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                     </select>
                   </label>
                   <label className="block">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Cidade Principal</span>
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Cidade Sede</span>
                     <select 
                       className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-600 outline-none appearance-none font-bold text-sm"
                       value={formData.cidade}
@@ -185,8 +185,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           {step === 2 && (
             <div className="space-y-6 animate-fade-in">
               <div className="p-5 bg-blue-50 border border-blue-100 rounded-2xl">
-                <p className="text-[10px] font-black uppercase text-blue-700 tracking-widest mb-1">Passo 2: Atuação</p>
-                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter leading-none">Especialidades e Unidades</h3>
+                <p className="text-[10px] font-black uppercase text-blue-700 tracking-widest mb-1">Passo 2: Categorização</p>
+                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter leading-none">Áreas de Atuação Local</h3>
               </div>
 
               <div className="grid grid-cols-2 gap-2 h-48 overflow-y-auto pr-2 custom-scrollbar">
@@ -194,6 +194,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   <button
                     key={spec}
                     onClick={() => handleCategoryToggle(spec)}
+                    aria-label={`Selecionar especialidade: ${spec}`}
+                    aria-pressed={formData.categorias.includes(spec)}
                     className={`p-3 rounded-xl border-2 text-[10px] font-black uppercase tracking-tight transition-all text-left ${
                       formData.categorias.includes(spec)
                         ? 'bg-blue-600 border-blue-600 text-white shadow-md'
@@ -217,7 +219,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   disabled={formData.categorias.length === 0}
                   className="flex-[2] py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl disabled:opacity-50"
                 >
-                  Escolher Módulos do Sistema
+                  Personalizar Sistema
                 </button>
               </div>
             </div>
@@ -226,28 +228,24 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           {step === 3 && (
             <div className="space-y-6 animate-fade-in">
               <div className="p-5 bg-slate-900 border border-slate-700 rounded-2xl">
-                <p className="text-[10px] font-black uppercase text-blue-400 tracking-widest mb-1">Passo 3: Arquitetura</p>
-                <h3 className="text-lg font-black text-white uppercase tracking-tighter leading-none">Funções Desejadas</h3>
+                <p className="text-[10px] font-black uppercase text-blue-400 tracking-widest mb-1">Passo 3: Módulos</p>
+                <h3 className="text-lg font-black text-white uppercase tracking-tighter leading-none">Seleção de Funcionalidades</h3>
               </div>
 
-              <div className="bg-blue-50 p-4 rounded-xl mb-4">
-                <p className="text-[9px] font-bold text-blue-700 uppercase tracking-widest leading-tight">
-                  Seu sistema será gerado instantaneamente com base nos {selectedModules.length} módulos selecionados abaixo.
-                </p>
-              </div>
-
-              <div className="space-y-3 h-56 overflow-y-auto pr-2 custom-scrollbar">
+              <div className="space-y-3 h-64 overflow-y-auto pr-2 custom-scrollbar">
                 {SYSTEM_MODULES.map(module => (
                   <button
                     key={module.id}
                     onClick={() => handleModuleToggle(module.id)}
+                    aria-label={`Incluir módulo: ${module.name}`}
+                    aria-pressed={selectedModules.includes(module.id)}
                     className={`w-full p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left group ${
                       selectedModules.includes(module.id)
                         ? 'bg-slate-900 border-slate-900 text-white shadow-lg'
                         : 'bg-white border-slate-100 text-slate-600 hover:border-blue-200'
                     }`}
                   >
-                    <span className="text-2xl">{module.icon}</span>
+                    <span className="text-2xl" aria-hidden="true">{module.icon}</span>
                     <div className="flex-grow">
                       <p className="text-xs font-black uppercase tracking-tight">{module.name}</p>
                       <p className={`text-[10px] font-medium leading-tight mt-0.5 ${selectedModules.includes(module.id) ? 'text-slate-300' : 'text-slate-400'}`}>
@@ -273,9 +271,9 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                 <button 
                   onClick={handleSubmit}
                   disabled={selectedModules.length === 0 || isSubmitting}
-                  className="flex-[2] py-5 bg-emerald-600 hover:bg-emerald-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
+                  className="flex-[2] py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
                 >
-                  Gerar Sistema em Tempo Real
+                  Gerar Sistema Customizado
                 </button>
               </div>
             </div>
@@ -289,8 +287,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               </div>
               
               <div className="w-full max-w-sm space-y-4">
-                <h3 className="text-xl font-black uppercase tracking-tighter text-slate-900 leading-none">Criando Ambiente</h3>
-                <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-[0.2em]">Sincronizando preferências do Dr(a). {formData.nome.split(' ')[0]}...</p>
+                <h3 className="text-xl font-black uppercase tracking-tighter text-slate-900 leading-none">Deploy em Andamento</h3>
+                <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-[0.2em]">Provisionando infraestrutura regional...</p>
                 
                 <div className="bg-slate-950 p-6 rounded-[2rem] font-mono text-[9px] text-emerald-400 text-left h-48 overflow-hidden flex flex-col justify-end shadow-inner border border-white/5 relative">
                   <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-slate-950 to-transparent z-10"></div>
@@ -318,23 +316,23 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                 </div>
               </div>
               <div>
-                <h2 className="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">Arquitetura Concluída!</h2>
-                <p className="text-emerald-600 font-bold uppercase text-[11px] tracking-widest mt-4">Sua unidade em {formData.cidade} está pronta para operar</p>
+                <h2 className="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">Ambiente Concluído!</h2>
+                <p className="text-emerald-600 font-bold uppercase text-[11px] tracking-widest mt-4">Sua unidade em {formData.cidade} já está em produção</p>
               </div>
 
               <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200 text-left space-y-5">
                 <div className="flex justify-between items-center">
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <span className="w-2 h-2 bg-emerald-500 rounded-full"></span> Configuração Ativa:
+                    <span className="w-2 h-2 bg-emerald-500 rounded-full"></span> Módulos Provisionados:
                   </p>
-                  <span className="text-[9px] font-black text-blue-600 uppercase">Deploy 100% Real-time</span>
+                  <span className="text-[9px] font-black text-blue-600 uppercase">Flame Core 3.1</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {selectedModules.map(m => {
                     const mod = SYSTEM_MODULES.find(sm => sm.id === m);
                     return (
                       <span key={m} className="px-4 py-2 bg-white border border-slate-200 rounded-2xl text-[10px] font-black text-slate-700 uppercase shadow-sm flex items-center gap-2 hover:border-emerald-400 transition-colors cursor-default">
-                        <span>{mod?.icon}</span> {mod?.name}
+                        <span aria-hidden="true">{mod?.icon}</span> {mod?.name}
                       </span>
                     )
                   })}
@@ -343,7 +341,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
 
               <button 
                 onClick={onClose}
-                aria-label="Acessar meu painel médico"
+                aria-label="Concluir e acessar painel de controle"
                 className="w-full py-6 bg-slate-900 hover:bg-black text-white font-black uppercase tracking-widest rounded-3xl transition-all shadow-2xl hover:scale-[1.02] active:scale-95 border-b-4 border-black"
               >
                 Acessar Meu Sistema IA

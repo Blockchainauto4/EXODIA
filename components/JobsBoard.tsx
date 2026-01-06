@@ -159,7 +159,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
             </div>
             <div>
               <h2 className="text-white font-black uppercase tracking-tighter text-3xl leading-none">Oportunidades Locais</h2>
-              <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Vagas em {location.city}</p>
+              <p className="text-slate-300 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Vagas em {location.city}</p>
             </div>
           </div>
 
@@ -172,10 +172,10 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
             </button>
 
             <div className="flex items-center gap-2">
-              <button onClick={() => scroll('left')} className="w-12 h-12 rounded-xl bg-slate-800 text-white flex items-center justify-center hover:bg-slate-700 transition-all">
+              <button onClick={() => scroll('left')} aria-label="Anterior" className="w-12 h-12 rounded-xl bg-slate-800 text-white flex items-center justify-center hover:bg-slate-700 transition-all">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
               </button>
-              <button onClick={() => scroll('right')} className="w-12 h-12 rounded-xl bg-slate-800 text-white flex items-center justify-center hover:bg-slate-700 transition-all">
+              <button onClick={() => scroll('right')} aria-label="Próximo" className="w-12 h-12 rounded-xl bg-slate-800 text-white flex items-center justify-center hover:bg-slate-700 transition-all">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
               </button>
             </div>
@@ -197,24 +197,24 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
               
               <div className="mb-6 relative z-10">
                 <div className="flex justify-between items-start mb-4">
-                  <span className="bg-slate-100 text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-200">{job.city}/{job.state}</span>
-                  {(job.id === 'job-033' || job.id === 'job-035' || job.id === 'job-036' || job.id === 'job-037') && <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">ATENÇÃO</span>}
+                  <span className="bg-slate-100 text-slate-800 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-200">{job.city}/{job.state}</span>
+                  {(job.id === 'job-033' || job.id === 'job-035' || job.id === 'job-036' || job.id === 'job-037') && <span className="bg-blue-700 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">ATENÇÃO</span>}
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight h-14 overflow-hidden">{job.title}</h3>
-                <p className="text-[10px] font-bold text-blue-600 uppercase mt-1 tracking-widest truncate">{job.hiringOrganization}</p>
+                <p className="text-[10px] font-bold text-blue-700 uppercase mt-1 tracking-widest truncate">{job.hiringOrganization}</p>
               </div>
 
               <div className="space-y-4 mb-8 flex-grow relative z-10 overflow-hidden">
                 <div className="flex items-center gap-3">
                   <span className="text-xl">💰</span>
                   <div>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Remuneração</p>
-                    <p className="text-sm font-black text-emerald-600">{job.salary}</p>
+                    <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Remuneração</p>
+                    <p className="text-sm font-black text-emerald-700">{job.salary}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="text-xl">ℹ️</span>
-                  <div className="text-[11px] text-slate-600 leading-relaxed font-medium line-clamp-5 italic">{job.description}</div>
+                  <div className="text-[11px] text-slate-700 leading-relaxed font-medium line-clamp-5 italic">{job.description}</div>
                 </div>
               </div>
 
@@ -222,7 +222,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
                 <a 
                   href={`https://wa.me/${job.contactWhatsapp}?text=Olá,%20vi%20a%20vaga%20de%20${job.title}%20em%20${job.city}%20no%20IA%20HOSPITAL.`}
                   target="_blank"
-                  className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 transition-all text-xs shadow-lg shadow-emerald-500/20"
+                  className="w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 transition-all text-xs shadow-lg shadow-emerald-500/20"
                 >
                   Falar com Contratante
                 </a>

@@ -39,11 +39,11 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
                 <div className={`p-5 ${context.bgColor} border-l-4 border-slate-900 rounded-xl`}>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest mb-1">Localização Imediata</h4>
+                  <h3 className="text-[10px] font-black uppercase tracking-widest mb-1">Localização Imediata</h3>
                   <p className="text-xs font-bold text-slate-700 italic">Unidades de {spec} mapeadas no seu bairro.</p>
                 </div>
                 <div className="p-5 bg-slate-50 border-l-4 border-blue-600 rounded-xl">
-                  <h4 className="text-[10px] font-black uppercase tracking-widest mb-1">Busca Por Proximidade</h4>
+                  <h3 className="text-[10px] font-black uppercase tracking-widest mb-1">Busca Por Proximidade</h3>
                   <p className="text-xs font-bold text-slate-700 italic">Triagem inteligente para o atendimento mais perto daqui.</p>
                 </div>
               </div>
