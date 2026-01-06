@@ -27,7 +27,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, l
           <div className="flex flex-col sm:flex-row gap-4 relative z-10 shrink-0">
             <button 
               onClick={onProfOpen} 
-              aria-label="Solicitar assento profissional na rede"
+              aria-label="Solicitar assento profissional na rede IA Hospital"
               className="px-12 py-6 bg-white text-slate-950 font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap"
             >
               Solicitar Assento
@@ -39,42 +39,42 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, l
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-8 text-white">
               <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-black text-lg shadow-lg shadow-blue-500/20">IA</div>
-              <span className="font-black text-2xl uppercase tracking-tighter">IA HOSPITAL</span>
+              <p className="font-black text-2xl uppercase tracking-tighter">IA HOSPITAL</p>
             </div>
             <p className="text-slate-300 max-w-sm mb-8 font-medium leading-relaxed italic">
               "Governança, Tecnologia e Segurança em Saúde. Uma visão enterprise transmitida por <span className="text-white font-bold">Bruno Audric Bittencourt Rizk</span> para todo o Brasil."
             </p>
             <div className="flex items-center gap-6">
-              <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group hover:border-blue-500 transition-all shadow-xl">
+              <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group hover:border-blue-500 transition-all shadow-xl" aria-hidden="true">
                 <span className="text-2xl group-hover:scale-110 transition-transform">🏢</span>
               </div>
               <div>
-                <p className="text-[10px] font-black text-slate-200 uppercase tracking-widest leading-tight mb-1">
+                <h3 className="text-[10px] font-black text-slate-200 uppercase tracking-widest leading-tight mb-1">
                   Institutional Governance
-                </p>
+                </h3>
                 <p className="text-[8px] text-blue-400 font-black uppercase tracking-[0.2em]">Rizk Certified Enterprise</p>
               </div>
             </div>
           </div>
           
-          <div>
+          <nav aria-label="Links estratégicos">
             <h3 className="font-black mb-8 text-white text-xs uppercase tracking-[0.2em]">Strategic Links</h3>
             <ul className="space-y-4 text-slate-300 text-sm font-bold uppercase tracking-widest">
               <li><button onClick={() => onOpenLegal?.('about', 'Visão Institucional')} className="hover:text-blue-400 transition-colors">Enterprise Vision</button></li>
               <li><button onClick={() => onOpenLegal?.('about', 'Board of Directors')} className="hover:text-blue-400 transition-colors">The Board</button></li>
               <li><button onClick={onProfOpen} className="hover:text-blue-400 transition-colors text-left text-blue-500">Professional Seats</button></li>
             </ul>
-          </div>
+          </nav>
 
-          <div>
+          <nav aria-label="Segurança e Compliance">
             <h3 className="font-black mb-8 text-white text-xs uppercase tracking-[0.2em]">Security & Compliance</h3>
             <ul className="space-y-4 text-slate-300 text-sm font-bold uppercase tracking-widest">
               <li><button onClick={() => onOpenLegal?.('privacy', 'Data Privacy Protocol')} className="hover:text-blue-400 transition-colors text-left">Privacy Policy</button></li>
               <li><button onClick={() => onOpenLegal?.('terms', 'Governance Terms')} className="hover:text-blue-400 transition-colors text-left">Usage Terms</button></li>
               <li><button onClick={() => onOpenLegal?.('data', 'Cyber Resilience')} className="hover:text-blue-400 transition-colors text-left">Data Security</button></li>
-              <li><button onClick={onAdminOpen} className="hover:text-white transition-colors text-left opacity-30 text-[9px]">Flame Engine 3.1</button></li>
+              <li><button onClick={onAdminOpen} aria-label="Abrir painel administrativo" className="hover:text-white transition-colors text-left opacity-30 text-[9px]">Flame Engine 3.1</button></li>
             </ul>
-          </div>
+          </nav>
         </div>
 
         <div className="border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-8">

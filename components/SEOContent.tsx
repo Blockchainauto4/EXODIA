@@ -53,7 +53,7 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
               </p>
 
               <div className="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-700">{context.icon}</div>
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform duration-700" aria-hidden="true">{context.icon}</div>
                 <h3 className="text-xl font-black uppercase tracking-widest mb-6 flex items-center gap-3">
                   <span className="text-blue-400">📍</span> Raio de Atendimento {city}
                 </h3>
@@ -84,16 +84,16 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
               
               <div className="space-y-4">
                 <div className="flex items-center gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
-                  <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-xl">📍</div>
+                  <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-xl" aria-hidden="true">📍</div>
                   <div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sua Localização</p>
+                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sua Localização</h4>
                     <p className="text-xs font-bold text-slate-900 uppercase">{city}, {state}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-xl">🏥</div>
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-xl" aria-hidden="true">🏥</div>
                   <div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Unidade Local</p>
+                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Unidade Local</h4>
                     <p className="text-xs font-bold text-blue-600 uppercase">{spec} Perto de Mim</p>
                   </div>
                 </div>
