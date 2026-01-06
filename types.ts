@@ -66,12 +66,12 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   'SP': [
     'São Paulo', 'Guarulhos', 'Campinas', 'José Bonifácio', 'Vila Matilde', 'Santo André', 
     'São Caetano do Sul', 'São Bernardo do Campo', 'Osasco', 'São José do Rio Preto', 
-    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'Icém', 'São Vicente'
+    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'Icém', 'São Vicente', 'Barra do Turvo'
   ],
   'SE': ['Aracaju'],
   'TO': ['Palmas']
 };
 
 export const SPECIALTIES = [
-  'Clínica Geral', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Alergologia', 'Angiologia', 'Cirurgia Geral', 'Gastroenterologia', 'Hematologia', 'Infectologia', 'Mastologia', 'Nefrologia', 'Neuropediatria', 'Pneumologia', 'Proctologia', 'Reumatologia', 'Nutrologia', 'Neonatologia', 'Anestesiologia', 'Emergencista'
+  'Clínica Geral', 'Cardiologia', 'Pediatria', 'Saúde Mental', 'Ginecologia', 'Ortopedia', 'Neurologia', 'Dermatologia', 'Endocrinologia', 'Geriatria', 'Oftalmologia', 'Urologia', 'Otorrinolaringologia', 'Psiquiatria', 'Radiologia', 'Nutrição', 'Alergologia', 'Angiologia', 'Cirurgia Geral', 'Gastroenterologia', 'Hematologia', 'Infectologia', 'Mastologia', 'Nefrologia', 'Neuropediatria', 'Pneumologia', 'Proctologia', 'Reumatologia', 'Nutrologia', 'Neonatologia', 'Anestesiologia', 'Emergencista', 'Farmácias'
 ];
