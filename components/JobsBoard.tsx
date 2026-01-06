@@ -5,79 +5,172 @@ import { initCheckoutPro } from '../services/paymentService';
 
 const MOCK_JOBS: JobOpportunity[] = [
   {
-    id: 'job-037',
-    title: 'Médico Ortopedista - Jaçanã/SP',
-    description: '🚨 VAGA FIXA PARA ORTOPEDISTA - JAÇANÃ/SP (ZONA NORTE). 🏥 Unidade Jaçanã. 🩺 Vagas fixas e coberturas. 🗓️ Baixo volume de atendimento. ⏰ Plantões de 12hrs ou 24hrs. ✅ Estacionamento, Refeitório e Conforto Médico. 🎓 ACEITAMOS RESIDENTES E PÓS GRADUADOS.',
-    datePosted: '2025-01-25',
-    validThrough: '2025-08-30',
+    id: 'job-go-001',
+    title: 'Ginecologia e Obstetrícia - Amparo/SP',
+    description: '🤰 Oportunidade para Ginecologia e Obstetrícia em Amparo. Atendimento em Maternidade e Ambulatório. Rede de alta complexidade com suporte completo.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-06-30',
     employmentType: 'CONTRACTOR',
-    hiringOrganization: 'Unidade Jaçanã (ZN)',
-    city: 'São Paulo',
+    hiringOrganization: 'Hospital Regional Amparo',
+    city: 'Amparo',
     state: 'SP',
-    specialty: 'Ortopedia',
-    salary: 'Valor por Plantão (A consultar)',
-    contactWhatsapp: '5511966007274',
-    dates: ['12h ou 24h']
+    specialty: 'Ginecologia',
+    salary: 'Tabela Hospitalar',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
   },
   {
-    id: 'job-036',
-    title: 'Médico Pediatra - Altinópolis/SP',
-    description: '🚨 VAGA FIXA PARA PEDIATRIA - Altinópolis/SP. 🏥 Secretaria de Saúde de Altinópolis. 🗓️ Agenda flexível - segunda à sexta, 20hrs semanais. ✅ Pacientes agendados. 📚 Necessário PÓS completa. 🚗 Próximo a Ribeirão Preto.',
-    datePosted: '2025-01-24',
-    validThrough: '2025-07-30',
+    id: 'job-ped-001',
+    title: 'Pediatria (Sala de Parto) - Amparo/SP',
+    description: '👶 Pediatra para acompanhamento de Sala de Parto e Recepção de Recém-nascido. Unidade em Amparo/SP com infraestrutura moderna.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-05-15',
     employmentType: 'FULL_TIME',
-    hiringOrganization: 'Secretaria de Saúde de Altinópolis',
-    city: 'Altinópolis',
+    hiringOrganization: 'Maternidade Amparo',
+    city: 'Amparo',
     state: 'SP',
     specialty: 'Pediatria',
-    salary: 'Fixo (A consultar)',
-    contactWhatsapp: '5543988110408',
-    dates: ['Segunda a Sexta (20h)']
+    salary: 'A combinar',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
   },
   {
-    id: 'job-035',
-    title: 'Emergencista / Enfermaria - Hosp. Alexandre Zaio',
-    description: '🏥 HOSPITAL ALEXANDRE ZAIO - ZONA LESTE SP. 🩺 Emergencista (R E T A) 💰 R$1.800,00 (Líquido) | Enfermaria 💰 R$1650,00 (Líquido). Necessário residência médica ou RQE. Vínculo SCP. Unidade com estacionamento, refeição e conforto com Ar condicionado.',
-    datePosted: '2025-01-24',
-    validThrough: '2025-06-30',
-    employmentType: 'PART_TIME',
-    hiringOrganization: 'Hosp. Alexandre Zaio',
+    id: 'job-eped-001',
+    title: 'Emergência Pediatria (RQE) - Sorocaba/SP',
+    description: '🚨 Plantões de Emergência Pediátrica em Sorocaba/SP. Obrigatório RQE na especialidade. Unidade de pronto atendimento 24h.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-04-01',
+    employmentType: 'TEMPORARY',
+    hiringOrganization: 'Pronto Socorro Infantil Sorocaba',
+    city: 'Sorocaba',
+    state: 'SP',
+    specialty: 'Pediatria',
+    salary: 'Valor por Plantão',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
+  },
+  {
+    id: 'job-uti-001',
+    title: 'UTI Neonatal - Taipas/SP',
+    description: '🩺 Médico Intensivista para UTI Neonatal na região de Taipas (São Paulo). Equipe multidisciplinar e suporte tecnológico avançado.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-07-20',
+    employmentType: 'CONTRACTOR',
+    hiringOrganization: 'Hospital Geral Taipas',
     city: 'São Paulo',
     state: 'SP',
-    specialty: 'Emergência',
-    salary: 'R$ 1.800,00 (Líquido)',
-    contactWhatsapp: '5511966007274',
-    dates: ['Plantões a combinar']
+    specialty: 'Pediatria',
+    salary: 'Valor Hora UTI',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
   },
   {
-    id: 'job-034',
-    title: 'Ortopedia / Anestesiologia - Lapa/PR',
-    description: '🆘 PLANTÕES DISPONÍVEIS LAPA/PR. 🏥 Hospital Regional da Lapa São Sebastião. ✳️ ORTOPEDIA: Quarta 08h-20h. ✳️ ANESTESIOLOGIA: Terças 08h-20h (Fixo). Localizado a 60km de Curitiba.',
-    datePosted: '2025-01-22',
-    validThrough: '2025-05-30',
-    employmentType: 'PART_TIME',
-    hiringOrganization: 'Hospital Regional da Lapa São Sebastião',
-    city: 'Lapa',
-    state: 'PR',
-    specialty: 'Ortopedia',
-    salary: 'Valor do Plantão (Tabela Regional)',
-    contactWhatsapp: '5541997002421',
-    dates: ['Terças', 'Quartas']
-  },
-  {
-    id: 'job-033',
-    title: 'Médico Psiquiatra - Icém/SP',
-    description: '🏥 VAGA PARA MÉDICO PSIQUIATRA MUNICÍPIO DE ICÉM/SP. ⚠️ Vaga Fixa. 🩺 Tipo de atendimento: Ambulatoriais e Caps. 📆 Carga horária: de 3X a 5X na semana. 💰 Pagamento: Mensal, fixo, sem desconto e sem precisar emitir NF.',
-    datePosted: '2025-01-20',
-    validThrough: '2025-04-30',
+    id: 'job-orto-jundiai',
+    title: 'Ortopedia Especializada - Jundiaí/SP',
+    description: '🦴 Vaga para Ortopedia em Jundiaí. Atendimento ambulatorial e retaguarda hospitalar. Oportunidade fixa para especialistas.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-08-15',
     employmentType: 'FULL_TIME',
-    hiringOrganization: 'Município de Icém/SP',
-    city: 'Icém',
+    hiringOrganization: 'Hospital Jundiaí',
+    city: 'Jundiaí',
+    state: 'SP',
+    specialty: 'Ortopedia',
+    salary: 'Rendimento Expressivo',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
+  },
+  {
+    id: 'job-vasc-001',
+    title: 'Vascular - Jundiaí/SP e Cacoal/RO',
+    description: '🩸 Oportunidade para Angiologia e Cirurgia Vascular em Jundiaí/SP e Cacoal/RO. Vagas para ambulatório e procedimentos cirúrgicos.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-09-01',
+    employmentType: 'CONTRACTOR',
+    hiringOrganization: 'Rede Vascular Integrada',
+    city: 'Jundiaí',
+    state: 'SP',
+    specialty: 'Clínica Geral',
+    salary: 'Comissão por Procedimento',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
+  },
+  {
+    id: 'job-card-001',
+    title: 'Cardiologia - Jundiaí/SP',
+    description: '🫀 Cardiologista para corpo clínico em Jundiaí. Exames de imagem (Eco/Holter) e consultas ambulatoriais. Vaga estável.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-10-10',
+    employmentType: 'PART_TIME',
+    hiringOrganization: 'Centro Cardiológico Jundiaí',
+    city: 'Jundiaí',
+    state: 'SP',
+    specialty: 'Cardiologia',
+    salary: 'Valor por Consulta/Exame',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
+  },
+  {
+    id: 'job-neuro-001',
+    title: 'Neurologia e Neuropediatria - Jundiaí/SP',
+    description: '🧠 Atendimento especializado em Neurologia Clínica e Neuropediatria em Jundiaí. Foco em neurodesenvolvimento e distúrbios cognitivos.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-12-31',
+    employmentType: 'CONTRACTOR',
+    hiringOrganization: 'NeuroCenter Jundiaí',
+    city: 'Jundiaí',
+    state: 'SP',
+    specialty: 'Saúde Mental',
+    salary: 'Remuneração Diferenciada',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
+  },
+  {
+    id: 'job-psiq-001',
+    title: 'Psiquiatria - Jundiaí/SP',
+    description: '🧠 Médico Psiquiatra para acompanhamento ambulatorial e suporte em saúde mental na região de Jundiaí. Agenda flexível.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-11-05',
+    employmentType: 'PART_TIME',
+    hiringOrganization: 'Saúde Mental Regional',
+    city: 'Jundiaí',
     state: 'SP',
     specialty: 'Psiquiatria',
-    salary: 'Mensal Fixo (Sem NF)',
-    contactWhatsapp: '5521983433895',
-    dates: ['3x a 5x na semana']
+    salary: 'Valor por Atendimento',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
+  },
+  {
+    id: 'job-orto-fortaleza',
+    title: 'Ortopedia - Fortaleza/CE',
+    description: '🦴 Oportunidade na Ortopedia em Fortaleza. Atendimento ambulatorial e plantões em hospital de grande porte.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-06-15',
+    employmentType: 'CONTRACTOR',
+    hiringOrganization: 'Hospital Fortaleza Unidade I',
+    city: 'Fortaleza',
+    state: 'CE',
+    specialty: 'Ortopedia',
+    salary: 'A consultar',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
+  },
+  {
+    id: 'job-clin-fortaleza',
+    title: 'Clínica Médica - Fortaleza/CE',
+    description: '🏛️ Médico Clínico para atendimento em unidade hospitalar de Fortaleza. Carga horária flexível e excelente ambiente de trabalho.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-09-30',
+    employmentType: 'FULL_TIME',
+    hiringOrganization: 'Rede Saúde Fortaleza',
+    city: 'Fortaleza',
+    state: 'CE',
+    specialty: 'Clínica Geral',
+    salary: 'Salário Fixo + Benefícios',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
+  },
+  {
+    id: 'job-gastro-001',
+    title: 'Gastroenterologia - Valinhos/SP',
+    description: '🧪 Médico Gastroenterologista para Valinhos e Jundiaí. Foco em exames endoscópicos e consultas. Unidade com alto fluxo.',
+    datePosted: '2025-01-26',
+    validThrough: '2025-08-01',
+    employmentType: 'CONTRACTOR',
+    hiringOrganization: 'Clínica Digestiva Valinhos',
+    city: 'Valinhos',
+    state: 'SP',
+    specialty: 'Clínica Geral',
+    salary: 'Fixo + Comissão',
+    contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1'
   }
 ];
 
@@ -95,24 +188,28 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
 
   const filteredJobs = MOCK_JOBS.filter(job => {
     const isBrazilScope = location.state === 'Brasil';
-    const cityMatch = location.city === 'sua região' || normalize(job.city) === normalize(location.city) || (normalize(location.city).includes('sao paulo') && normalize(job.description).includes('zona norte'));
+    
+    // Se estiver no escopo Brasil, mostra tudo. Senão filtra por estado.
     const stateMatch = isBrazilScope || job.state.toLowerCase() === location.state.toLowerCase();
     
+    // Filtro de cidade opcional - se o usuário estiver em uma cidade específica, prioriza ela
+    // mas não esconde outras do mesmo estado se a busca for estadual.
+    const cityMatch = location.city === 'sua região' || 
+                      normalize(job.city).includes(normalize(location.city)) ||
+                      normalize(location.city).includes(normalize(job.city));
+                      
     const currentSpec = normalize(location.specialty || '');
     const jobSpec = normalize(job.specialty);
+    const jobTitle = normalize(job.title);
     const jobDesc = normalize(job.description);
     
     const specialtyMatch = !location.specialty || 
                            jobSpec.includes(currentSpec) || 
-                           jobDesc.includes(currentSpec) ||
-                           (currentSpec.includes('emergencia') && (jobDesc.includes('emergencista') || jobDesc.includes('pronto socorro'))) ||
-                           (currentSpec.includes('ortopedia') && jobDesc.includes('ortopedia')) ||
-                           (currentSpec.includes('anestesia') && jobDesc.includes('anestesia')) ||
-                           (currentSpec.includes('caps') && jobDesc.includes('caps')) ||
-                           (currentSpec.includes('upa') && jobDesc.includes('upa'));
+                           jobTitle.includes(currentSpec) ||
+                           jobDesc.includes(currentSpec);
 
-    return (cityMatch && stateMatch) && specialtyMatch;
-  }).slice(0, 10);
+    return stateMatch && specialtyMatch;
+  }).slice(0, 15);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
@@ -137,7 +234,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
     setPaymentStatus('Aguarde...');
     try {
       await initCheckoutPro({
-        title: `Vaga Premium em ${location.city}`,
+        title: `Anúncio Vaga Premium em ${location.city}`,
         price: 99.00,
         quantity: 1
       });
@@ -158,8 +255,8 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
               <span className="text-2xl" aria-hidden="true">👨‍⚕️</span>
             </div>
             <div>
-              <h2 className="text-white font-black uppercase tracking-tighter text-3xl leading-none">Oportunidades Locais</h2>
-              <p className="text-slate-300 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Vagas em {location.city}</p>
+              <h2 className="text-white font-black uppercase tracking-tighter text-3xl leading-none">Vagas Médicas em Destaque</h2>
+              <p className="text-slate-300 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Oportunidades em {location.state === 'Brasil' ? 'Todo o Brasil' : location.state}</p>
             </div>
           </div>
 
@@ -190,15 +287,15 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {filteredJobs.map(job => (
-            <div key={job.id} className="snap-center shrink-0 w-[85vw] md:w-[45vw] lg:w-[400px] relative bg-white rounded-[2.5rem] p-8 shadow-2xl border-t-8 border-slate-900 animate-fade-in flex flex-col h-[520px] overflow-hidden group">
+            <div key={job.id} className="snap-center shrink-0 w-[85vw] md:w-[45vw] lg:w-[400px] relative bg-white rounded-[2.5rem] p-8 shadow-2xl border-t-8 border-slate-900 animate-fade-in flex flex-col h-[540px] overflow-hidden group">
               <div className="absolute top-10 right-[-30px] opacity-[0.03] rotate-45 pointer-events-none select-none">
-                <span className="text-8xl font-black uppercase">MEDICAL</span>
+                <span className="text-8xl font-black uppercase">DOCTOR</span>
               </div>
               
               <div className="mb-6 relative z-10">
                 <div className="flex justify-between items-start mb-4">
                   <span className="bg-slate-100 text-slate-800 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-200">{job.city}/{job.state}</span>
-                  {(job.id === 'job-033' || job.id === 'job-035' || job.id === 'job-036' || job.id === 'job-037') && <span className="bg-blue-700 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-blue-500/20">ATENÇÃO</span>}
+                  {job.employmentType === 'TEMPORARY' && <span className="bg-red-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-red-500/20">URGENTE</span>}
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight h-14 overflow-hidden">{job.title}</h3>
                 <p className="text-[10px] font-bold text-blue-700 uppercase mt-1 tracking-widest truncate">{job.hiringOrganization}</p>
@@ -206,25 +303,26 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location }) => {
 
               <div className="space-y-4 mb-8 flex-grow relative z-10 overflow-hidden">
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">💰</span>
+                  <span className="text-xl" aria-hidden="true">💰</span>
                   <div>
-                    <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Remuneração</p>
+                    <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Remuneração</h4>
                     <p className="text-sm font-black text-emerald-700">{job.salary}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="text-xl">ℹ️</span>
-                  <div className="text-[11px] text-slate-700 leading-relaxed font-medium line-clamp-5 italic">{job.description}</div>
+                  <span className="text-xl" aria-hidden="true">ℹ️</span>
+                  <div className="text-[11px] text-slate-700 leading-relaxed font-medium line-clamp-6 italic">"{job.description}"</div>
                 </div>
               </div>
 
               <div className="pt-6 border-t border-slate-100 mt-auto relative z-10">
                 <a 
-                  href={`https://wa.me/${job.contactWhatsapp}?text=Olá,%20vi%20a%20vaga%20de%20${job.title}%20em%20${job.city}%20no%20IA%20HOSPITAL.`}
+                  href={job.contactUrl ? job.contactUrl : `https://wa.me/${job.contactWhatsapp}?text=Olá,%20vi%20a%20vaga%20de%20${job.title}%20em%20${job.city}%20no%20IA%20HOSPITAL.`}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 transition-all text-xs shadow-lg shadow-emerald-500/20"
                 >
-                  Falar com Contratante
+                  Candidatar-se Agora
                 </a>
               </div>
             </div>
