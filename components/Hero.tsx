@@ -5,9 +5,11 @@ import { UserLocation } from '../types';
 interface HeroProps {
   location: UserLocation;
   onStartChat?: () => void;
+  onPatientOpen?: () => void;
+  onLiveOpen?: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ location, onStartChat }) => {
+const Hero: React.FC<HeroProps> = ({ location, onStartChat, onPatientOpen, onLiveOpen }) => {
   const city = location.city === 'sua região' ? 'na sua cidade' : location.city;
 
   return (
@@ -16,41 +18,43 @@ const Hero: React.FC<HeroProps> = ({ location, onStartChat }) => {
       
       <div className="max-w-7xl mx-auto px-4 text-center md:text-left">
         <div className="max-w-4xl mx-auto md:mx-0">
-          <div className="inline-flex items-center gap-3 px-4 py-2 mb-6 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-black tracking-[0.2em] uppercase">
-            <span className="w-2 h-2 bg-emerald-600 rounded-full animate-pulse"></span>
-            Aberto Agora • Atendimento Imediato em {location.city}
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-black tracking-[0.2em] uppercase">
+              <span className="w-2 h-2 bg-emerald-600 rounded-full animate-pulse"></span>
+              Aberto Agora em {location.city}
+            </div>
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black tracking-[0.2em] uppercase">
+              100% Gratuito
+            </div>
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-tight mb-6 tracking-tighter">
-            {location.specialty || 'Atendimento Médico'} <span className="text-blue-600 font-black italic underline decoration-blue-200">Aqui Perto</span> de Mim em {city}
+            {location.specialty || 'Atendimento Médico'} <span className="text-blue-600 font-black italic underline decoration-blue-200">Sem Custos</span> em {city}
           </h1>
           
           <p className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl">
-            Precisa de um médico ou especialista <span className="font-bold text-slate-900">no seu bairro hoje</span>? Receba orientação profissional e triagem rápida <span className="underline decoration-blue-500 font-bold">onde você está agora</span>. Atendimento 24h com foco regional.
+            Tecnologia de ponta a <span className="font-bold text-slate-900 underline decoration-emerald-500">custo zero</span>. Receba orientação profissional e triagem rápida por IA agora mesmo. O IA HOSPITAL é um serviço <span className="font-black">totalmente livre de taxas</span> para pacientes e unidades médicas.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mb-10">
             <button 
               onClick={onStartChat}
-              aria-label="Iniciar Orientação Médica Imediata"
               className="group relative px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-2xl shadow-2xl shadow-blue-500/30 transition-all flex items-center justify-center gap-3 overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-              Atendimento Agora
+              Atendimento Grátis
             </button>
-            <a 
-              href="#orientacao"
-              className="px-10 py-5 bg-white border-2 border-slate-200 hover:border-blue-600 text-slate-700 font-bold rounded-2xl transition-all text-center flex items-center justify-center gap-2 uppercase tracking-widest text-xs"
+            <button 
+              onClick={onLiveOpen}
+              className="px-10 py-5 bg-slate-900 text-white font-black uppercase tracking-widest rounded-2xl shadow-2xl transition-all hover:scale-105 flex items-center justify-center gap-3 text-xs"
             >
-              Consultórios na Região
-            </a>
+              <span className="text-lg">📹</span> Consulta Pro (Free)
+            </button>
           </div>
           
           <div className="mt-12 flex items-center justify-center md:justify-start gap-4 text-[10px] text-slate-500 font-black uppercase tracking-widest">
-            <span className="bg-slate-100 px-3 py-1 rounded-lg">Hospital 24h</span>
-            <span className="bg-slate-100 px-3 py-1 rounded-lg">Clínica Local</span>
-            <span className="bg-slate-100 px-3 py-1 rounded-lg">Pronto Atendimento</span>
+            <span className="bg-slate-100 px-3 py-1 rounded-lg">Custo Zero</span>
+            <span className="bg-slate-100 px-3 py-1 rounded-lg">Foco Social</span>
+            <span className="bg-slate-100 px-3 py-1 rounded-lg">Triagem Inteligente</span>
           </div>
         </div>
       </div>

@@ -9,11 +9,14 @@ import JobsBoard from './components/JobsBoard';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
 import ProfessionalModal from './components/ProfessionalModal';
+import PatientRegistrationModal from './components/PatientRegistrationModal';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import AdminAuthModal from './components/AdminAuthModal';
 import ProcessingDashboard from './components/ProcessingDashboard';
 import LegalModal from './components/LegalModal';
 import CookieConsent from './components/CookieConsent';
+import LiveAnalysis from './components/LiveAnalysis';
+import TutorialModal from './components/TutorialModal';
 import { UserLocation, LegalModalType } from './types';
 
 const App: React.FC = () => {
@@ -27,8 +30,11 @@ const App: React.FC = () => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isProfModalOpen, setIsProfModalOpen] = useState(false);
+  const [isPatientModalOpen, setIsPatientModalOpen] = useState(false);
   const [isProcessingOpen, setIsProcessingOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isLiveOpen, setIsLiveOpen] = useState(false);
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   
   const [legalModal, setLegalModal] = useState<{ open: boolean; title: string; type: LegalModalType }>({
     open: false,
@@ -92,13 +98,18 @@ const App: React.FC = () => {
       <Header 
         isScrolled={isScrolled} 
         location={location} 
-        onAdminOpen={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)} 
+        onAdminOpen={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
+        onPatientOpen={() => setIsPatientModalOpen(true)}
+        onDoctorOpen={() => setIsProfModalOpen(true)}
+        onLiveOpen={() => setIsTutorialOpen(true)}
       />
       
       <main className="flex-grow">
         <Hero 
           location={location} 
           onStartChat={() => setIsChatOpen(true)}
+          onPatientOpen={() => setIsPatientModalOpen(true)}
+          onLiveOpen={() => setIsTutorialOpen(true)}
         />
         
         <JobsBoard location={location} />
@@ -146,6 +157,9 @@ const App: React.FC = () => {
       {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={(loc) => setLocation(loc)} currentLocation={location} onOpenProcessing={() => { setIsAdminOpen(false); setIsProcessingOpen(true); }} />}
       {isProcessingOpen && <ProcessingDashboard onClose={() => setIsProcessingOpen(false)} location={location} />}
       {isProfModalOpen && <ProfessionalModal onClose={() => setIsProfModalOpen(false)} />}
+      {isPatientModalOpen && <PatientRegistrationModal onClose={() => setIsPatientModalOpen(false)} />}
+      {isTutorialOpen && <TutorialModal onClose={() => setIsTutorialOpen(false)} onOpenSelectKey={() => { setIsLiveOpen(true); setIsTutorialOpen(false); }} />}
+      {isLiveOpen && <LiveAnalysis location={location} onClose={() => setIsLiveOpen(false)} />}
     </div>
   );
 };

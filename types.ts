@@ -12,6 +12,23 @@ export interface UserLocation {
   lng?: number;
 }
 
+export interface PatientProfile {
+  nome: string;
+  cpf: string;
+  whatsapp: string;
+  cep: string;
+  sintomaInicial: string;
+}
+
+export interface DoctorProfile {
+  nome: string;
+  crm: string;
+  categorias: string[];
+  cidade: string;
+  estado: string;
+  capacidadeDiaria: number;
+}
+
 export interface JobOpportunity {
   id: string;
   title: string;
