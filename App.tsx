@@ -74,7 +74,7 @@ const App: React.FC = () => {
     const city = location.city === 'sua região' ? 'na sua cidade' : location.city;
     const state = location.state === 'Brasil' ? '' : `, ${location.state}`;
     
-    document.title = `${spec} Perto de Mim em ${city}${state} | Aberto Agora 24h`;
+    document.title = `${spec} Perto de Mim em ${city}${state} | Unidade Mais Próxima`;
     
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
@@ -90,7 +90,7 @@ const App: React.FC = () => {
       description.setAttribute('name', 'description');
       document.head.appendChild(description);
     }
-    description.setAttribute('content', `Precisa de ${spec.toLowerCase()} em ${city}${state} agora? Atendimento médico próximo de você, no seu bairro, com triagem inteligente 24 horas. Marque sua consulta ou encontre um pronto atendimento hoje.`);
+    description.setAttribute('content', `Encontre ${spec.toLowerCase()} em ${city}${state} agora. Localize unidades de saúde, UPAs e postos de atendimento médico próximos de você com triagem inteligente.`);
   }, [location]);
 
   return (

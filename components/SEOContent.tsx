@@ -13,8 +13,8 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
 
   const getContext = () => {
     if (isUrgencia) return { icon: '🚨', color: 'text-red-700', bgColor: 'bg-red-50', borderColor: 'border-red-200', tag: 'Urgência 24h Perto de Você' };
-    if (isPublico) return { icon: '🏛️', color: 'text-blue-700', bgColor: 'bg-blue-50', borderColor: 'border-blue-200', tag: 'Saúde Pública Perto de Mim' };
-    return { icon: '🏥', color: 'text-blue-700', bgColor: 'bg-blue-50', borderColor: 'border-blue-200', tag: 'Atendimento Próximo' };
+    if (isPublico) return { icon: '🏛️', color: 'text-blue-700', bgColor: 'bg-blue-50', borderColor: 'border-blue-200', tag: 'Saúde Pública na Sua Região' };
+    return { icon: '🏥', color: 'text-blue-700', bgColor: 'bg-blue-50', borderColor: 'border-blue-200', tag: 'Atendimento Aqui Perto' };
   };
 
   const context = getContext();
@@ -34,22 +34,22 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
             
             <div className="prose prose-slate text-slate-600 mb-8 leading-relaxed space-y-6">
               <p className="text-base font-medium">
-                Procurando por <span className="font-black text-slate-900">{spec.toLowerCase()} perto de mim</span> agora? Se você está em {city} e precisa de atendimento imediato, o IA HOSPITAL mapeia as melhores opções <span className="font-bold underline">aqui perto</span>. Seja uma <span className="font-bold">UPA Perto de Mim</span> para emergências 24h, um <span className="font-bold">Posto de Saúde Próximo</span> para consultas de rotina ou uma <span className="font-bold">AMA na sua região</span>, nossa triagem inteligente ajuda você a encontrar o local ideal <span className="font-bold">onde você está agora</span> em {state}.
+                Procurando por <span className="font-black text-slate-900">{spec.toLowerCase()} perto de mim</span> agora? Se você está em {city} e precisa de atendimento imediato, o IA HOSPITAL mapeia as melhores opções <span className="font-bold underline">aqui perto</span>. Seja uma <span className="font-bold">UPA Perto de Mim</span> para emergências 24h, um <span className="font-bold">Posto de Saúde Próximo</span> para consultas ou uma <span className="font-bold">AMA na sua área</span>, nossa triagem inteligente ajuda você a encontrar o local ideal <span className="font-bold">onde você está agora</span> em {state}.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
                 <div className={`p-5 ${context.bgColor} border-l-4 border-slate-900 rounded-xl`}>
-                  <h4 className="text-[10px] font-black uppercase tracking-widest mb-1">Localização Direta</h4>
-                  <p className="text-xs font-bold text-slate-700 italic">Unidades de {spec} mais próximas do seu bairro.</p>
+                  <h4 className="text-[10px] font-black uppercase tracking-widest mb-1">Localização Imediata</h4>
+                  <p className="text-xs font-bold text-slate-700 italic">Unidades de {spec} mapeadas no seu bairro.</p>
                 </div>
-                <div className="p-5 bg-slate-50 border-l-4 border-emerald-600 rounded-xl">
-                  <h4 className="text-[10px] font-black uppercase tracking-widest mb-1">Busca Rápida</h4>
+                <div className="p-5 bg-slate-50 border-l-4 border-blue-600 rounded-xl">
+                  <h4 className="text-[10px] font-black uppercase tracking-widest mb-1">Busca Por Proximidade</h4>
                   <p className="text-xs font-bold text-slate-700 italic">Triagem inteligente para o atendimento médico mais perto daqui.</p>
                 </div>
               </div>
 
               <p className="text-sm">
-                Nossa missão é facilitar o acesso à saúde <span className="font-bold">próximo a você</span>. Muitas vezes, um <span className="font-bold">Posto de Saúde (UBS)</span> ou uma <span className="font-bold">AMA</span> pode resolver seu problema sem a necessidade de grandes deslocamentos. O IA HOSPITAL organiza as informações de <span className="font-bold">upa perto de mim, postos de saúde e prontos-socorros</span> em {city} para que você tenha socorro rápido no momento que mais precisa.
+                Nossa missão é facilitar o acesso à saúde <span className="font-bold">próximo a você</span>. Muitas vezes, um <span className="font-bold">Posto de Saúde (UBS)</span> ou uma <span className="font-bold">AMA</span> na região pode resolver seu problema rapidamente. O IA HOSPITAL organiza as informações de <span className="font-bold">upa perto de mim, postos de saúde e prontos-socorros</span> em {city} para que você tenha socorro no momento que mais precisa.
               </p>
 
               <div className="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
@@ -60,9 +60,9 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
                 <ul className="space-y-4">
                   {[
                     `Qual a ${spec.toLowerCase()} mais perto de mim agora?`,
-                    `Endereço de Posto de Saúde e UBS próximo daqui.`,
-                    `UPA 24 horas em ${city} perto de você.`,
-                    `Atendimento em AMAs na sua região de ${city}.`
+                    `Endereço de Posto de Saúde e UBS em ${city} aqui perto.`,
+                    `UPA 24 horas e Prontos-Socorros próximos daqui.`,
+                    `Atendimento em AMAs e Clínicas na sua região de ${city}.`
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3 text-xs font-bold uppercase tracking-tight text-slate-300 border-b border-white/5 pb-2">
                       <span className="text-blue-500">•</span> {item}
