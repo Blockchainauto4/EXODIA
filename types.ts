@@ -81,9 +81,9 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   'RR': ['Boa Vista'],
   'SC': ['Florianópolis', 'Joinville', 'Blumenau'],
   'SP': [
-    'São Paulo', 'Guarulhos', 'Campinas', 'Pontal', 'José Bonifácio', 'Vila Matilde', 'Santo André', 
+    'São Paulo', 'Guarulhos', 'Campinas', 'Pontal', 'José Bonifácio', 'Icém', 'Santo André', 
     'São Caetano do Sul', 'São Bernardo do Campo', 'Osasco', 'São José do Rio Preto', 
-    'Ribeirão Preto', 'Santos', 'Mogi Cresces', 'Jundiaí', 'Itapecerica da Serra', 'Icém', 'São Vicente', 'Barra do Turvo', 'Campo Limpo Paulista'
+    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'São Vicente', 'Barra do Turvo', 'Campo Limpo Paulista'
   ],
   'SE': ['Aracaju'],
   'TO': ['Palmas']
@@ -94,13 +94,15 @@ export const SPECIALTIES = [
   'Posto de Saúde Próximo', 
   'AMA Perto de Mim', 
   'UBS Próxima', 
+  'CAPS Próximo',
+  'Pronto Socorro 24h',
   'Clínica Geral', 
+  'Psiquiatria',
   'Cardiologia', 
   'Pediatria', 
   'Saúde Mental', 
   'Ginecologia', 
   'Ortopedia', 
-  'Pronto Socorro 24h',
   'Fisioterapia',
   'Nutrição'
 ];

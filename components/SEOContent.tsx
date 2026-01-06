@@ -9,11 +9,11 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
   
   const lowerSpec = spec.toLowerCase();
   const isUrgencia = lowerSpec.includes('upa') || lowerSpec.includes('pronto') || lowerSpec.includes('socorro');
-  const isPublico = lowerSpec.includes('posto') || lowerSpec.includes('ubs') || lowerSpec.includes('ama');
+  const isPublico = lowerSpec.includes('posto') || lowerSpec.includes('ubs') || lowerSpec.includes('ama') || lowerSpec.includes('caps');
 
   const getContext = () => {
     if (isUrgencia) return { icon: '🚨', color: 'text-red-700', bgColor: 'bg-red-50', borderColor: 'border-red-200', tag: 'Urgência 24h Perto de Você' };
-    if (isPublico) return { icon: '🏛️', color: 'text-blue-700', bgColor: 'bg-blue-50', borderColor: 'border-blue-200', tag: 'Saúde Pública na Sua Região' };
+    if (isPublico) return { icon: '🏛️', color: 'text-blue-700', bgColor: 'bg-blue-50', borderColor: 'border-blue-200', tag: 'Unidade de Saúde na Sua Região' };
     return { icon: '🏥', color: 'text-blue-700', bgColor: 'bg-blue-50', borderColor: 'border-blue-200', tag: 'Atendimento Aqui Perto' };
   };
 
@@ -34,7 +34,7 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
             
             <div className="prose prose-slate text-slate-600 mb-8 leading-relaxed space-y-6">
               <p className="text-base font-medium">
-                Procurando por <span className="font-black text-slate-900">{spec.toLowerCase()} perto de mim</span> agora? Se você está em {city} e precisa de atendimento imediato, o IA HOSPITAL mapeia as melhores opções <span className="font-bold underline">aqui perto</span>. Seja uma <span className="font-bold">UPA Perto de Mim</span> para emergências 24h, um <span className="font-bold">Posto de Saúde Próximo</span> para consultas ou uma <span className="font-bold">AMA na sua área</span>, nossa triagem inteligente ajuda você a encontrar o local ideal <span className="font-bold">onde você está agora</span> em {state}.
+                Precisa de <span className="font-black text-slate-900">{spec.toLowerCase()} em {city} perto de mim</span> agora? Se você busca por um <span className="font-bold">Posto de Saúde</span>, <span className="font-bold">UPA 24h</span> ou atendimento especializado em um <span className="font-bold">CAPS</span> ou <span className="font-bold">AMA</span> na sua região, o IA HOSPITAL localiza a unidade ideal <span className="font-bold underline">onde você está agora</span>. Mapeamos o ecossistema de saúde de {city} para oferecer orientação imediata em {state}.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
@@ -44,12 +44,12 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
                 </div>
                 <div className="p-5 bg-slate-50 border-l-4 border-blue-600 rounded-xl">
                   <h4 className="text-[10px] font-black uppercase tracking-widest mb-1">Busca Por Proximidade</h4>
-                  <p className="text-xs font-bold text-slate-700 italic">Triagem inteligente para o atendimento médico mais perto daqui.</p>
+                  <p className="text-xs font-bold text-slate-700 italic">Triagem inteligente para o atendimento mais perto daqui.</p>
                 </div>
               </div>
 
               <p className="text-sm">
-                Nossa missão é facilitar o acesso à saúde <span className="font-bold">próximo a você</span>. Muitas vezes, um <span className="font-bold">Posto de Saúde (UBS)</span> ou uma <span className="font-bold">AMA</span> na região pode resolver seu problema rapidamente. O IA HOSPITAL organiza as informações de <span className="font-bold">upa perto de mim, postos de saúde e prontos-socorros</span> em {city} para que você tenha socorro no momento que mais precisa.
+                Facilitar o acesso à saúde <span className="font-bold">próximo de você</span> é nossa prioridade. Seja para atendimento ambulatorial em uma <span className="font-bold">AMA</span>, suporte em saúde mental no <span className="font-bold">CAPS</span>, ou rotina em um <span className="font-bold">Posto de Saúde (UBS)</span> em {city}, nossa tecnologia de IA direciona seu caso com precisão, garantindo socorro onde você mais precisa.
               </p>
 
               <div className="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
@@ -59,10 +59,10 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
                 </h3>
                 <ul className="space-y-4">
                   {[
-                    `Qual a ${spec.toLowerCase()} mais perto de mim agora?`,
-                    `Endereço de Posto de Saúde e UBS em ${city} aqui perto.`,
+                    `Qual a ${spec.toLowerCase()} mais perto de mim em ${city}?`,
+                    `Endereço de Posto de Saúde e CAPS em ${city} aqui perto.`,
                     `UPA 24 horas e Prontos-Socorros próximos daqui.`,
-                    `Atendimento em AMAs e Clínicas na sua região de ${city}.`
+                    `Atendimento em AMAs e Unidades Básicas na sua região.`
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3 text-xs font-bold uppercase tracking-tight text-slate-300 border-b border-white/5 pb-2">
                       <span className="text-blue-500">•</span> {item}
@@ -79,7 +79,7 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
                 Unidade <span className={context.color}>Mais Próxima</span>
               </h3>
               <p className="text-sm text-slate-600 font-medium leading-relaxed mb-8">
-                Detectamos automaticamente unidades de <span className="font-black text-slate-900 underline decoration-blue-500">{spec} perto de mim</span> para agilizar seu socorro em <span className="font-bold">{city}</span>.
+                Localizamos unidades de <span className="font-black text-slate-900 underline decoration-blue-500">{spec} perto daqui</span> para agilizar seu socorro imediato em <span className="font-bold">{city}</span>.
               </p>
               
               <div className="space-y-4">
@@ -93,7 +93,7 @@ const SEOContent: React.FC<{ location: UserLocation }> = ({ location }) => {
                 <div className="flex items-center gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-xl">🏥</div>
                   <div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Foco de Busca</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Unidade Local</p>
                     <p className="text-xs font-bold text-blue-600 uppercase">{spec} Perto de Mim</p>
                   </div>
                 </div>

@@ -12,15 +12,15 @@ const VoiceFAQ: React.FC<{ location: UserLocation }> = ({ location }) => {
       a: `O IA HOSPITAL identifica a UPA 24h mais próxima da sua localização em ${city}. Basta iniciar a triagem para saber qual unidade de urgência está com atendimento disponível agora perto de você.`
     },
     {
-      q: `Siri, qual o Posto de Saúde mais próximo aqui em ${city}?`,
-      a: `Existem diversas Unidades Básicas de Saúde (UBS) e Postos de Saúde em ${city}. Nós ajudamos você a encontrar o posto mais perto daqui para consultas, vacinas e exames de rotina.`
+      q: `Siri, qual o CAPS ou Posto de Saúde mais próximo aqui em ${city}?`,
+      a: `Existem diversas Unidades Básicas de Saúde (UBS), Postos de Saúde e centros de suporte (CAPS) em ${city}. Nós ajudamos você a encontrar o local mais perto daqui para consultas e acompanhamento.`
     },
     {
-      q: `Ei Google, tem alguma AMA perto de mim aberta em ${city}?`,
-      a: `Sim, as AMAs em ${city} oferecem pronto atendimento para casos leves. O IA HOSPITAL localiza a AMA mais próxima de onde você está agora para agilizar seu cuidado.`
+      q: `Ei Google, tem alguma AMA ou UBS perto de mim aberta em ${city}?`,
+      a: `Sim, as AMAs e UBS em ${city} oferecem pronto atendimento e consultas. O IA HOSPITAL localiza a unidade mais próxima de onde você está agora para agilizar seu cuidado.`
     },
     {
-      q: `Onde encontrar atendimento médico perto de mim em ${city} agora?`,
+      q: `Onde encontrar atendimento médico aqui perto em ${city} agora?`,
       a: `Para qualquer necessidade de ${spec.toLowerCase()} em ${city}, o IA HOSPITAL oferece orientação em tempo real sobre hospitais, prontos-socorros e unidades de saúde próximas à sua posição atual.`
     }
   ];
@@ -55,7 +55,7 @@ const VoiceFAQ: React.FC<{ location: UserLocation }> = ({ location }) => {
               `UPA perto de mim ${city}`,
               `Posto de Saúde aqui perto`, 
               `AMA mais próxima em ${city}`,
-              `UBS perto daqui agora`,
+              `CAPS perto daqui agora`,
               `Pronto Socorro próximo em ${city}`
             ].map(tag => (
               <span key={tag} className="text-[10px] font-black text-blue-800 uppercase border-2 border-blue-50 px-4 py-2 rounded-xl bg-white shadow-sm hover:bg-blue-600 hover:text-white transition-all">
