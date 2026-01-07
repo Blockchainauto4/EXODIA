@@ -62,6 +62,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, l
             <ul className="space-y-4 text-slate-300 text-sm font-bold uppercase tracking-widest">
               <li><button onClick={() => onOpenLegal?.('about', 'Visão Institucional')} className="hover:text-blue-400 transition-colors">Enterprise Vision</button></li>
               <li><button onClick={() => onOpenLegal?.('about', 'Board of Directors')} className="hover:text-blue-400 transition-colors">The Board</button></li>
+              <li><a href="/carreiras" className="hover:text-blue-400 transition-colors">Trabalhe Conosco</a></li>
               <li><button onClick={onProfOpen} className="hover:text-blue-400 transition-colors text-left text-blue-500">Professional Seats</button></li>
             </ul>
           </nav>

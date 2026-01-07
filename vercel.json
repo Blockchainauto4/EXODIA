@@ -16,6 +16,14 @@
       "destination": "/sitemap.xml"
     },
     {
+      "source": "/vagas/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/carreiras",
+      "destination": "/index.html"
+    },
+    {
       "source": "/atendimento/(.*)",
       "destination": "/index.html"
     },

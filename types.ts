@@ -31,6 +31,7 @@ export interface DoctorProfile {
 
 export interface JobOpportunity {
   id: string;
+  slug: string;
   title: string;
   description: string;
   datePosted: string;
@@ -77,13 +78,13 @@ export const CITIES_BY_STATE: Record<string, string[]> = {
   ],
   'RN': ['Natal', 'Mossoró'],
   'RS': ['Porto Alegre', 'Caxias do Sul', 'Viamão', 'Região Central', 'Região Noroeste'],
-  'RO': ['Porto Velho', 'Ji-Paraná'],
+  'RO': ['Porto Velho', 'Ji-Paraná', 'Cacoal'],
   'RR': ['Boa Vista'],
   'SC': ['Florianópolis', 'Joinville', 'Blumenau'],
   'SP': [
     'São Paulo', 'Guarulhos', 'Campinas', 'Pontal', 'José Bonifácio', 'Icém', 'Altinópolis', 'Santo André', 
-    'São Caetano do Sul', 'São Bernardo do Campo', 'Osasco', 'São José do Rio Preto', 
-    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'São Vicente', 'Barra do Turvo', 'Campo Limpo Paulista'
+    'São Caetano do Sul', 'São Bernardo do Campo', 'Osasco', 'São José do Rio Preto', 'Amparo', 'Sorocaba',
+    'Ribeirão Preto', 'Santos', 'Mogi das Cruzes', 'Jundiaí', 'Itapecerica da Serra', 'São Vicente', 'Barra do Turvo', 'Campo Limpo Paulista', 'Valinhos'
   ],
   'SE': ['Aracaju'],
   'TO': ['Palmas']
