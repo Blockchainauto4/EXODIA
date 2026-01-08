@@ -1,23 +1,6 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-/**
- * Retorna o modelo apropriado com base no nível de acesso detectado.
- * Tarefas básicas (Triagem Texto) usam Flash.
- * Tarefas complexas (Raciocínio Clínico Avançado) usam Pro se disponível.
- */
-const getModelForTier = async () => {
-  if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
-    try {
-      const isPro = await window.aistudio.hasSelectedApiKey();
-      return isPro ? 'gemini-3-pro-preview' : 'gemini-3-flash-preview';
-    } catch (e) {
-      return 'gemini-3-flash-preview';
-    }
-  }
-  return 'gemini-3-flash-preview';
-};
-
 export const getMedicalOrientation = async (prompt: string, history: { role: string; text: string }[]) => {
   const apiKey = process.env.API_KEY;
   
@@ -27,7 +10,7 @@ export const getMedicalOrientation = async (prompt: string, history: { role: str
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  const modelName = await getModelForTier();
+  const modelName = 'gemini-3-flash-preview';
   
   try {
     const response = await ai.models.generateContent({

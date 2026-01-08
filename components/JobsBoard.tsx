@@ -1,7 +1,7 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { UserLocation, JobOpportunity } from '../types';
-import { initCheckoutPro } from '../services/paymentService';
+// FIX: Correcting the import name from 'initCheckoutPro' to 'initCheckoutProMP' as suggested by the error message.
+import { initCheckoutProMP } from '../services/paymentService';
 
 interface JobsBoardProps {
   location: UserLocation;
@@ -60,7 +60,8 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs }) => {
   const handlePremiumPurchase = async () => {
     setPaymentStatus('Aguarde...');
     try {
-      await initCheckoutPro({
+      // FIX: Correcting the function call to match the imported name 'initCheckoutProMP'.
+      await initCheckoutProMP({
         title: `Anúncio Vaga Premium em ${location.city}`,
         price: 99.00,
         quantity: 1

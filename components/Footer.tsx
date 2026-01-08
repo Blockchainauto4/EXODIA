@@ -4,13 +4,12 @@ import { UserLocation, BRAZIL_STATES, LegalModalType } from '../types';
 
 interface FooterProps {
   onAdminOpen?: () => void;
-  onProfOpen?: () => void;
   onOpenLegal?: (type: LegalModalType, title: string) => void;
   location?: UserLocation;
   isAuthorized?: boolean;
 }
 
-const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, location, isAuthorized }) => {
+const Footer: React.FC<FooterProps> = ({ onAdminOpen, onOpenLegal, location, isAuthorized }) => {
   return (
     <footer className="bg-slate-950 text-white py-20 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4">
@@ -25,13 +24,13 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, l
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 relative z-10 shrink-0">
-            <button 
-              onClick={onProfOpen} 
+            <a
+              href="/medicos"
               aria-label="Solicitar assento profissional na rede IA Hospital"
-              className="px-12 py-6 bg-white text-slate-950 font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap"
+              className="px-12 py-6 bg-white text-slate-950 font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap flex items-center justify-center"
             >
-              Solicitar Assento
-            </button>
+              Sou Médico
+            </a>
           </div>
         </div>
 
@@ -61,9 +60,9 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onProfOpen, onOpenLegal, l
             <h3 className="font-black mb-8 text-white text-xs uppercase tracking-[0.2em]">Strategic Links</h3>
             <ul className="space-y-4 text-slate-300 text-sm font-bold uppercase tracking-widest">
               <li><button onClick={() => onOpenLegal?.('about', 'Visão Institucional')} className="hover:text-blue-400 transition-colors">Enterprise Vision</button></li>
-              <li><button onClick={() => onOpenLegal?.('about', 'Board of Directors')} className="hover:text-blue-400 transition-colors">The Board</button></li>
+              <li><a href="/ferramentas-ia" className="hover:text-blue-400 transition-colors">Guia de Ferramentas IA</a></li>
               <li><a href="/carreiras" className="hover:text-blue-400 transition-colors">Trabalhe Conosco</a></li>
-              <li><button onClick={onProfOpen} className="hover:text-blue-400 transition-colors text-left text-blue-500">Professional Seats</button></li>
+              <li><a href="/medicos" className="hover:text-blue-400 transition-colors text-left text-blue-500">Para Médicos</a></li>
             </ul>
           </nav>
 

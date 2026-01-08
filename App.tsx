@@ -19,9 +19,11 @@ const AdminAuthModal = lazy(() => import('./components/AdminAuthModal'));
 const ProcessingDashboard = lazy(() => import('./components/ProcessingDashboard'));
 const LegalModal = lazy(() => import('./components/LegalModal'));
 const LiveAnalysis = lazy(() => import('./components/LiveAnalysis'));
-const TutorialModal = lazy(() => import('./components/TutorialModal'));
+const SubscriptionModal = lazy(() => import('./components/SubscriptionModal'));
 const JobDetailPage = lazy(() => import('./components/JobDetailPage'));
 const CareersPage = lazy(() => import('./components/CareersPage'));
+const AIToolsPage = lazy(() => import('./components/AIToolsPage'));
+const ForDoctorsPage = lazy(() => import('./components/ForDoctorsPage'));
 
 const slugify = (text: string) => 
   text.toLowerCase()
@@ -33,6 +35,13 @@ const slugify = (text: string) =>
       .replace(/-+/g, '-');
 
 const MOCK_JOBS_DATA: Omit<JobOpportunity, 'slug'>[] = [
+  { id: 'job-anestesista-pr-01', title: 'Anestesista - Hospital das Clínicas/Curitiba-PR', description: 'Oportunidade de alta remuneração para Médico Anestesista no Hospital das Clínicas em Curitiba, Paraná. Ganhos mensais entre R$ 40 mil e R$ 60 mil.', datePosted: '2025-01-28', validThrough: '2025-09-30', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital das Clínicas', city: 'Curitiba', state: 'PR', specialty: 'Clínica Geral', salary: 'R$ 40.000 a R$ 60.000 / Mês', contactWhatsapp: '5544998711112' },
+  { id: 'job-upa-pr-01', title: 'Plantonista UPA (Clínica Médica) - Lapa/Ivaí-PR', description: 'Oportunidade para Médico Plantonista (Clínica Médica) para atuar nas UPAs de Lapa e Ivaí (PR). Plantões de 12h, diurnos e noturnos. Pagamento via PJ.', datePosted: '2025-01-27', validThrough: '2025-08-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Selettho Med', city: 'Lapa', state: 'PR', specialty: 'Clínica Geral', salary: 'R$ 1.600,00 / Plantão 12h', contactWhatsapp: '554198773803' },
+  { id: 'job-gineco-rj-01', title: 'Ginecologia - Centro/RJ', description: 'Vaga para Ginecologista (com ou sem Obstetrícia) para consultas ambulatoriais no Centro do Rio de Janeiro. Pagamento por produtividade em até 1 dia via PIX.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Ginecologia', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
+  { id: 'job-gastro-rj-01', title: 'Gastroenterologia - Centro/RJ', description: 'Oportunidade para Gastroenterologista em clínica no Centro do Rio de Janeiro. Atuação em consultas ambulatoriais com remuneração por produtividade.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Clínica Geral', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
+  { id: 'job-uro-rj-01', title: 'Urologia - Centro/RJ', description: 'Clínica no Centro/RJ busca Urologista para consultas ambulatoriais. Modelo de pagamento por produtividade com repasse rápido via PIX.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Clínica Geral', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
+  { id: 'job-psiq-rj-01', title: 'Psiquiatria (RQE) - Centro/RJ', description: 'Vaga para Psquiatra com RQE para atendimento ambulatorial no Centro/RJ. Remuneração por produtividade e pagamento em até 1 dia.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Psiquiatria', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
+  { id: 'job-nutro-rj-01', title: 'Nutrologia (RQE) - Centro/RJ', description: 'Buscamos Nutrólogo com RQE para consultas ambulatoriais na Clínica Saúde Pra Todos, Centro/RJ. Pagamento por produtividade.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Nutrição', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
   { id: 'job-go-001', title: 'Ginecologia e Obstetrícia - Amparo/SP', description: '🤰 Oportunidade para Ginecologia e Obstetrícia em Amparo. Atendimento em Maternidade e Ambulatório. Rede de alta complexidade com suporte completo.', datePosted: '2025-01-26', validThrough: '2025-06-30', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital Regional Amparo', city: 'Amparo', state: 'SP', specialty: 'Ginecologia', salary: 'Tabela Hospitalar', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
   { id: 'job-ped-001', title: 'Pediatria (Sala de Parto) - Amparo/SP', description: '👶 Pediatra para acompanhamento de Sala de Parto e Recepção de Recém-nascido. Unidade em Amparo/SP com infraestrutura moderna.', datePosted: '2025-01-26', validThrough: '2025-05-15', employmentType: 'FULL_TIME', hiringOrganization: 'Maternidade Amparo', city: 'Amparo', state: 'SP', specialty: 'Pediatria', salary: 'A combinar', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
   { id: 'job-eped-001', title: 'Emergência Pediatria (RQE) - Sorocaba/SP', description: '🚨 Plantões de Emergência Pediátrica em Sorocaba/SP. Obrigatório RQE na especialidade. Unidade de pronto atendimento 24h.', datePosted: '2025-01-26', validThrough: '2025-04-01', employmentType: 'TEMPORARY', hiringOrganization: 'Pronto Socorro Infantil Sorocaba', city: 'Sorocaba', state: 'SP', specialty: 'Pediatria', salary: 'Valor por Plantão', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
@@ -53,6 +62,8 @@ const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ city: 'sua região', state: 'Brasil', specialty: 'Atendimento Médico' });
   const [selectedJob, setSelectedJob] = useState<JobOpportunity | null>(null);
   const [isCareersPage, setIsCareersPage] = useState(false);
+  const [isAIToolsPage, setIsAIToolsPage] = useState(false);
+  const [isForDoctorsPage, setIsForDoctorsPage] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -62,7 +73,7 @@ const App: React.FC = () => {
   const [isProcessingOpen, setIsProcessingOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isLiveOpen, setIsLiveOpen] = useState(false);
-  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
   
   const [legalModal, setLegalModal] = useState<{ open: boolean; title: string; type: LegalModalType }>({ open: false, title: '', type: 'privacy' });
 
@@ -70,18 +81,20 @@ const App: React.FC = () => {
     const path = window.location.pathname;
     const parts = path.split('/').filter(p => p);
     
-    // Reseta estados de página
     setSelectedJob(null);
     setIsCareersPage(false);
+    setIsAIToolsPage(false);
+    setIsForDoctorsPage(false);
 
     if (path.startsWith('/tag/')) {
       window.history.replaceState({}, '', '/');
       return;
     }
 
-    if (path === '/carreiras') {
-      setIsCareersPage(true);
-    } else if (parts[0] === 'vagas' && parts[1]) {
+    if (path === '/carreiras') setIsCareersPage(true);
+    else if (path === '/ferramentas-ia') setIsAIToolsPage(true);
+    else if (path === '/medicos') setIsForDoctorsPage(true);
+    else if (parts[0] === 'vagas' && parts[1]) {
       const job = jobsWithSlugs.find(j => j.slug === parts[1]);
       setSelectedJob(job || null);
     } else if (parts[0] === 'atendimento' && parts.length >= 2) {
@@ -116,6 +129,12 @@ const App: React.FC = () => {
     if (isCareersPage) {
       pageTitle = 'Carreiras - Trabalhe Conosco | IA HOSPITAL';
       pageDescription = 'Junte-se à nossa equipe e faça parte da revolução na saúde digital. Veja as vagas médicas abertas em todo o Brasil e candidate-se.';
+    } else if (isAIToolsPage) {
+      pageTitle = 'Ferramentas de IA para Saúde | Guia Médico e Gestão - IA HOSPITAL';
+      pageDescription = 'Descubra as melhores ferramentas de IA para médicos e clínicas. Análise de exames, gestão de prontuários, triagem inteligente e mais. Otimize sua prática com o IA HOSPITAL.';
+    } else if (isForDoctorsPage) {
+      pageTitle = 'Plataforma para Médicos | Triagem com IA e SEO Local - IA HOSPITAL';
+      pageDescription = 'Médico, teste nossa plataforma de triagem com IA por 15 minutos. Aumente sua visibilidade local e otimize seu atendimento com a tecnologia do IA HOSPITAL.';
     } else if (selectedJob) {
       pageTitle = `${selectedJob.title} | Vaga Médica IA HOSPITAL`;
       pageDescription = `Vaga de ${selectedJob.specialty} em ${selectedJob.city}, ${selectedJob.state}. Candidate-se para a posição de ${selectedJob.title} no ${selectedJob.hiringOrganization}.`;
@@ -138,7 +157,12 @@ const App: React.FC = () => {
       document.head.appendChild(description);
     }
     description.setAttribute('content', pageDescription);
-  }, [location, selectedJob, isCareersPage]);
+  }, [location, selectedJob, isCareersPage, isAIToolsPage, isForDoctorsPage]);
+
+  const handleTrialEnd = () => {
+    setIsLiveOpen(false);
+    setIsSubscriptionModalOpen(true);
+  };
 
   const renderMainContent = () => (
     <>
@@ -146,7 +170,7 @@ const App: React.FC = () => {
         location={location} 
         onStartChat={() => setIsChatOpen(true)}
         onPatientOpen={() => setIsPatientModalOpen(true)}
-        onLiveOpen={() => setIsTutorialOpen(true)}
+        onLiveOpen={() => setIsLiveOpen(true)}
       />
       <JobsBoard location={location} jobs={jobsWithSlugs} />
       <SEOContent location={location} />
@@ -156,6 +180,8 @@ const App: React.FC = () => {
 
   const renderPage = () => {
     if (isCareersPage) return <CareersPage jobs={jobsWithSlugs} />;
+    if (isAIToolsPage) return <AIToolsPage />;
+    if (isForDoctorsPage) return <ForDoctorsPage onStartTrial={() => setIsLiveOpen(true)} onRegisterUnit={() => setIsProfModalOpen(true)} />;
     if (selectedJob) return <JobDetailPage job={selectedJob} />;
     return renderMainContent();
   };
@@ -167,8 +193,6 @@ const App: React.FC = () => {
         location={location} 
         onAdminOpen={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
         onPatientOpen={() => setIsPatientModalOpen(true)}
-        onDoctorOpen={() => setIsProfModalOpen(true)}
-        onLiveOpen={() => setIsTutorialOpen(true)}
       />
       
       <main className="flex-grow">
@@ -181,11 +205,10 @@ const App: React.FC = () => {
         location={location} 
         isAuthorized={isAuthorized}
         onAdminOpen={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)} 
-        onProfOpen={() => setIsProfModalOpen(true)}
         onOpenLegal={(type, title) => setLegalModal({ open: true, type, title })}
       />
       
-      {!selectedJob && !isCareersPage && (
+      {!selectedJob && !isCareersPage && !isAIToolsPage && !isForDoctorsPage &&(
         <>
           <div className="fixed bottom-24 left-6 z-[100] flex flex-col items-start gap-4">
             {isChatOpen && (
@@ -227,8 +250,8 @@ const App: React.FC = () => {
         {isProcessingOpen && <ProcessingDashboard onClose={() => setIsProcessingOpen(false)} location={location} />}
         {isProfModalOpen && <ProfessionalModal onClose={() => setIsProfModalOpen(false)} />}
         {isPatientModalOpen && <PatientRegistrationModal onClose={() => setIsPatientModalOpen(false)} />}
-        {isTutorialOpen && <TutorialModal onClose={() => setIsTutorialOpen(false)} onOpenSelectKey={() => { setIsLiveOpen(true); setIsTutorialOpen(false); }} />}
-        {isLiveOpen && <LiveAnalysis location={location} onClose={() => setIsLiveOpen(false)} />}
+        {isLiveOpen && <LiveAnalysis location={location} onClose={() => setIsLiveOpen(false)} onTrialEnd={handleTrialEnd} />}
+        {isSubscriptionModalOpen && <SubscriptionModal onClose={() => setIsSubscriptionModalOpen(false)} />}
       </Suspense>
     </div>
   );

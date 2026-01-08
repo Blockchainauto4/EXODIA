@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { GoogleGenAI, Modality, LiveServerMessage } from '@google/genai';
 import { decode, decodeAudioData, createBlob } from '../services/audioUtils';
@@ -5,6 +6,7 @@ import { UserLocation } from '../types';
 
 interface LiveAnalysisProps {
   onClose: () => void;
+  onTrialEnd: () => void;
   location: UserLocation;
 }
 
@@ -13,17 +15,17 @@ interface ChatTurn {
   text: string;
 }
 
-const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
+const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, onTrialEnd, location }) => {
   const [isActive, setIsActive] = useState(false);
   const [history, setHistory] = useState<ChatTurn[]>([]);
   const [currentInput, setCurrentInput] = useState('');
   const [currentOutput, setCurrentOutput] = useState('');
   const [status, setStatus] = useState<'conectando' | 'analisando' | 'erro'>('conectando');
   const [errorMessage, setErrorMessage] = useState('');
+  const [remainingTime, setRemainingTime] = useState(900); // 15 minutes in seconds
   
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
-  const [volumeLevel, setVolumeLevel] = useState(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -67,13 +69,31 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
     }
   };
 
+  useEffect(() => {
+    if (!isActive) return;
+
+    const timer = setInterval(() => {
+      setRemainingTime(prevTime => {
+        if (prevTime <= 1) {
+          clearInterval(timer);
+          stopSession();
+          onTrialEnd();
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isActive, onTrialEnd]);
+
   const startSession = async () => {
     try {
       setStatus('conectando');
       
       const apiKey = process.env.API_KEY;
       if (!apiKey) {
-        throw new Error("API Key não encontrada. Por favor, selecione sua chave PRO.");
+        throw new Error("API Key da plataforma não configurada.");
       }
 
       const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -93,7 +113,7 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
 
       const ai = new GoogleGenAI({ apiKey });
       const sessionPromise = ai.live.connect({
-        model: 'gemini-2.5-flash-native-audio-preview-09-2025',
+        model: 'gemini-2.5-flash-native-audio-preview-12-2025',
         callbacks: {
           onopen: () => {
             setStatus('analisando');
@@ -105,11 +125,6 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
             scriptProcessor.onaudioprocess = (e) => {
               if (isMuted) return;
               const inputData = e.inputBuffer.getChannelData(0);
-              
-              let sum = 0;
-              for(let i=0; i<inputData.length; i++) sum += inputData[i] * inputData[i];
-              setVolumeLevel(Math.sqrt(sum / inputData.length));
-
               const pcmBlob = createBlob(inputData);
               sessionPromise.then(session => {
                 session.sendRealtimeInput({ media: pcmBlob });
@@ -204,6 +219,7 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
             console.error("Erro na sessão Live:", e);
             setStatus('erro');
             setErrorMessage('A conexão com o servidor médico PRO falhou.');
+            stopSession();
           },
           onclose: () => {
             setIsActive(false);
@@ -233,6 +249,12 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
     return () => stopSession();
   }, []);
 
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/95 backdrop-blur-2xl p-0 sm:p-4">
       <div className="w-full max-w-7xl h-full sm:h-[92vh] flex flex-col bg-white rounded-none sm:rounded-[2.5rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/10">
@@ -244,7 +266,10 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
               <div className={`w-4 h-4 rounded-full ${isActive ? 'bg-blue-500' : 'bg-red-500'} relative z-10`}></div>
             </div>
             <div>
-              <h2 className="text-white font-black uppercase tracking-[0.2em] text-xs">Consulta Pro</h2>
+              <h2 className="text-white font-black uppercase tracking-[0.2em] text-xs">Consulta Pro - Teste Gratuito</h2>
+            </div>
+            <div className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest ${remainingTime < 60 ? 'bg-red-600/20 text-red-400' : 'bg-white/10 text-slate-200'}`}>
+              Tempo Restante: {formatTime(remainingTime)}
             </div>
           </div>
           <button 
@@ -272,6 +297,7 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, location }) => {
           ) : (
             <>
               <div className="lg:w-[60%] relative bg-black flex items-center justify-center overflow-hidden border-r border-slate-100">
+                <canvas ref={canvasRef} className="hidden"></canvas>
                 <video ref={videoRef} autoPlay playsInline muted className={`w-full h-full object-cover transition-all duration-1000 ${isVideoOff ? 'opacity-0 scale-110 blur-2xl' : 'opacity-80'}`} />
                 
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 bg-slate-950/40 backdrop-blur-2xl p-3 rounded-3xl border border-white/5">

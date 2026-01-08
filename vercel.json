@@ -1,3 +1,4 @@
+
 {
   "redirects": [
     {
@@ -21,6 +22,14 @@
     },
     {
       "source": "/carreiras",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ferramentas-ia",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/medicos",
       "destination": "/index.html"
     },
     {

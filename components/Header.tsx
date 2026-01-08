@@ -7,11 +7,9 @@ interface HeaderProps {
   location: UserLocation;
   onAdminOpen: () => void;
   onPatientOpen: () => void;
-  onDoctorOpen: () => void;
-  onLiveOpen: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPatientOpen, onDoctorOpen, onLiveOpen }) => {
+const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPatientOpen }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -19,23 +17,22 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPa
       isScrolled ? 'bg-white/90 backdrop-blur-xl shadow-lg py-2' : 'bg-transparent py-4'
     }`}>
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
+        <a href="/" className="flex items-center gap-2" aria-label="Página inicial do IA HOSPITAL">
           <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/20">IA</div>
           <span className={`font-black text-xl tracking-tighter text-slate-900 uppercase`}>IA HOSPITAL</span>
-        </div>
+        </a>
         
         <nav className="hidden lg:flex gap-8 items-center">
           <div className="flex items-center gap-6">
-            <a href="#orientacao" className="text-[10px] font-black text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Triagem IA</a>
-            <a href="#vagas" className="text-[10px] font-black text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Vagas na Região</a>
-            <button 
-              onClick={onLiveOpen} 
+            <a href="/#orientacao" className="text-[10px] font-black text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Triagem IA</a>
+            <a href="/#vagas" className="text-[10px] font-black text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Vagas na Região</a>
+            <a href="/medicos"
               aria-label="Iniciar consulta profissional na região"
               className="px-4 py-2 bg-slate-900 text-white rounded-xl text-[9px] font-black uppercase tracking-[0.2em] hover:bg-blue-600 transition-all flex items-center gap-2 shadow-xl shadow-blue-500/10 border border-white/10"
             >
               <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
               Consulta Pro Local
-            </button>
+            </a>
           </div>
           
           <div className="w-[1px] h-6 bg-slate-200 mx-2"></div>
@@ -48,13 +45,13 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPa
             >
               Portal Paciente
             </button>
-            <button 
-              onClick={onDoctorOpen} 
-              aria-label="Iniciar credenciamento médico para novas unidades"
-              className="text-[10px] font-black text-white bg-slate-900 hover:bg-black transition-colors uppercase tracking-widest px-4 py-2 rounded-xl border border-white/10 shadow-lg"
+            <a 
+              href="/medicos"
+              aria-label="Acessar portal para médicos e profissionais de saúde"
+              className="text-[10px] font-black text-white bg-slate-900 hover:bg-black transition-colors uppercase tracking-widest px-4 py-2 rounded-xl border border-white/10 shadow-lg flex items-center justify-center"
             >
-              Credenciamento Médico
-            </button>
+              Para Médicos
+            </a>
           </div>
         </nav>
 
@@ -92,14 +89,15 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPa
 
       {isMobileMenuOpen && (
         <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-200 p-6 space-y-4 animate-fade-in shadow-2xl">
-          <button 
-            onClick={() => { onLiveOpen(); setIsMobileMenuOpen(false); }} 
+          <a
+            href="/medicos"
+            onClick={() => setIsMobileMenuOpen(false)} 
             aria-label="Consultar profissional na região via vídeo"
             className="w-full py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2"
           >
             <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
             Consulta Pro na Região
-          </button>
+          </a>
           <div className="grid grid-cols-2 gap-3">
             <button 
               onClick={() => { onPatientOpen(); setIsMobileMenuOpen(false); }} 
@@ -108,13 +106,14 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPa
             >
               Paciente
             </button>
-            <button 
-              onClick={() => { onDoctorOpen(); setIsMobileMenuOpen(false); }} 
+            <a
+              href="/medicos" 
+              onClick={() => setIsMobileMenuOpen(false)} 
               aria-label="Entrar como médico"
-              className="py-4 bg-slate-100 text-slate-700 rounded-2xl text-[10px] font-black uppercase tracking-widest"
+              className="py-4 bg-slate-100 text-slate-700 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center"
             >
               Médico
-            </button>
+            </a>
           </div>
           <div className="pt-4 border-t border-slate-100 grid grid-cols-1 gap-4">
             <a href="#orientacao" onClick={() => setIsMobileMenuOpen(false)} className="text-[10px] font-black text-slate-500 uppercase tracking-widest block text-center">Triagem Inteligente Local</a>

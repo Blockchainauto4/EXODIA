@@ -34,6 +34,12 @@ const JobDetailPage: React.FC<JobDetailPageProps> = ({ job }) => {
     // A informação sobre salário está incluída na descrição.
   };
 
+  const contactLink = job.contactUrl 
+    ? job.contactUrl 
+    : job.contactWhatsapp 
+      ? `https://wa.me/${job.contactWhatsapp}?text=Olá,%20tenho%20interesse%20na%20vaga%20de%20${encodeURIComponent(job.title)}%20divulgada%20no%20IA%20HOSPITAL.`
+      : '#';
+
   return (
     <div className="animate-fade-in">
       <script
@@ -75,7 +81,7 @@ const JobDetailPage: React.FC<JobDetailPageProps> = ({ job }) => {
                 Envie sua candidatura diretamente para a equipe de recrutamento responsável por esta vaga em <strong>{job.city}</strong>.
               </p>
               <a 
-                href={job.contactUrl || '#'}
+                href={contactLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full block py-5 bg-emerald-600 hover:bg-emerald-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-emerald-200"
