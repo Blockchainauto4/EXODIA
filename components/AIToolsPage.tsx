@@ -46,8 +46,8 @@ const AIToolsPage: React.FC = () => {
       <div className="relative bg-slate-900 pt-40 pb-20">
         <div className="absolute inset-0 bg-gradient-to-br from-teal-900 to-slate-900 opacity-50"></div>
         <div className="max-w-4xl mx-auto px-4 relative z-10 text-center">
-          <p className="text-teal-400 text-sm font-black uppercase tracking-[0.2em]">Conteúdo Estratégico</p>
-          <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mt-2 tracking-tighter">Guia Definitivo de Ferramentas de IA para Saúde</h1>
+          <p className="text-teal-400 text-sm font-bold uppercase tracking-[0.2em]">Conteúdo Estratégico</p>
+          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mt-2 tracking-tighter">Guia Definitivo de Ferramentas de IA para Saúde</h1>
           <p className="text-slate-200 max-w-3xl mx-auto mt-6 text-lg leading-relaxed">
             Explore como a Inteligência Artificial está revolucionando o diagnóstico, a gestão hospitalar e o atendimento ao paciente. Um guia para médicos, gestores e profissionais que buscam inovação.
           </p>
@@ -56,20 +56,20 @@ const AIToolsPage: React.FC = () => {
       
       <div className="bg-slate-50 py-20">
         <div className="max-w-4xl mx-auto px-4 prose prose-slate max-w-none text-slate-700 leading-relaxed">
-          <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-800">Categorias de Ferramentas de IA na Medicina</h2>
+          <h2 className="text-2xl font-bold uppercase tracking-tighter text-slate-800">Categorias de Ferramentas de IA na Medicina</h2>
           <p>A Inteligência Artificial na saúde não é uma única tecnologia, mas um ecossistema de ferramentas especializadas. Cada uma resolve um desafio específico, desde a análise de um exame até a otimização da agenda de uma clínica inteira. Compreender essas categorias é o primeiro passo para uma implementação bem-sucedida.</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-12 not-prose">
             {tools.map(item => (
               <div key={item.title} className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:border-teal-300 transition-colors">
                 <div className="text-teal-600">{item.icon}</div>
-                <h3 className="text-lg font-black text-slate-900 mt-4 mb-2">{item.title}</h3>
+                <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2">{item.title}</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
 
-          <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-800">Como o IA HOSPITAL Integra a Tecnologia</h2>
+          <h2 className="text-2xl font-bold uppercase tracking-tighter text-slate-800">Como o IA HOSPITAL Integra a Tecnologia</h2>
           <p>Muitas dessas ferramentas operam de forma isolada. O diferencial do IA HOSPITAL é nossa <strong>Arquitetura de Unidade</strong>, que integra os módulos essenciais em uma única plataforma coesa. Ao se credenciar, um profissional ou clínica ganha acesso a um sistema que já inclui:</p>
           <ul>
             <li><strong>Módulo de Triagem IA Local:</strong> Para direcionamento de pacientes na sua região.</li>
@@ -79,7 +79,7 @@ const AIToolsPage: React.FC = () => {
           <p>Nossa abordagem transforma a complexidade de múltiplas ferramentas em uma solução única, pronta para operar e otimizada para o mercado de saúde brasileiro.</p>
 
           <div className="bg-white my-16 p-10 rounded-[2.5rem] border border-slate-200 shadow-xl">
-            <h2 className="text-2xl font-black uppercase tracking-tighter text-slate-800 mt-0">Perguntas Frequentes (Busca por Voz)</h2>
+            <h2 className="text-2xl font-bold uppercase tracking-tighter text-slate-800 mt-0">Perguntas Frequentes (Busca por Voz)</h2>
             <div className="space-y-6 mt-6">
               {faqs.map((faq, index) => (
                 <div key={index}>

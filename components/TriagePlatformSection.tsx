@@ -39,7 +39,7 @@ const TriagePlatformSection: React.FC<TriagePlatformSectionProps> = ({ onRegiste
       <div className="absolute -bottom-48 -left-24 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl"></div>
 
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-        <span className="text-teal-400 font-bold uppercase tracking-widest text-sm">IA HOSPITAL PARA PROFISSIONAIS</span>
+        <span className="text-teal-400 font-semibold uppercase tracking-widest text-sm">IA HOSPITAL PARA PROFISSIONAIS</span>
         <h1 className="text-5xl md:text-7xl font-thin text-white leading-tight mt-4 tracking-tight">
           O futuro da triagem <span className="font-normal">começa com confiança.</span>
         </h1>
@@ -91,7 +91,7 @@ const TriagePlatformSection: React.FC<TriagePlatformSectionProps> = ({ onRegiste
           </div>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6 p-6 bg-black/20 rounded-2xl">
               <p className="font-bold text-white text-center">Pronto para integrar sua unidade?</p>
-              <button onClick={onRegisterUnit} className="px-6 py-3 bg-white text-slate-900 font-black uppercase text-xs tracking-widest rounded-lg transition-transform hover:scale-105 shrink-0">
+              <button onClick={onRegisterUnit} className="px-6 py-3 bg-white text-slate-900 font-bold uppercase text-xs tracking-widest rounded-lg transition-transform hover:scale-105 shrink-0">
                 Cadastrar Unidade
               </button>
           </div>

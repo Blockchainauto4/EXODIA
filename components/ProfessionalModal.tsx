@@ -99,9 +99,9 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           <div className="bg-slate-900 p-8 text-white shrink-0">
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-teal-800 rounded-xl flex items-center justify-center font-black">DR</div>
+                <div className="w-10 h-10 bg-teal-800 rounded-xl flex items-center justify-center font-bold">DR</div>
                 <div>
-                  <h2 className="text-xl font-black uppercase tracking-tighter leading-none">Arquitetura de Unidade</h2>
+                  <h2 className="text-xl font-bold uppercase tracking-tighter leading-none">Arquitetura de Unidade</h2>
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Configuração em Tempo Real</p>
                 </div>
               </div>
@@ -121,13 +121,13 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           {step === 1 && (
             <div className="space-y-6 animate-fade-in">
               <div className="p-5 bg-teal-50 border border-teal-100 rounded-2xl">
-                <p className="text-[10px] font-black uppercase text-teal-700 tracking-widest mb-1">Passo 1: Identificação</p>
-                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter leading-none">Registro de Unidade</h3>
+                <p className="text-[10px] font-bold uppercase text-teal-700 tracking-widest mb-1">Passo 1: Identificação</p>
+                <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tighter leading-none">Registro de Unidade</h3>
               </div>
 
               <div className="space-y-4">
                 <label className="block">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome do Responsável</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nome do Responsável</span>
                   <input 
                     type="text" 
                     placeholder="Ex: Dr. Bruno Rizk"
@@ -137,7 +137,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   />
                 </label>
                 <label className="block">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">CRM e Estado</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">CRM e Estado</span>
                   <input 
                     type="text" 
                     placeholder="000000-UF"
@@ -149,7 +149,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                 
                 <div className="grid grid-cols-2 gap-4">
                   <label className="block">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Estado (UF)</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Estado (UF)</span>
                     <select 
                       className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none appearance-none font-bold text-sm"
                       value={formData.estado}
@@ -159,7 +159,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                     </select>
                   </label>
                   <label className="block">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Cidade Sede</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Cidade Sede</span>
                     <select 
                       className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none appearance-none font-bold text-sm"
                       value={formData.cidade}
@@ -175,7 +175,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               <button 
                 onClick={() => setStep(2)}
                 disabled={!formData.nome || !formData.crm || !formData.cidade}
-                className="w-full py-5 bg-teal-800 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200 disabled:opacity-50"
+                className="w-full py-5 bg-teal-800 hover:bg-teal-700 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200 disabled:opacity-50"
               >
                 Próximo Passo
               </button>
@@ -185,8 +185,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           {step === 2 && (
             <div className="space-y-6 animate-fade-in">
               <div className="p-5 bg-teal-50 border border-teal-100 rounded-2xl">
-                <p className="text-[10px] font-black uppercase text-teal-700 tracking-widest mb-1">Passo 2: Categorização</p>
-                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter leading-none">Áreas de Atuação Local</h3>
+                <p className="text-[10px] font-bold uppercase text-teal-700 tracking-widest mb-1">Passo 2: Categorização</p>
+                <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tighter leading-none">Áreas de Atuação Local</h3>
               </div>
 
               <div className="grid grid-cols-2 gap-2 h-48 overflow-y-auto pr-2 custom-scrollbar">
@@ -196,7 +196,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                     onClick={() => handleCategoryToggle(spec)}
                     aria-label={`Selecionar especialidade: ${spec}`}
                     aria-pressed={formData.categorias.includes(spec)}
-                    className={`p-3 rounded-xl border-2 text-[10px] font-black uppercase tracking-tight transition-all text-left ${
+                    className={`p-3 rounded-xl border-2 text-[10px] font-bold uppercase tracking-tight transition-all text-left ${
                       formData.categorias.includes(spec)
                         ? 'bg-teal-800 border-teal-800 text-white shadow-md'
                         : 'bg-white border-slate-100 text-slate-500 hover:border-teal-200'
@@ -210,14 +210,14 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               <div className="flex gap-4">
                 <button 
                   onClick={() => setStep(1)}
-                  className="flex-grow py-5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-black uppercase tracking-widest rounded-2xl"
+                  className="flex-grow py-5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold uppercase tracking-widest rounded-2xl"
                 >
                   Voltar
                 </button>
                 <button 
                   onClick={() => setStep(3)}
                   disabled={formData.categorias.length === 0}
-                  className="flex-[2] py-5 bg-teal-800 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl disabled:opacity-50"
+                  className="flex-[2] py-5 bg-teal-800 hover:bg-teal-700 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl disabled:opacity-50"
                 >
                   Personalizar Sistema
                 </button>
@@ -228,8 +228,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           {step === 3 && (
             <div className="space-y-6 animate-fade-in">
               <div className="p-5 bg-slate-900 border border-slate-700 rounded-2xl">
-                <p className="text-[10px] font-black uppercase text-teal-400 tracking-widest mb-1">Passo 3: Módulos</p>
-                <h3 className="text-lg font-black text-white uppercase tracking-tighter leading-none">Seleção de Funcionalidades</h3>
+                <p className="text-[10px] font-bold uppercase text-teal-400 tracking-widest mb-1">Passo 3: Módulos</p>
+                <h3 className="text-lg font-bold text-white uppercase tracking-tighter leading-none">Seleção de Funcionalidades</h3>
               </div>
 
               <div className="space-y-3 h-64 overflow-y-auto pr-2 custom-scrollbar">
@@ -247,7 +247,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   >
                     <div className={`transition-colors ${selectedModules.includes(module.id) ? 'text-teal-400' : 'text-slate-500'}`} aria-hidden="true">{module.icon}</div>
                     <div className="flex-grow">
-                      <p className="text-xs font-black uppercase tracking-tight">{module.name}</p>
+                      <p className="text-xs font-bold uppercase tracking-tight">{module.name}</p>
                       <p className={`text-[10px] font-medium leading-tight mt-0.5 ${selectedModules.includes(module.id) ? 'text-slate-300' : 'text-slate-400'}`}>
                         {module.desc}
                       </p>
@@ -264,14 +264,14 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               <div className="flex gap-4">
                 <button 
                   onClick={() => setStep(2)}
-                  className="flex-grow py-5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-black uppercase tracking-widest rounded-2xl"
+                  className="flex-grow py-5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold uppercase tracking-widest rounded-2xl"
                 >
                   Voltar
                 </button>
                 <button 
                   onClick={handleSubmit}
                   disabled={selectedModules.length === 0 || isSubmitting}
-                  className="flex-[2] py-5 bg-teal-800 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
+                  className="flex-[2] py-5 bg-teal-800 hover:bg-teal-700 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
                 >
                   Gerar Sistema Customizado
                 </button>
@@ -289,7 +289,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               </div>
               
               <div className="w-full max-w-sm space-y-4">
-                <h3 className="text-xl font-black uppercase tracking-tighter text-slate-900 leading-none">Deploy em Andamento</h3>
+                <h3 className="text-xl font-bold uppercase tracking-tighter text-slate-900 leading-none">Deploy em Andamento</h3>
                 <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-[0.2em]">Provisionando infraestrutura regional...</p>
                 
                 <div className="bg-slate-950 p-6 rounded-[2rem] font-mono text-[9px] text-emerald-400 text-left h-48 overflow-hidden flex flex-col justify-end shadow-inner border border-white/5 relative">
@@ -297,7 +297,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   <div className="space-y-1.5">
                     {dynamicLogs.slice(0, currentLogIdx + 1).map((log, i) => (
                       <p key={i} className="opacity-90 animate-fade-in flex items-center gap-2">
-                        <span className="text-emerald-800 font-black shrink-0">✔</span> {log}
+                        <span className="text-emerald-800 font-bold shrink-0">✔</span> {log}
                       </p>
                     ))}
                   </div>
@@ -318,22 +318,22 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                 </div>
               </div>
               <div>
-                <h2 className="text-4xl font-black uppercase tracking-tighter text-slate-900 leading-none">Ambiente Concluído!</h2>
+                <h2 className="text-4xl font-bold uppercase tracking-tighter text-slate-900 leading-none">Ambiente Concluído!</h2>
                 <p className="text-emerald-600 font-bold uppercase text-[11px] tracking-widest mt-4">Sua unidade em {formData.cidade} já está em produção</p>
               </div>
 
               <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200 text-left space-y-5">
                 <div className="flex justify-between items-center">
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
                     <span className="w-2 h-2 bg-emerald-500 rounded-full"></span> Módulos Provisionados:
                   </p>
-                  <span className="text-[9px] font-black text-teal-600 uppercase">Flame Core 3.1</span>
+                  <span className="text-[9px] font-bold text-teal-600 uppercase">Flame Core 3.1</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {selectedModules.map(m => {
                     const mod = SYSTEM_MODULES.find(sm => sm.id === m);
                     return (
-                      <span key={m} className="px-4 py-2 bg-white border border-slate-200 rounded-2xl text-[10px] font-black text-slate-700 uppercase shadow-sm flex items-center gap-2 hover:border-emerald-400 transition-colors cursor-default">
+                      <span key={m} className="px-4 py-2 bg-white border border-slate-200 rounded-2xl text-[10px] font-bold text-slate-700 uppercase shadow-sm flex items-center gap-2 hover:border-emerald-400 transition-colors cursor-default">
                         <span className="text-teal-800" aria-hidden="true">{mod?.icon}</span> {mod?.name}
                       </span>
                     )
@@ -344,7 +344,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               <button 
                 onClick={onClose}
                 aria-label="Concluir e acessar painel de controle"
-                className="w-full py-6 bg-slate-900 hover:bg-black text-white font-black uppercase tracking-widest rounded-3xl transition-all shadow-2xl hover:scale-[1.02] active:scale-95 border-b-4 border-black"
+                className="w-full py-6 bg-slate-900 hover:bg-black text-white font-bold uppercase tracking-widest rounded-3xl transition-all shadow-2xl hover:scale-[1.02] active:scale-95 border-b-4 border-black"
               >
                 Acessar Meu Sistema IA
               </button>

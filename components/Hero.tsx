@@ -18,7 +18,7 @@ const Hero: React.FC<HeroProps> = ({ location, onStartChat, onPatientOpen, onLiv
       
       <div className="max-w-7xl mx-auto px-4 text-center">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-100 text-teal-800 text-xs font-bold mb-6 border border-teal-200">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-100 text-teal-800 text-xs font-semibold mb-6 border border-teal-200">
             <span className="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></span>
             Triagem Local Ativa em {location.city}
           </div>

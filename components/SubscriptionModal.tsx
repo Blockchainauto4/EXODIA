@@ -36,12 +36,12 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ onClose }) => {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           </div>
           
-          <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">Sua Demonstração Terminou</h2>
+          <h2 className="text-3xl font-bold uppercase tracking-tighter text-slate-900 leading-none">Sua Demonstração Terminou</h2>
           <p className="text-slate-600 font-medium mt-4">Continue com acesso ilimitado à triagem por vídeo, prontuário inteligente e mais.</p>
           
           <div className="my-8 p-6 bg-slate-50 border border-slate-200 rounded-[2rem]">
-            <p className="text-sm font-black text-slate-800 uppercase">Plano IA HOSPITAL PRO</p>
-            <p className="text-4xl font-black text-teal-600 tracking-tighter mt-1">R$199<span className="text-lg">,90/mês</span></p>
+            <p className="text-sm font-bold text-slate-800 uppercase">Plano IA HOSPITAL PRO</p>
+            <p className="text-4xl font-bold text-teal-600 tracking-tighter mt-1">R$199<span className="text-lg">,90/mês</span></p>
           </div>
           
           {error && <p className="text-red-600 text-xs font-bold mb-4">{error}</p>}
@@ -50,14 +50,14 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ onClose }) => {
             <button 
               onClick={() => handlePayment('stripe')}
               disabled={!!isLoading}
-              className="w-full py-5 bg-slate-900 hover:bg-black text-white font-black uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-3 disabled:opacity-60"
+              className="w-full py-5 bg-slate-900 hover:bg-black text-white font-bold uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-3 disabled:opacity-60"
             >
               {isLoading === 'stripe' ? 'Aguarde...' : 'Assinar com Stripe'}
             </button>
             <button 
               onClick={() => handlePayment('mp')}
               disabled={!!isLoading}
-              className="w-full py-5 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-3 disabled:opacity-60"
+              className="w-full py-5 bg-teal-600 hover:bg-teal-700 text-white font-bold uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-3 disabled:opacity-60"
             >
               {isLoading === 'mp' ? 'Aguarde...' : 'Assinar com Mercado Pago'}
             </button>

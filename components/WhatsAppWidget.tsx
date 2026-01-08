@@ -10,7 +10,7 @@ const WhatsAppWidget: React.FC = () => {
       {/* Opção Secundária: Cadastro Profissional (Aparece no Hover) */}
       <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
         <div className="bg-white px-4 py-2 rounded-xl shadow-xl border border-teal-100">
-          <p className="text-[10px] font-black text-teal-800 uppercase tracking-widest whitespace-nowrap">Portal Profissional</p>
+          <p className="text-[10px] font-bold text-teal-800 uppercase tracking-widest whitespace-nowrap">Portal Profissional</p>
         </div>
         <a 
           href={professionalUrl}
@@ -26,7 +26,7 @@ const WhatsAppWidget: React.FC = () => {
       {/* Opção Principal: Contato Solicitado */}
       <div className="flex items-center gap-3">
         <div className="bg-white px-4 py-2 rounded-xl shadow-xl border border-emerald-100 opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest whitespace-nowrap">Orientação Médica</p>
+          <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest whitespace-nowrap">Orientação Médica</p>
         </div>
         
         <a 

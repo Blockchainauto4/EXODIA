@@ -1,6 +1,8 @@
 
 import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import Header from './components/Header';
+import Hero from './components/Hero';
+import SEOContent from './components/SEOContent';
 import VoiceFAQ from './components/VoiceFAQ';
 import Footer from './components/Footer';
 import WhatsAppWidget from './components/WhatsAppWidget';
@@ -84,6 +86,7 @@ const App: React.FC = () => {
   const [isCareersPage, setIsCareersPage] = useState(false);
   const [isAIToolsPage, setIsAIToolsPage] = useState(false);
   const [isForDoctorsPage, setIsForDoctorsPage] = useState(false);
+  const [isSeoPage, setIsSeoPage] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -106,6 +109,7 @@ const App: React.FC = () => {
     setIsCareersPage(false);
     setIsAIToolsPage(false);
     setIsForDoctorsPage(false);
+    setIsSeoPage(false);
 
     if (path.startsWith('/tag/')) {
       window.history.replaceState({}, '', '/');
@@ -119,6 +123,7 @@ const App: React.FC = () => {
       const job = jobsWithSlugs.find(j => j.slug === parts[1]);
       setSelectedJob(job || null);
     } else if (parts[0] === 'atendimento' && parts.length >= 2) {
+      setIsSeoPage(true);
       const stateParam = parts[1].toUpperCase();
       const cityParam = parts[2] ? parts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
       const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Atendimento Médico';
@@ -239,16 +244,25 @@ const App: React.FC = () => {
 
   const renderMainContent = () => (
     <>
-      <Suspense fallback={<div className="pt-48 h-[100vh] bg-slate-950"></div>}>
-        <TriagePlatformSection 
-          onStartTrial={handleLiveOpen} 
-          onRegisterUnit={() => setIsProfModalOpen(true)}
-        />
-      </Suspense>
-      <VoiceFAQ location={location} />
+      <Hero 
+        location={location} 
+        onStartChat={handleStartChat}
+        onPatientOpen={handlePatientOpen}
+        onLiveOpen={handleLiveOpen}
+      />
+      {!isSeoPage && (
+        <Suspense fallback={<div className="h-screen bg-slate-950"></div>}>
+          <TriagePlatformSection 
+            onStartTrial={handleLiveOpen} 
+            onRegisterUnit={() => setIsProfModalOpen(true)}
+          />
+        </Suspense>
+      )}
+      <SEOContent location={location} />
       <Suspense fallback={<JobsBoardSkeleton />}>
         <JobsBoard location={location} jobs={jobsWithSlugs} onNavigate={handleNavigate} />
       </Suspense>
+      <VoiceFAQ location={location} />
     </>
   );
 

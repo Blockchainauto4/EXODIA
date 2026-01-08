@@ -43,13 +43,13 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
               </div>
-              <h2 className="text-2xl font-black uppercase tracking-tighter leading-none">Cadastro de Acesso</h2>
-              <p className="text-teal-100 text-[10px] font-black uppercase tracking-[0.2em] mt-2 opacity-80">Triagem IA Regional Personalizada</p>
+              <h2 className="text-2xl font-bold uppercase tracking-tighter leading-none">Cadastro de Acesso</h2>
+              <p className="text-teal-100 text-[10px] font-bold uppercase tracking-[0.2em] mt-2 opacity-80">Triagem IA Regional Personalizada</p>
             </div>
 
             <form onSubmit={handleSubmit} className="p-8 space-y-5 overflow-y-auto custom-scrollbar">
               <div className="p-5 bg-teal-50 rounded-2xl border border-teal-100 mb-2">
-                <p className="text-[10px] leading-relaxed text-teal-800 font-black uppercase tracking-tight flex items-start gap-2">
+                <p className="text-[10px] leading-relaxed text-teal-800 font-bold uppercase tracking-tight flex items-start gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                   <span>LOCALIZAÇÃO: Seu cadastro garante que a triagem direcione você para o atendimento ideal mais perto daqui.</span>
                 </p>
@@ -57,7 +57,7 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
 
               <div className="space-y-4">
                 <label className="block">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nome Completo</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nome Completo</span>
                   <input 
                     required
                     type="text" 
@@ -70,7 +70,7 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
                 
                 <div className="grid grid-cols-2 gap-4">
                   <label className="block">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">WhatsApp</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">WhatsApp</span>
                     <input 
                       required
                       type="tel" 
@@ -81,7 +81,7 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
                     />
                   </label>
                   <label className="block">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">CEP (Localização)</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">CEP (Localização)</span>
                     <input 
                       required
                       type="text" 
@@ -94,7 +94,7 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
                 </div>
 
                 <label className="block">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">O que você está sentindo?</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">O que você está sentindo?</span>
                   <textarea 
                     required
                     rows={3}
@@ -109,7 +109,7 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-2 py-5 bg-teal-800 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-300 flex items-center justify-center gap-3 disabled:opacity-50"
+                className="w-full mt-2 py-5 bg-teal-800 hover:bg-teal-700 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-300 flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {isSubmitting ? 'Processando Localização...' : 'Iniciar Triagem Imediata'}
               </button>
@@ -127,7 +127,7 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
             </div>
             
             <div>
-              <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">Triagem Concluída!</h2>
+              <h2 className="text-3xl font-bold uppercase tracking-tighter text-slate-900 leading-none">Triagem Concluída!</h2>
               <p className="text-teal-800 font-bold uppercase text-[10px] tracking-widest mt-4">Match Regional Ativado com Sucesso</p>
             </div>
 
@@ -139,7 +139,7 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
 
             <button 
               onClick={onClose}
-              className="w-full py-5 bg-slate-900 hover:bg-black text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-2xl"
+              className="w-full py-5 bg-slate-900 hover:bg-black text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-2xl"
             >
               Acessar Painel de Unidades
             </button>

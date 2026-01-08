@@ -88,15 +88,15 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => 
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
             </div>
             <div>
-              <h2 className="text-white font-black uppercase tracking-tighter text-3xl leading-none">Vagas Médicas em Destaque</h2>
-              <p className="text-slate-300 text-[10px] font-black uppercase tracking-[0.3em] mt-2">Oportunidades em {location.state === 'Brasil' ? 'Todo o Brasil' : location.state}</p>
+              <h2 className="text-white font-bold uppercase tracking-tighter text-3xl leading-none">Vagas Médicas em Destaque</h2>
+              <p className="text-slate-300 text-[10px] font-bold uppercase tracking-[0.3em] mt-2">Oportunidades em {location.state === 'Brasil' ? 'Todo o Brasil' : location.state}</p>
             </div>
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-4">
             <a 
               href="/carreiras"
-              className="px-6 py-4 bg-slate-800 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl hover:bg-slate-700 transition-all flex items-center gap-2 border border-white/10"
+              className="px-6 py-4 bg-slate-800 text-white rounded-2xl font-bold uppercase tracking-widest text-[10px] shadow-2xl hover:bg-slate-700 transition-all flex items-center gap-2 border border-white/10"
             >
               Ver Todas as Vagas
             </a>
@@ -122,15 +122,15 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => 
           {filteredJobs.map(job => (
             <div key={job.id} className="snap-center shrink-0 w-[85vw] md:w-[45vw] lg:w-[400px] relative bg-white rounded-[2.5rem] p-8 shadow-2xl border-t-8 border-slate-900 animate-fade-in flex flex-col h-[540px] overflow-hidden group">
               <div className="absolute top-10 right-[-30px] opacity-[0.03] rotate-45 pointer-events-none select-none">
-                <span className="text-8xl font-black uppercase">DOCTOR</span>
+                <span className="text-8xl font-bold uppercase">DOCTOR</span>
               </div>
               
               <div className="mb-6 relative z-10">
                 <div className="flex justify-between items-start mb-4">
-                  <span className="bg-slate-100 text-slate-800 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-200">{job.city}/{job.state}</span>
-                  {job.employmentType === 'TEMPORARY' && <span className="bg-red-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-red-500/20">URGENTE</span>}
+                  <span className="bg-slate-100 text-slate-800 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-slate-200">{job.city}/{job.state}</span>
+                  {job.employmentType === 'TEMPORARY' && <span className="bg-red-600 text-white px-3 py-1 rounded-lg text-[9px] font-bold uppercase shadow-lg shadow-red-500/20">URGENTE</span>}
                 </div>
-                <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight h-14 overflow-hidden">{job.title}</h3>
+                <h3 className="text-2xl font-bold text-slate-900 uppercase tracking-tighter leading-tight h-14 overflow-hidden">{job.title}</h3>
                 <p className="text-[10px] font-bold text-teal-700 uppercase mt-1 tracking-widest truncate">{job.hiringOrganization}</p>
               </div>
 
@@ -140,8 +140,8 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => 
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H9a2 2 0 00-2 2v2m-3 2h16M5 12h14M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>
                   </div>
                   <div>
-                    <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Remuneração</h4>
-                    <p className="text-sm font-black text-emerald-700">{job.salary}</p>
+                    <h4 className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Remuneração</h4>
+                    <p className="text-sm font-bold text-emerald-700">{job.salary}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -156,7 +156,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => 
                 <a 
                   href={`/vagas/${job.slug}`}
                   onClick={(e) => onNavigate(`/vagas/${job.slug}`, e)}
-                  className="w-full py-4 bg-slate-800 hover:bg-slate-950 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 transition-all text-xs shadow-lg shadow-slate-500/20"
+                  className="w-full py-4 bg-slate-800 hover:bg-slate-950 text-white font-bold uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 transition-all text-xs shadow-lg shadow-slate-500/20"
                 >
                   Ver Detalhes da Vaga
                 </a>

@@ -53,7 +53,7 @@ const ForDoctorsPage: React.FC<ForDoctorsPageProps> = ({ onStartTrial, onRegiste
       <div className="relative bg-slate-900 pt-40 pb-24 text-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-teal-900 to-slate-900 opacity-60"></div>
         <div className="max-w-4xl mx-auto px-4 relative z-10">
-          <h1 className="text-4xl md:text-6xl font-black text-white leading-tight tracking-tighter">
+          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tighter">
             Eleve Sua Prática Médica.<br/> Conecte-se aos Pacientes <span className="text-teal-400 underline decoration-teal-500">da Sua Região</span>.
           </h1>
           <p className="text-slate-200 max-w-2xl mx-auto mt-6 text-lg leading-relaxed">
@@ -62,13 +62,13 @@ const ForDoctorsPage: React.FC<ForDoctorsPageProps> = ({ onStartTrial, onRegiste
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={onRegisterUnit}
-              className="px-10 py-5 bg-white text-slate-900 font-black uppercase tracking-widest rounded-2xl shadow-2xl shadow-teal-900/40 transition-all hover:scale-105 active:scale-95"
+              className="px-10 py-5 bg-white text-slate-900 font-bold uppercase tracking-widest rounded-2xl shadow-2xl shadow-teal-900/40 transition-all hover:scale-105 active:scale-95"
             >
               Cadastrar Minha Unidade
             </button>
             <button
               onClick={onStartTrial}
-              className="px-10 py-5 bg-teal-600/30 text-white font-black uppercase tracking-widest rounded-2xl shadow-lg transition-all hover:bg-teal-600/50 border border-white/20"
+              className="px-10 py-5 bg-teal-600/30 text-white font-bold uppercase tracking-widest rounded-2xl shadow-lg transition-all hover:bg-teal-600/50 border border-white/20"
             >
               Testar Triagem IA (15 Min)
             </button>
@@ -80,13 +80,13 @@ const ForDoctorsPage: React.FC<ForDoctorsPageProps> = ({ onStartTrial, onRegiste
       <div className="py-24 bg-slate-50">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-800">Como Funciona a Plataforma</h2>
+            <h2 className="text-3xl font-bold uppercase tracking-tighter text-slate-800">Como Funciona a Plataforma</h2>
             <p className="text-slate-600 mt-3 max-w-2xl mx-auto">Um fluxo de trabalho de 4 passos, projetado para integrar sua unidade à nossa rede e gerar resultados rapidamente.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {howItWorksSteps.map(step => (
               <div key={step.number} className="bg-white p-8 rounded-3xl border border-slate-200 text-center shadow-sm">
-                <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-2xl font-black mx-auto mb-6">{step.number}</div>
+                <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-6">{step.number}</div>
                 <h3 className="font-bold text-slate-900 mb-2 uppercase tracking-widest text-sm">{step.title}</h3>
                 <p className="text-xs text-slate-500 leading-relaxed">{step.desc}</p>
               </div>
@@ -100,7 +100,7 @@ const ForDoctorsPage: React.FC<ForDoctorsPageProps> = ({ onStartTrial, onRegiste
       <div className="bg-white py-24">
         <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-800">Uma Plataforma Completa Para Sua Prática</h2>
+            <h2 className="text-3xl font-bold uppercase tracking-tighter text-slate-800">Uma Plataforma Completa Para Sua Prática</h2>
             <p className="text-slate-600 mt-3 max-w-2xl mx-auto">
               Nossa plataforma não é apenas uma ferramenta, é um ecossistema integrado. Oferecemos todos os módulos necessários para digitalizar e otimizar sua operação.
             </p>
@@ -109,7 +109,7 @@ const ForDoctorsPage: React.FC<ForDoctorsPageProps> = ({ onStartTrial, onRegiste
             {features.map(feature => (
               <div key={feature.title} className="bg-slate-50 p-8 rounded-3xl border border-slate-200 hover:border-teal-300 hover:shadow-xl transition-all group">
                 <div className="text-teal-600">{feature.icon}</div>
-                <h3 className="text-lg font-black text-slate-900 mt-4 mb-2 group-hover:text-teal-600 transition-colors">{feature.title}</h3>
+                <h3 className="text-lg font-bold text-slate-900 mt-4 mb-2 group-hover:text-teal-600 transition-colors">{feature.title}</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">{feature.desc}</p>
               </div>
             ))}
@@ -120,7 +120,7 @@ const ForDoctorsPage: React.FC<ForDoctorsPageProps> = ({ onStartTrial, onRegiste
       {/* Benefits / Why Join Section */}
       <div className="py-24 bg-teal-700">
           <div className="max-w-4xl mx-auto px-4 text-center text-white">
-              <h2 className="text-3xl font-black uppercase tracking-tighter">Vantagens Diretas Para Sua Unidade</h2>
+              <h2 className="text-3xl font-bold uppercase tracking-tighter">Vantagens Diretas Para Sua Unidade</h2>
               <p className="mt-4 max-w-2xl mx-auto text-teal-100">Ao se juntar ao IA HOSPITAL, você não apenas adota tecnologia, você investe em crescimento e eficiência.</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-16">
                   <div className="bg-teal-800/50 p-8 rounded-3xl border border-white/10"><h3 className="text-xl font-bold">Aumento do Fluxo de Pacientes Qualificados</h3></div>
@@ -134,11 +134,11 @@ const ForDoctorsPage: React.FC<ForDoctorsPageProps> = ({ onStartTrial, onRegiste
       {/* Final CTA */}
       <div className="bg-slate-900 py-24 text-center">
         <div className="max-w-2xl mx-auto px-4">
-          <h2 className="text-3xl font-black text-white leading-tight tracking-tighter">Pronto para Digitalizar e Expandir seu Atendimento?</h2>
+          <h2 className="text-3xl font-bold text-white leading-tight tracking-tighter">Pronto para Digitalizar e Expandir seu Atendimento?</h2>
           <p className="text-slate-300 mt-4 mb-10">Junte-se a uma rede de profissionais de vanguarda. O cadastro é rápido e nossa equipe está pronta para auxiliar na integração.</p>
           <button
             onClick={onRegisterUnit}
-            className="px-12 py-6 bg-white text-slate-900 font-black uppercase tracking-widest rounded-2xl shadow-2xl shadow-teal-900/40 transition-all hover:scale-105 active:scale-95"
+            className="px-12 py-6 bg-white text-slate-900 font-bold uppercase tracking-widest rounded-2xl shadow-2xl shadow-teal-900/40 transition-all hover:scale-105 active:scale-95"
           >
             Cadastre Sua Unidade Agora
           </button>

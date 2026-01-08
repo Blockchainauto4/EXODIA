@@ -51,18 +51,18 @@ const ProcessingDashboard: React.FC<ProcessingDashboardProps> = ({ onClose, loca
                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
               </div>
               <div>
-                <h2 className="text-white font-black uppercase tracking-tighter text-xl">Instant Index</h2>
-                <p className="text-slate-400 text-xs font-black uppercase tracking-widest">Dashboard v1.0</p>
+                <h2 className="text-white font-bold uppercase tracking-tighter text-xl">Instant Index</h2>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Dashboard v1.0</p>
               </div>
             </div>
             
             <div className="space-y-6">
               <div className="p-5 bg-white/5 border border-white/5 rounded-2xl">
-                <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Target Region</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Target Region</p>
                 <p className="text-sm font-bold text-white uppercase">{location.city}, {location.state}</p>
               </div>
               <div className="p-5 bg-white/5 border border-white/5 rounded-2xl">
-                <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Current Tier</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Current Tier</p>
                 <p className="text-sm font-bold text-emerald-400 uppercase">Pro Access Active</p>
               </div>
             </div>
@@ -71,7 +71,7 @@ const ProcessingDashboard: React.FC<ProcessingDashboardProps> = ({ onClose, loca
           <button 
             onClick={onClose}
             aria-label="Fechar painel de indexação instantânea"
-            className="w-full py-4 border-2 border-white/10 text-slate-400 hover:text-white hover:border-white/20 rounded-2xl font-black uppercase tracking-widest transition-all"
+            className="w-full py-4 border-2 border-white/10 text-slate-400 hover:text-white hover:border-white/20 rounded-2xl font-bold uppercase tracking-widest transition-all"
           >
             Fechar Dashboard
           </button>
@@ -79,8 +79,8 @@ const ProcessingDashboard: React.FC<ProcessingDashboardProps> = ({ onClose, loca
 
         <div className="flex-grow p-10 flex flex-col">
           <div className="flex justify-between items-center mb-10">
-            <h3 className="text-white font-black uppercase tracking-tighter text-3xl">Painel de Processamento</h3>
-            <div className={`px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest ${apiStatus === 'ACTIVE' ? 'bg-orange-500/20 text-orange-500 animate-pulse' : 'bg-slate-800 text-slate-500'}`}>
+            <h3 className="text-white font-bold uppercase tracking-tighter text-3xl">Painel de Processamento</h3>
+            <div className={`px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${apiStatus === 'ACTIVE' ? 'bg-orange-500/20 text-orange-500 animate-pulse' : 'bg-slate-800 text-slate-500'}`}>
               {apiStatus === 'ACTIVE' ? 'API Busy' : 'API Idle'}
             </div>
           </div>
@@ -88,8 +88,8 @@ const ProcessingDashboard: React.FC<ProcessingDashboardProps> = ({ onClose, loca
           <div className="flex-grow flex flex-col gap-10">
             <div className="bg-slate-950 p-8 rounded-[2rem] border border-white/5">
               <div className="flex justify-between mb-4">
-                <span className="text-xs font-black text-slate-300 uppercase tracking-widest">Status da Fila de Indexação</span>
-                <span className="text-xs font-black text-white">{progress}%</span>
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">Status da Fila de Indexação</span>
+                <span className="text-xs font-bold text-white">{progress}%</span>
               </div>
               <div className="h-4 bg-slate-900 rounded-full overflow-hidden border border-white/10">
                 <div 
@@ -115,7 +115,7 @@ const ProcessingDashboard: React.FC<ProcessingDashboardProps> = ({ onClose, loca
               onClick={runIndexingProcess}
               disabled={isProcessing}
               aria-label={isProcessing ? "Processamento em curso" : "Executar indexação instantânea na região"}
-              className={`w-full py-6 rounded-2xl font-black uppercase tracking-widest text-lg transition-all shadow-2xl ${isProcessing ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-orange-600 hover:bg-orange-500 text-white shadow-orange-950/40 hover:scale-[1.01]'}`}
+              className={`w-full py-6 rounded-2xl font-bold uppercase tracking-widest text-lg transition-all shadow-2xl ${isProcessing ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-orange-600 hover:bg-orange-500 text-white shadow-orange-950/40 hover:scale-[1.01]'}`}
             >
               {isProcessing ? 'Processando URLs...' : 'Iniciar Indexação Inteligente'}
             </button>

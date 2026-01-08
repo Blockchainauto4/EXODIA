@@ -31,7 +31,7 @@ const AddToExtension: React.FC = () => {
   return (
     <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[160] w-[90%] max-w-2xl animate-fade-in">
       <div className="bg-slate-950 rounded-2xl shadow-2xl p-6 flex flex-col sm:flex-row items-center gap-6 border-2 border-white/10">
-        <div className="w-12 h-12 bg-teal-700 rounded-xl flex items-center justify-center text-white font-black text-xl shrink-0">
+        <div className="w-12 h-12 bg-teal-700 rounded-xl flex items-center justify-center text-white font-bold text-xl shrink-0">
           IA
         </div>
         <div className="text-center sm:text-left flex-grow">

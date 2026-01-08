@@ -27,13 +27,13 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ onClose, onSuccess }) =
           <div className="w-16 h-16 bg-orange-600/20 text-orange-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.879 16.121A5 5 0 0014.142 11.858" /></svg>
           </div>
-          <h2 className="text-white font-black uppercase tracking-tighter text-xl">Acesso Restrito</h2>
+          <h2 className="text-white font-bold uppercase tracking-tighter text-xl">Acesso Restrito</h2>
           <p className="text-slate-300 text-xs font-bold uppercase tracking-widest mt-2">Flame Work Local SEO Engine</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-xs font-black text-slate-200 uppercase tracking-widest ml-1">Senha Administrativa</label>
+            <label className="text-xs font-bold text-slate-200 uppercase tracking-widest ml-1">Senha Administrativa</label>
             <input 
               type="password"
               autoFocus
@@ -48,7 +48,7 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ onClose, onSuccess }) =
           <div className="flex flex-col gap-3 pt-4">
             <button 
               type="submit"
-              className="w-full py-5 bg-orange-700 hover:bg-orange-600 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-orange-950/40 border-b-4 border-orange-900"
+              className="w-full py-5 bg-orange-700 hover:bg-orange-600 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-orange-950/40 border-b-4 border-orange-900"
             >
               Autenticar
             </button>

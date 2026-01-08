@@ -277,9 +277,9 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, onTrialEnd, locati
               <div className={`w-4 h-4 rounded-full ${isActive ? 'bg-teal-500' : 'bg-red-500'} relative z-10`}></div>
             </div>
             <div>
-              <h2 className="text-white font-black uppercase tracking-[0.2em] text-xs">Consulta Pro - Teste Gratuito</h2>
+              <h2 className="text-white font-bold uppercase tracking-[0.2em] text-xs">Consulta Pro - Teste Gratuito</h2>
             </div>
-            <div className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest ${remainingTime < 60 ? 'bg-red-600/20 text-red-400' : 'bg-white/10 text-slate-200'}`}>
+            <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${remainingTime < 60 ? 'bg-red-600/20 text-red-400' : 'bg-white/10 text-slate-200'}`}>
               Tempo Restante: {formatTime(remainingTime)}
             </div>
           </div>
@@ -298,11 +298,11 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, onTrialEnd, locati
               <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-3xl mb-6">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
               </div>
-              <h2 className="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tighter">Falha na Conexão</h2>
+              <h2 className="text-2xl font-bold text-slate-900 mb-4 uppercase tracking-tighter">Falha na Conexão</h2>
               <p className="text-slate-500 max-w-md mb-8">{errorMessage}</p>
               <button 
                 onClick={onClose}
-                className="px-12 py-5 bg-slate-900 text-white font-black uppercase tracking-widest rounded-2xl hover:bg-black transition-all"
+                className="px-12 py-5 bg-slate-900 text-white font-bold uppercase tracking-widest rounded-2xl hover:bg-black transition-all"
               >
                 Voltar ao Início
               </button>
@@ -316,7 +316,7 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, onTrialEnd, locati
                 
                 <div className="absolute top-8 left-8 bg-black/30 backdrop-blur-lg p-3 px-5 rounded-2xl border border-white/10">
                     <p className="text-white font-bold text-sm">Você (Paciente)</p>
-                    <p className="text-teal-300 text-xs font-black uppercase tracking-widest">Triagem Ativa</p>
+                    <p className="text-teal-300 text-xs font-bold uppercase tracking-widest">Triagem Ativa</p>
                 </div>
                 
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-4 bg-slate-950/40 backdrop-blur-2xl p-3 rounded-3xl border border-white/5">
@@ -324,61 +324,4 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, onTrialEnd, locati
                     {isMuted ? <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5l14 14" /></svg> : <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>}
                   </button>
                   <button onClick={() => setIsVideoOff(!isVideoOff)} aria-label={isVideoOff ? "Ativar câmera" : "Desativar câmera"} className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-2xl ${isVideoOff ? 'bg-red-600 text-white' : 'bg-white/10 text-white hover:bg-white/20'}`}>
-                    {isVideoOff ? <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5l14 14" /></svg> : <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>}
-                  </button>
-                  <div className="w-[1px] bg-white/10 mx-2"></div>
-                  <button onClick={onClose} aria-label="Encerrar consulta" className="w-14 h-14 bg-red-600/20 hover:bg-red-600 text-white rounded-2xl flex items-center justify-center transition-all shadow-2xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 8l2-2m0 0l2 2m-2-2v5a3 3 0 01-3 3H9a3 3 0 01-3-3V6m0 0l2 2m-2-2l2-2" /></svg>
-                  </button>
-                </div>
-              </div>
-
-              <div className="lg:w-1/3 flex flex-col bg-white overflow-hidden border-l border-slate-200">
-                <div className="p-6 bg-white border-b border-slate-200 shrink-0">
-                  <h3 className="text-slate-900 font-black uppercase text-sm tracking-widest flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7.757 16.243a6 6 0 108.486-8.486 6 6 0 00-8.486 8.486z" /></svg>
-                    Análise de IA & Transcrição
-                  </h3>
-                </div>
-                
-                <div className="flex-grow overflow-y-auto p-6 space-y-6 custom-scrollbar bg-slate-50/50">
-                  {history.map((turn, i) => (
-                     <div key={i} className={`flex items-start gap-3 ${turn.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm ${turn.role === 'user' ? 'bg-teal-600 text-white' : 'bg-slate-800 text-white'}`}>
-                          {turn.role === 'user' ? 
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg> : 
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" /><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" /></svg>
-                          }
-                        </div>
-                        <div className={`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed ${turn.role === 'user' ? 'bg-teal-600 text-white rounded-br-none' : 'bg-slate-100 text-slate-800 rounded-bl-none border border-slate-200'}`}>
-                            {turn.text}
-                        </div>
-                    </div>
-                  ))}
-                  <div ref={transcriptionEndRef} />
-                </div>
-                
-                <div className="shrink-0 p-6 bg-white border-t border-slate-200 space-y-4">
-                    {currentInput && (
-                        <div className="opacity-60">
-                            <p className="text-[9px] font-black mb-1 uppercase text-slate-400 tracking-widest flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>Você (ouvindo...)</p>
-                            <p className="text-sm text-teal-900">{currentInput}</p>
-                        </div>
-                    )}
-                    {currentOutput && (
-                        <div className="opacity-60">
-                           <p className="text-[9px] font-black mb-1 uppercase text-slate-400 tracking-widest flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-slate-500 animate-pulse"></span>IA (processando...)</p>
-                           <p className="text-sm text-slate-700">{currentOutput}</p>
-                        </div>
-                    )}
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default LiveAnalysis;
+                    {isVideoOff ? <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0
