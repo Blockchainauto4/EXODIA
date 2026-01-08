@@ -4,13 +4,13 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import SEOContent from './components/SEOContent';
 import VoiceFAQ from './components/VoiceFAQ';
-import JobsBoard from './components/JobsBoard';
 import Footer from './components/Footer';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import CookieConsent from './components/CookieConsent';
 import { UserLocation, LegalModalType, JobOpportunity } from './types';
 
 // Lazy Loading de componentes pesados para otimização de Performance (Code Splitting)
+const JobsBoard = lazy(() => import('./components/JobsBoard'));
 const MedicalAssistant = lazy(() => import('./components/MedicalAssistant'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const ProfessionalModal = lazy(() => import('./components/ProfessionalModal'));
@@ -63,6 +63,21 @@ const MOCK_JOBS_DATA: Omit<JobOpportunity, 'slug'>[] = [
 ];
 
 const jobsWithSlugs: JobOpportunity[] = MOCK_JOBS_DATA.map(job => ({ ...job, slug: slugify(job.title) }));
+
+const JobsBoardSkeleton: React.FC = () => (
+  <div className="py-20 bg-slate-900 overflow-hidden" id="vagas">
+    <div className="max-w-7xl mx-auto px-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+        <div className="h-16 bg-slate-800 rounded-lg w-1/2 animate-pulse"></div>
+        <div className="h-12 bg-slate-800 rounded-lg w-1/4 animate-pulse"></div>
+      </div>
+      <div className="flex gap-8 overflow-hidden">
+        <div className="snap-center shrink-0 w-[85vw] md:w-[45vw] lg:w-[400px] h-[540px] bg-white/5 rounded-[2.5rem] p-8 animate-pulse"></div>
+        <div className="hidden md:block snap-center shrink-0 w-[85vw] md:w-[45vw] lg:w-[400px] h-[540px] bg-white/5 rounded-[2.5rem] p-8 animate-pulse"></div>
+      </div>
+    </div>
+  </div>
+);
 
 const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ city: 'sua região', state: 'Brasil', specialty: 'Atendimento Médico' });
@@ -233,7 +248,9 @@ const App: React.FC = () => {
       />
       <SEOContent location={location} />
       <VoiceFAQ location={location} />
-      <JobsBoard location={location} jobs={jobsWithSlugs} onNavigate={handleNavigate} />
+      <Suspense fallback={<JobsBoardSkeleton />}>
+        <JobsBoard location={location} jobs={jobsWithSlugs} onNavigate={handleNavigate} />
+      </Suspense>
     </>
   );
 

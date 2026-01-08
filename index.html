@@ -10,6 +10,12 @@
     
     <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://esm.sh" crossorigin>
+    
+    <!-- Font Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
 
     <!-- Payment SDKs will be loaded dynamically or deferred -->
     <script src="https://sdk.mercadopago.com/js/v2" defer></script>
@@ -22,7 +28,7 @@
         --slate-50: #f8fafc; 
         --slate-950: #020617;
       }
-      body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background-color: var(--slate-50); color: #0f172a; overflow-x: hidden; }
+      body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: var(--slate-50); color: #0f172a; overflow-x: hidden; }
       .header-skeleton { position: fixed; top: 0; left: 0; right: 0; height: 72px; background: white; border-bottom: 1px solid #e2e8f0; z-index: 50; display: flex; align-items: center; padding: 0 1rem; }
       .logo-box { width: 40px; height: 40px; background: var(--teal-600); border-radius: 8px; margin-right: 12px; }
       .hero-skeleton { padding-top: 120px; text-align: center; max-width: 800px; margin: 0 auto; }
