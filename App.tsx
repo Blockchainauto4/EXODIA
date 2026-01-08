@@ -1,8 +1,6 @@
 
 import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import SEOContent from './components/SEOContent';
 import VoiceFAQ from './components/VoiceFAQ';
 import Footer from './components/Footer';
 import WhatsAppWidget from './components/WhatsAppWidget';
@@ -10,6 +8,7 @@ import CookieConsent from './components/CookieConsent';
 import { UserLocation, LegalModalType, JobOpportunity } from './types';
 
 // Lazy Loading de componentes pesados para otimização de Performance (Code Splitting)
+const TriagePlatformSection = lazy(() => import('./components/TriagePlatformSection'));
 const JobsBoard = lazy(() => import('./components/JobsBoard'));
 const MedicalAssistant = lazy(() => import('./components/MedicalAssistant'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
@@ -240,13 +239,12 @@ const App: React.FC = () => {
 
   const renderMainContent = () => (
     <>
-      <Hero 
-        location={location} 
-        onStartChat={handleStartChat}
-        onPatientOpen={handlePatientOpen}
-        onLiveOpen={handleLiveOpen}
-      />
-      <SEOContent location={location} />
+      <Suspense fallback={<div className="pt-48 h-[100vh] bg-slate-950"></div>}>
+        <TriagePlatformSection 
+          onStartTrial={handleLiveOpen} 
+          onRegisterUnit={() => setIsProfModalOpen(true)}
+        />
+      </Suspense>
       <VoiceFAQ location={location} />
       <Suspense fallback={<JobsBoardSkeleton />}>
         <JobsBoard location={location} jobs={jobsWithSlugs} onNavigate={handleNavigate} />
@@ -261,14 +259,14 @@ const App: React.FC = () => {
     if (selectedJob) return <JobDetailPage job={selectedJob} onNavigate={handleNavigate} />;
     return renderMainContent();
   };
-
+  
   return (
     <div className="min-h-screen flex flex-col font-sans relative">
       <Header 
         isScrolled={isScrolled} 
-        location={location} 
         onAdminOpen={handleAdminOpen}
         onPatientOpen={handlePatientOpen}
+        onNavigate={handleNavigate}
       />
       
       <main className="flex-grow">
@@ -282,6 +280,7 @@ const App: React.FC = () => {
         isAuthorized={isAuthorized}
         onAdminOpen={handleAdminOpen} 
         onOpenLegal={handleOpenLegal}
+        onNavigate={handleNavigate}
       />
       
       {/* Floating Action Buttons & Widgets */}

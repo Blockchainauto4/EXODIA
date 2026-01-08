@@ -9,7 +9,7 @@ const AddToExtension: React.FC = () => {
     if (isDismissed !== 'true') {
       const timer = setTimeout(() => {
         setIsVisible(true);
-      }, 2000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, []);
@@ -20,8 +20,6 @@ const AddToExtension: React.FC = () => {
   };
 
   const handleAdd = () => {
-    // In a real application, this would link to the Chrome Web Store or another marketplace.
-    // For this simulation, we'll show an alert and dismiss the banner.
     alert("Redirecionando para a loja de extensões... (Simulação)");
     handleDismiss();
   };
@@ -32,8 +30,8 @@ const AddToExtension: React.FC = () => {
 
   return (
     <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[160] w-[90%] max-w-2xl animate-fade-in">
-      <div className="bg-slate-900 rounded-2xl shadow-2xl p-6 flex flex-col sm:flex-row items-center gap-6 border-2 border-white/10">
-        <div className="w-12 h-12 bg-teal-600 rounded-xl flex items-center justify-center text-white font-black text-xl shrink-0">
+      <div className="bg-slate-950 rounded-2xl shadow-2xl p-6 flex flex-col sm:flex-row items-center gap-6 border-2 border-white/10">
+        <div className="w-12 h-12 bg-teal-700 rounded-xl flex items-center justify-center text-white font-black text-xl shrink-0">
           IA
         </div>
         <div className="text-center sm:text-left flex-grow">
@@ -43,7 +41,7 @@ const AddToExtension: React.FC = () => {
         <div className="flex gap-3 shrink-0">
           <button 
             onClick={handleAdd}
-            className="px-5 py-2 bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs uppercase tracking-widest rounded-lg transition-colors"
+            className="px-5 py-2 bg-teal-700 hover:bg-teal-600 text-white font-bold text-xs uppercase tracking-widest rounded-lg transition-colors"
           >
             Adicionar
           </button>
