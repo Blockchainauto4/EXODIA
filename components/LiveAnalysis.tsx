@@ -324,4 +324,56 @@ const LiveAnalysis: React.FC<LiveAnalysisProps> = ({ onClose, onTrialEnd, locati
                     {isMuted ? <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 5l14 14" /></svg> : <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>}
                   </button>
                   <button onClick={() => setIsVideoOff(!isVideoOff)} aria-label={isVideoOff ? "Ativar câmera" : "Desativar câmera"} className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-2xl ${isVideoOff ? 'bg-red-600 text-white' : 'bg-white/10 text-white hover:bg-white/20'}`}>
-                    {isVideoOff ? <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0
+                    {isVideoOff 
+                      ? <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M1 1l22 22" /></svg>
+                      : <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                    }
+                  </button>
+                  <button onClick={onClose} aria-label="Encerrar chamada" className="w-20 h-14 bg-red-600 text-white rounded-2xl flex items-center justify-center transition-all shadow-2xl hover:bg-red-700">
+                      <svg style={{transform: 'rotate(135deg)'}} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div className="lg:w-1/3 bg-slate-900 border-l border-white/5 flex flex-col">
+                <div className="p-8 border-b border-white/5">
+                  <h3 className="text-white font-bold uppercase tracking-widest text-sm">Transcrição da Triagem</h3>
+                  <p className="text-slate-400 text-xs mt-1">Análise em tempo real via IA</p>
+                </div>
+                <div className="flex-grow p-8 overflow-y-auto custom-scrollbar space-y-6">
+                  {history.map((turn, index) => (
+                    <div key={index} className={`flex flex-col ${turn.role === 'user' ? 'items-start' : 'items-end'}`}>
+                      <div className={`p-4 rounded-2xl max-w-[85%] ${turn.role === 'user' ? 'bg-teal-800 text-white' : 'bg-slate-700 text-slate-100'}`}>
+                        <p className="text-sm font-medium leading-relaxed">{turn.text}</p>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-2 uppercase font-bold tracking-widest">{turn.role === 'user' ? 'Você' : 'Médico IA'}</p>
+                    </div>
+                  ))}
+                  {currentInput && (
+                    <div className="flex flex-col items-start animate-fade-in">
+                      <div className="p-4 rounded-2xl max-w-[85%] bg-teal-800/50 text-white/70 italic">
+                        <p className="text-sm font-medium leading-relaxed">{currentInput}...</p>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-2 uppercase font-bold tracking-widest">Você (digitando)</p>
+                    </div>
+                  )}
+                  {currentOutput && (
+                    <div className="flex flex-col items-end animate-fade-in">
+                      <div className="p-4 rounded-2xl max-w-[85%] bg-slate-700/50 text-slate-100/70 italic">
+                        <p className="text-sm font-medium leading-relaxed">{currentOutput}...</p>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-2 uppercase font-bold tracking-widest">Médico IA (processando)</p>
+                    </div>
+                  )}
+                  <div ref={transcriptionEndRef} />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LiveAnalysis;

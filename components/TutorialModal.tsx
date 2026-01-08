@@ -13,8 +13,8 @@ const TutorialModal: React.FC<TutorialModalProps> = ({ onClose, onOpenSelectKey 
       <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
         <div className="bg-teal-700 p-8 text-white">
           <div className="flex justify-between items-start">
-            <h2 className="text-3xl font-black uppercase tracking-tighter mb-2">Acesso Tecnológico</h2>
-            <span className="bg-white/20 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/20">Acesso PRO</span>
+            <h2 className="text-3xl font-bold uppercase tracking-tighter mb-2">Acesso Tecnológico</h2>
+            <span className="bg-white/20 px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest border border-white/20">Acesso PRO</span>
           </div>
           <p className="text-white font-medium opacity-90">O sistema IA Hospital utiliza infraestrutura avançada para triagem local. Veja como habilitar recursos PRO.</p>
         </div>
@@ -40,7 +40,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({ onClose, onOpenSelectKey 
             </div>
 
             <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-              <h4 className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-4">Níveis de Acesso</h4>
+              <h4 className="text-[10px] font-bold text-slate-600 uppercase tracking-widest mb-4">Níveis de Acesso</h4>
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200">
                   <span className="text-xs font-bold text-slate-700 uppercase">Triagem Texto</span>
@@ -64,7 +64,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({ onClose, onOpenSelectKey 
                 onOpenSelectKey();
                 onClose();
               }}
-              className="flex-grow py-4 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200"
+              className="flex-grow py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200"
             >
               Habilitar Vídeo/Voz PRO
             </button>
