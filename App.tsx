@@ -35,6 +35,11 @@ const slugify = (text: string) =>
       .replace(/-+/g, '-');
 
 const MOCK_JOBS_DATA: Omit<JobOpportunity, 'slug'>[] = [
+  { id: 'job-utineo-campinas-01', title: 'Neonatologista para UTI Neonatal - Maternidade de Campinas/SP', description: 'Vaga para Médico Intensivista Pediátrico ou Neonatologista na UTI Neonatal da Maternidade de Campinas, com gestão BNG Hub. Requisitos: Título de especialista ou Residência completa.', datePosted: '2025-01-09', validThrough: '2025-04-30', employmentType: 'CONTRACTOR', hiringOrganization: 'BNG Hub (Maternidade de Campinas)', city: 'Campinas', state: 'SP', specialty: 'Pediatria', salary: 'R$ 1.700 (semana) / R$ 1.900 (fim de semana) por plantão', contactUrl: 'https://wa.me/5511952134811' },
+  { id: 'job-uci-campinas-01', title: 'Pediatra para UCI - Maternidade de Campinas/SP', description: 'Oportunidade para Pediatra na UCI do Hospital Maternidade de Campinas, gerido pelo BNG Hub. Requisitos: Título de especialista ou Residência completa em Pediatria/Neonatologia.', datePosted: '2025-01-09', validThrough: '2025-04-30', employmentType: 'CONTRACTOR', hiringOrganization: 'BNG Hub (Maternidade de Campinas)', city: 'Campinas', state: 'SP', specialty: 'Pediatria', salary: 'R$ 1.500 (semana) / R$ 1.700 (fim de semana) por plantão', contactUrl: 'https://wa.me/5511952134811' },
+  { id: 'job-salaparto-campinas-01', title: 'Pediatra para Sala de Parto - Maternidade de Campinas/SP', description: 'O BNG Hub busca Pediatra para atuar na Sala de Parto do Hospital Maternidade de Campinas. Requisitos: Título de especialista ou Residência completa em Pediatria/Neonatologia.', datePosted: '2025-01-09', validThrough: '2025-04-30', employmentType: 'CONTRACTOR', hiringOrganization: 'BNG Hub (Maternidade de Campinas)', city: 'Campinas', state: 'SP', specialty: 'Pediatria', salary: 'R$ 1.500 (semana) / R$ 1.700 (fim de semana) por plantão', contactUrl: 'https://wa.me/5511952134811' },
+  { id: 'job-alojamento-campinas-01', title: 'Pediatra para Alojamento Conjunto - Maternidade de Campinas/SP', description: 'Junte-se ao time BNG Hub na Maternidade de Campinas. Vaga para Pediatra no Alojamento Conjunto. Requisitos: Título de especialista ou Residência completa.', datePosted: '2025-01-09', validThrough: '2025-04-30', employmentType: 'CONTRACTOR', hiringOrganization: 'BNG Hub (Maternidade de Campinas)', city: 'Campinas', state: 'SP', specialty: 'Pediatria', salary: 'R$ 1.500 (semana) / R$ 1.700 (fim de semana) por plantão', contactUrl: 'https://wa.me/5511952134811' },
+  { id: 'job-go-barramansa-01', title: '🚨 Plantão G&O - Pagamento à Vista', description: 'Cobertura de plantão para Ginecologista e Obstetra no Hospital Maternidade Theresa Sacchi de Moura. Plantões diurnos, noturnos ou 24h para o dia 09/01. Pagamento líquido à vista.', datePosted: '2025-01-08', validThrough: '2025-01-10', employmentType: 'TEMPORARY', hiringOrganization: 'Hospital Maternidade Theresa Sacchi de Moura', city: 'Barra Mansa', state: 'RJ', specialty: 'Ginecologia', salary: 'Valor líquido (Pagamento à vista)', contactUrl: 'https://wa.me/5521994165405' },
   { id: 'job-anestesista-pr-01', title: 'Anestesista - Hospital das Clínicas/Curitiba-PR', description: 'Oportunidade de alta remuneração para Médico Anestesista no Hospital das Clínicas em Curitiba, Paraná. Ganhos mensais entre R$ 40 mil e R$ 60 mil.', datePosted: '2025-01-28', validThrough: '2025-09-30', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital das Clínicas', city: 'Curitiba', state: 'PR', specialty: 'Clínica Geral', salary: 'R$ 40.000 a R$ 60.000 / Mês', contactWhatsapp: '5544998711112' },
   { id: 'job-upa-pr-01', title: 'Plantonista UPA (Clínica Médica) - Lapa/Ivaí-PR', description: 'Oportunidade para Médico Plantonista (Clínica Médica) para atuar nas UPAs de Lapa e Ivaí (PR). Plantões de 12h, diurnos e noturnos. Pagamento via PJ.', datePosted: '2025-01-27', validThrough: '2025-08-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Selettho Med', city: 'Lapa', state: 'PR', specialty: 'Clínica Geral', salary: 'R$ 1.600,00 / Plantão 12h', contactWhatsapp: '554198773803' },
   { id: 'job-gineco-rj-01', title: 'Ginecologia - Centro/RJ', description: 'Vaga para Ginecologista (com ou sem Obstetrícia) para consultas ambulatoriais no Centro do Rio de Janeiro. Pagamento por produtividade em até 1 dia via PIX.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Ginecologia', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
@@ -105,6 +110,13 @@ const App: React.FC = () => {
     }
   }, []);
 
+  const handleNavigate = (path: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    window.history.pushState({}, '', path);
+    handleRouting();
+    window.scrollTo(0, 0);
+  };
+
 
   useEffect(() => {
     handleRouting();
@@ -172,17 +184,16 @@ const App: React.FC = () => {
         onPatientOpen={() => setIsPatientModalOpen(true)}
         onLiveOpen={() => setIsLiveOpen(true)}
       />
-      <JobsBoard location={location} jobs={jobsWithSlugs} />
       <SEOContent location={location} />
       <VoiceFAQ location={location} />
     </>
   );
 
   const renderPage = () => {
-    if (isCareersPage) return <CareersPage jobs={jobsWithSlugs} />;
+    if (isCareersPage) return <CareersPage jobs={jobsWithSlugs} onNavigate={handleNavigate} />;
     if (isAIToolsPage) return <AIToolsPage />;
     if (isForDoctorsPage) return <ForDoctorsPage onStartTrial={() => setIsLiveOpen(true)} onRegisterUnit={() => setIsProfModalOpen(true)} />;
-    if (selectedJob) return <JobDetailPage job={selectedJob} />;
+    if (selectedJob) return <JobDetailPage job={selectedJob} onNavigate={handleNavigate} />;
     return renderMainContent();
   };
 

@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { JobOpportunity } from '../types';
 
 interface JobDetailPageProps {
   job: JobOpportunity;
+  onNavigate: (path: string, e: React.MouseEvent) => void;
 }
 
-const JobDetailPage: React.FC<JobDetailPageProps> = ({ job }) => {
+const JobDetailPage: React.FC<JobDetailPageProps> = ({ job, onNavigate }) => {
   const jobSchema = {
     "@context": "https://schema.org/",
     "@type": "JobPosting",
@@ -49,7 +49,7 @@ const JobDetailPage: React.FC<JobDetailPageProps> = ({ job }) => {
       <div className="relative bg-slate-900 pt-40 pb-20">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-slate-900 opacity-50"></div>
         <div className="max-w-4xl mx-auto px-4 relative z-10 text-center">
-          <a href="/#vagas" className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-full text-[10px] font-black uppercase tracking-widest mb-6 hover:bg-white/20 transition-colors">
+          <a href="/carreiras" onClick={(e) => onNavigate('/carreiras', e)} className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-full text-[10px] font-black uppercase tracking-widest mb-6 hover:bg-white/20 transition-colors">
             &larr; Voltar para Vagas
           </a>
           <p className="text-blue-400 text-sm font-black uppercase tracking-[0.2em]">{job.hiringOrganization}</p>

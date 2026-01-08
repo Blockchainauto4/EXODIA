@@ -6,9 +6,10 @@ import { initCheckoutProMP } from '../services/paymentService';
 interface JobsBoardProps {
   location: UserLocation;
   jobs: JobOpportunity[];
+  onNavigate: (path: string, e: React.MouseEvent) => void;
 }
 
-const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs }) => {
+const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
@@ -89,12 +90,12 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs }) => {
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-4">
-            <button 
-              onClick={handlePremiumPurchase}
-              className="px-6 py-4 bg-gradient-to-r from-blue-600 to-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl hover:scale-105 transition-all flex items-center gap-2 border border-white/10"
+            <a 
+              href="/carreiras"
+              className="px-6 py-4 bg-slate-800 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl hover:bg-slate-700 transition-all flex items-center gap-2 border border-white/10"
             >
-              <span className="text-lg">💎</span> {paymentStatus || 'Anunciar Vaga Regional'}
-            </button>
+              Ver Todas as Vagas
+            </a>
 
             <div className="flex items-center gap-2">
               <button onClick={() => scroll('left')} aria-label="Anterior" className="w-12 h-12 rounded-xl bg-slate-800 text-white flex items-center justify-center hover:bg-slate-700 transition-all">
@@ -146,6 +147,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs }) => {
               <div className="pt-6 border-t border-slate-100 mt-auto relative z-10">
                 <a 
                   href={`/vagas/${job.slug}`}
+                  onClick={(e) => onNavigate(`/vagas/${job.slug}`, e)}
                   className="w-full py-4 bg-slate-800 hover:bg-slate-950 text-white font-black uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 transition-all text-xs shadow-lg shadow-slate-500/20"
                 >
                   Ver Detalhes da Vaga

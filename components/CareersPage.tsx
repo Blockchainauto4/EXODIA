@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { JobOpportunity } from '../types';
 
 interface CareersPageProps {
   jobs: JobOpportunity[];
+  onNavigate: (path: string, e: React.MouseEvent) => void;
 }
 
-const CareersPage: React.FC<CareersPageProps> = ({ jobs }) => {
+const CareersPage: React.FC<CareersPageProps> = ({ jobs, onNavigate }) => {
   return (
     <div className="animate-fade-in">
       <div className="relative bg-slate-900 pt-40 pb-20">
@@ -33,6 +33,7 @@ const CareersPage: React.FC<CareersPageProps> = ({ jobs }) => {
                 <a 
                   key={job.id}
                   href={`/vagas/${job.slug}`}
+                  onClick={(e) => onNavigate(`/vagas/${job.slug}`, e)}
                   className="block bg-white p-8 rounded-3xl border border-slate-200 hover:border-blue-500 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 group"
                 >
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">

@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPa
         <nav className="hidden lg:flex gap-8 items-center">
           <div className="flex items-center gap-6">
             <a href="/#orientacao" className="text-[10px] font-black text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Triagem IA</a>
-            <a href="/#vagas" className="text-[10px] font-black text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Vagas na Região</a>
+            <a href="/carreiras" className="text-[10px] font-black text-slate-700 hover:text-blue-600 transition-colors uppercase tracking-widest">Vagas Médicas</a>
             <a href="/medicos"
               aria-label="Iniciar consulta profissional na região"
               className="px-4 py-2 bg-slate-900 text-white rounded-xl text-[9px] font-black uppercase tracking-[0.2em] hover:bg-blue-600 transition-all flex items-center gap-2 shadow-xl shadow-blue-500/10 border border-white/10"
@@ -117,7 +117,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPa
           </div>
           <div className="pt-4 border-t border-slate-100 grid grid-cols-1 gap-4">
             <a href="#orientacao" onClick={() => setIsMobileMenuOpen(false)} className="text-[10px] font-black text-slate-500 uppercase tracking-widest block text-center">Triagem Inteligente Local</a>
-            <a href="#vagas" onClick={() => setIsMobileMenuOpen(false)} className="text-[10px] font-black text-slate-500 uppercase tracking-widest block text-center">Vagas em {location.city}</a>
+            <a href="/carreiras" onClick={() => setIsMobileMenuOpen(false)} className="text-[10px] font-black text-slate-500 uppercase tracking-widest block text-center">Ver Vagas Médicas</a>
           </div>
         </div>
       )}
