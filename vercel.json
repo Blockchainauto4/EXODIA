@@ -33,6 +33,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/status",
+      "destination": "/index.html"
+    },
+    {
       "source": "/atendimento/(.*)",
       "destination": "/index.html"
     },

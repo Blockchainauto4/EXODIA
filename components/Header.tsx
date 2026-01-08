@@ -5,10 +5,11 @@ interface HeaderProps {
   isScrolled: boolean;
   onAdminOpen: () => void;
   onPatientOpen: () => void;
+  onProfOpen: () => void;
   onNavigate: (path: string, e: React.MouseEvent) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isScrolled, onAdminOpen, onPatientOpen, onNavigate }) => {
+const Header: React.FC<HeaderProps> = ({ isScrolled, onAdminOpen, onPatientOpen, onProfOpen, onNavigate }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleNavAndCloseMenu = (path: string, e: React.MouseEvent, isFaq: boolean = false) => {
@@ -40,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, onAdminOpen, onPatientOpen,
           <a href="/" onClick={handleFaqClick} className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Perguntas</a>
           <a href="/carreiras" onClick={(e) => onNavigate('/carreiras', e)} className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Vagas Médicas</a>
           <a href="/medicos" onClick={(e) => onNavigate('/medicos', e)} className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Para Médicos</a>
-          <a href="/ferramentas-ia" onClick={(e) => onNavigate('/ferramentas-ia', e)} className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Ferramentas IA</a>
+          <a href="/consulta-medicos" onClick={(e) => onNavigate('/consulta-medicos', e)} className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Consulta CRM</a>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -52,14 +53,13 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, onAdminOpen, onPatientOpen,
             >
               Portal do Paciente
             </button>
-            <a 
-              href="/medicos"
-              onClick={(e) => onNavigate('/medicos', e)}
+            <button
+              onClick={onProfOpen}
               aria-label="Acessar portal para médicos e profissionais de saúde"
               className="px-4 py-2 bg-white hover:bg-slate-200 text-slate-900 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"
             >
-              Área Médica
-            </a>
+              Acesso Profissional
+            </button>
           </div>
 
           <button 
@@ -80,9 +80,9 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, onAdminOpen, onPatientOpen,
           <a href="/" onClick={(e) => handleNavAndCloseMenu('/', e, true)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Perguntas</a>
           <a href="/carreiras" onClick={(e) => handleNavAndCloseMenu('/carreiras', e)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Vagas Médicas</a>
           <a href="/medicos" onClick={(e) => handleNavAndCloseMenu('/medicos', e)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Para Médicos</a>
-          <a href="/ferramentas-ia" onClick={(e) => handleNavAndCloseMenu('/ferramentas-ia', e)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Ferramentas IA</a>
+          <a href="/consulta-medicos" onClick={(e) => handleNavAndCloseMenu('/consulta-medicos', e)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Consulta CRM</a>
           <div className="pt-2 mt-2 border-t border-white/10 space-y-2">
-             <a href="/medicos" onClick={(e) => handleNavAndCloseMenu('/medicos', e)} className="block w-full text-center px-4 py-3 rounded-lg text-base font-semibold text-slate-900 bg-white hover:bg-slate-200">Área Médica</a>
+             <button onClick={() => { onProfOpen(); setIsMobileMenuOpen(false); }} className="block w-full text-center px-4 py-3 rounded-lg text-base font-semibold text-slate-900 bg-white hover:bg-slate-200">Acesso Profissional</button>
              <button onClick={() => { onPatientOpen(); setIsMobileMenuOpen(false); }} className="block w-full px-4 py-3 rounded-lg text-base font-semibold text-white bg-white/10 hover:bg-white/20">Portal do Paciente</button>
           </div>
         </div>

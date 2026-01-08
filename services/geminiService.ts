@@ -15,12 +15,13 @@ export const getMedicalOrientation = async (prompt: string, history: { role: str
   try {
     const response = await ai.models.generateContent({
       model: modelName,
+      // FIX: Ensure the user's prompt has the correct role and simplify history mapping.
       contents: [
         ...history.map(h => ({ 
-          role: h.role === 'user' ? 'user' : 'model', 
+          role: h.role, 
           parts: [{ text: h.text }] 
         })),
-        { parts: [{ text: prompt }] }
+        { role: 'user', parts: [{ text: prompt }] }
       ],
       config: {
         systemInstruction: `Você é o assistente virtual sênior do IA HOSPITAL.

@@ -1,5 +1,5 @@
 
-import React, { memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { UserLocation } from '../types';
 
 interface HeroProps {
@@ -10,7 +10,22 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ location, onStartChat, onPatientOpen, onLiveOpen }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
   const city = location.city === 'sua região' ? 'na sua cidade' : location.city;
+
+  const slides = [
+    <>O futuro da medicina começa com <span className="text-teal-700">confiança</span>.</>,
+    <>{location.specialty || 'Atendimento Médico'} <span className="text-teal-700">Perto de Mim</span> em {city}</>,
+    <>Triagem Inteligente <span className="text-teal-700">onde você está agora</span>.</>,
+  ];
+
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % slides.length);
+    }, 5000); // Muda o slide a cada 5 segundos
+
+    return () => clearInterval(slideInterval);
+  }, [slides.length]);
 
   return (
     <section id="inicio" className="relative pt-36 pb-24 md:pt-48 md:pb-32 overflow-hidden bg-white">
@@ -23,12 +38,19 @@ const Hero: React.FC<HeroProps> = ({ location, onStartChat, onPatientOpen, onLiv
             Triagem Local Ativa em {location.city}
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight mb-6 tracking-tight">
-            {location.specialty || 'Atendimento Médico'} <span className="text-teal-700">Perto de Mim</span> em {city}
-          </h1>
+          <div className="relative h-24 md:h-40 lg:h-44 flex items-center justify-center">
+            {slides.map((slideContent, index) => (
+               <h1 
+                key={index}
+                className={`absolute inset-0 text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight tracking-tight transition-opacity duration-1000 ease-in-out ${currentSlide === index ? 'opacity-100' : 'opacity-0'}`}
+              >
+                {slideContent}
+              </h1>
+            ))}
+          </div>
           
-          <p className="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed max-w-3xl mx-auto">
-            Utilize nossa tecnologia de IA para localizar o atendimento de saúde ideal <span className="font-semibold text-slate-800">onde você está agora</span>. Orientação profissional e triagem rápida para a unidade de saúde mais próxima em seu bairro.
+          <p className="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed max-w-3xl mx-auto mt-2">
+            Utilize nossa tecnologia de IA para localizar o atendimento de saúde ideal e seguro. Orientação profissional e triagem rápida para a unidade de saúde mais próxima em seu bairro.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

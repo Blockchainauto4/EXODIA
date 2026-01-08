@@ -72,7 +72,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onOpenLegal, location, isA
             <ul className="space-y-4 text-slate-300 text-sm font-semibold uppercase tracking-widest">
               <li><button onClick={() => onOpenLegal?.('privacy', 'Política de Privacidade')} className="hover:text-teal-400 transition-colors text-left">Privacidade</button></li>
               <li><button onClick={() => onOpenLegal?.('terms', 'Termos de Uso')} className="hover:text-teal-400 transition-colors text-left">Termos de Uso</button></li>
-              <li><button onClick={() => onOpenLegal?.('data', 'Segurança de Dados')} className="hover:text-teal-400 transition-colors text-left">Segurança de Dados</button></li>
+              <li><a href="/status" onClick={(e) => onNavigate('/status', e)} className="hover:text-teal-400 transition-colors">Status do Sistema</a></li>
               <li><button onClick={onAdminOpen} aria-label="Abrir painel administrativo" className="hover:text-white transition-colors text-left text-slate-500 text-[9px]">Flame Engine 3.1</button></li>
             </ul>
           </nav>

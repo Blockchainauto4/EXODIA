@@ -16,7 +16,7 @@ const MedicalAssistant = lazy(() => import('./components/MedicalAssistant'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const ProfessionalModal = lazy(() => import('./components/ProfessionalModal'));
 const PatientRegistrationModal = lazy(() => import('./components/PatientRegistrationModal'));
-const AdminAuthModal = lazy(() => import('./components/AdminAuthModal'));
+const AuthModal = lazy(() => import('./components/AuthModal'));
 const ProcessingDashboard = lazy(() => import('./components/ProcessingDashboard'));
 const LegalModal = lazy(() => import('./components/LegalModal'));
 const LiveAnalysis = lazy(() => import('./components/LiveAnalysis'));
@@ -26,6 +26,9 @@ const CareersPage = lazy(() => import('./components/CareersPage'));
 const AIToolsPage = lazy(() => import('./components/AIToolsPage'));
 const ForDoctorsPage = lazy(() => import('./components/ForDoctorsPage'));
 const TutorialModal = lazy(() => import('./components/TutorialModal'));
+const DoctorSearchPage = lazy(() => import('./components/DoctorSearchPage'));
+const SystemStatusPage = lazy(() => import('./components/SystemStatusPage'));
+
 
 const slugify = (text: string) => 
   text.toLowerCase()
@@ -83,13 +86,10 @@ const JobsBoardSkeleton: React.FC = () => (
 const App: React.FC = () => {
   const [location, setLocation] = useState<UserLocation>({ city: 'sua região', state: 'Brasil', specialty: 'Atendimento Médico' });
   const [selectedJob, setSelectedJob] = useState<JobOpportunity | null>(null);
-  const [isCareersPage, setIsCareersPage] = useState(false);
-  const [isAIToolsPage, setIsAIToolsPage] = useState(false);
-  const [isForDoctorsPage, setIsForDoctorsPage] = useState(false);
-  const [isSeoPage, setIsSeoPage] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [authModal, setAuthModal] = useState<{ open: boolean, initialTab: 'professional' | 'admin' }>({ open: false, initialTab: 'professional' });
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isProfModalOpen, setIsProfModalOpen] = useState(false);
   const [isPatientModalOpen, setIsPatientModalOpen] = useState(false);
@@ -106,28 +106,36 @@ const App: React.FC = () => {
     const parts = path.split('/').filter(p => p);
     
     setSelectedJob(null);
-    setIsCareersPage(false);
-    setIsAIToolsPage(false);
-    setIsForDoctorsPage(false);
-    setIsSeoPage(false);
+    setCurrentPage('home');
 
     if (path.startsWith('/tag/')) {
       window.history.replaceState({}, '', '/');
       return;
     }
-
-    if (path === '/carreiras') setIsCareersPage(true);
-    else if (path === '/ferramentas-ia') setIsAIToolsPage(true);
-    else if (path === '/medicos') setIsForDoctorsPage(true);
-    else if (parts[0] === 'vagas' && parts[1]) {
-      const job = jobsWithSlugs.find(j => j.slug === parts[1]);
-      setSelectedJob(job || null);
-    } else if (parts[0] === 'atendimento' && parts.length >= 2) {
-      setIsSeoPage(true);
-      const stateParam = parts[1].toUpperCase();
-      const cityParam = parts[2] ? parts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
-      const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Atendimento Médico';
-      setLocation({ city: cityParam || 'Sua Localidade', state: stateParam, specialty: specialtyParam });
+    
+    switch (parts[0]) {
+      case 'carreiras': setCurrentPage('careers'); break;
+      case 'ferramentas-ia': setCurrentPage('ai-tools'); break;
+      case 'medicos': setCurrentPage('for-doctors'); break;
+      case 'consulta-medicos': setCurrentPage('doctor-search'); break;
+      case 'status': setCurrentPage('status'); break;
+      case 'vagas':
+        if (parts[1]) {
+          const job = jobsWithSlugs.find(j => j.slug === parts[1]);
+          setSelectedJob(job || null);
+          setCurrentPage('job-detail');
+        }
+        break;
+      case 'atendimento':
+        if (parts.length >= 2) {
+          const stateParam = parts[1].toUpperCase();
+          const cityParam = parts[2] ? parts[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '';
+          const specialtyParam = parts[3] ? parts[3].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Atendimento Médico';
+          setLocation({ city: cityParam || 'Sua Localidade', state: stateParam, specialty: specialtyParam });
+        }
+        break;
+      default:
+        setCurrentPage('home');
     }
   }, []);
 
@@ -159,15 +167,18 @@ const App: React.FC = () => {
     let pageTitle = `${spec} Perto de Mim em ${city}${state} | Unidade Mais Próxima`;
     let pageDescription = `Encontre ${spec.toLowerCase()} em ${city}${state} agora. Localize unidades de saúde, UPAs e postos de atendimento médico próximos de você com triagem inteligente.`;
 
-    if (isCareersPage) {
+    if (currentPage === 'careers') {
       pageTitle = 'Carreiras - Trabalhe Conosco | IA HOSPITAL';
       pageDescription = 'Junte-se à nossa equipe e faça parte da revolução na saúde digital. Veja as vagas médicas abertas em todo o Brasil e candidate-se.';
-    } else if (isAIToolsPage) {
+    } else if (currentPage === 'ai-tools' || currentPage === 'doctor-search') {
       pageTitle = 'Ferramentas de IA para Saúde | Guia Médico e Gestão - IA HOSPITAL';
       pageDescription = 'Descubra as melhores ferramentas de IA para médicos e clínicas. Análise de exames, gestão de prontuários, triagem inteligente e mais. Otimize sua prática com o IA HOSPITAL.';
-    } else if (isForDoctorsPage) {
+    } else if (currentPage === 'for-doctors') {
       pageTitle = 'Plataforma para Médicos | Triagem com IA e SEO Local - IA HOSPITAL';
       pageDescription = 'Médico, teste nossa plataforma de triagem com IA por 15 minutos. Aumente sua visibilidade local e otimize seu atendimento com a tecnologia do IA HOSPITAL.';
+    } else if (currentPage === 'status') {
+      pageTitle = 'Status do Sistema | IA HOSPITAL';
+      pageDescription = 'Verifique o status operacional de todos os serviços do IA HOSPITAL em tempo real, incluindo APIs, motor de SEO local e sistemas de IA.';
     } else if (selectedJob) {
       pageTitle = `${selectedJob.title} | Vaga Médica IA HOSPITAL`;
       pageDescription = `Vaga de ${selectedJob.specialty} em ${selectedJob.city}, ${selectedJob.state}. Candidate-se para a posição de ${selectedJob.title} no ${selectedJob.hiringOrganization}.`;
@@ -190,7 +201,7 @@ const App: React.FC = () => {
       document.head.appendChild(description);
     }
     description.setAttribute('content', pageDescription);
-  }, [location, selectedJob, isCareersPage, isAIToolsPage, isForDoctorsPage]);
+  }, [location, selectedJob, currentPage]);
 
   const handleLiveOpen = useCallback(async () => {
     // @ts-ignore
@@ -222,25 +233,18 @@ const App: React.FC = () => {
     setIsSubscriptionModalOpen(true);
   }, []);
 
-  const handleAdminOpen = useCallback(() => {
-    isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true);
+  const handleAdminAuth = useCallback(() => {
+    isAuthorized ? setIsAdminOpen(true) : setAuthModal({ open: true, initialTab: 'admin' });
   }, [isAuthorized]);
-
-  const handlePatientOpen = useCallback(() => {
-    setIsPatientModalOpen(true);
-  }, []);
   
-  const handleStartChat = useCallback(() => {
-    setIsChatOpen(true)
+  const handleProfAuth = useCallback(() => {
+    setAuthModal({ open: true, initialTab: 'professional' });
   }, []);
 
-  const handleOpenLegal = useCallback((type: LegalModalType, title: string) => {
-    setLegalModal({ open: true, type, title });
-  }, []);
-
-  const handleOpenPrivacy = useCallback(() => {
-    handleOpenLegal('privacy', 'Política de Privacidade');
-  }, [handleOpenLegal]);
+  const handlePatientOpen = useCallback(() => setIsPatientModalOpen(true), []);
+  const handleStartChat = useCallback(() => setIsChatOpen(true), []);
+  const handleOpenLegal = useCallback((type: LegalModalType, title: string) => setLegalModal({ open: true, type, title }), []);
+  const handleOpenPrivacy = useCallback(() => handleOpenLegal('privacy', 'Política de Privacidade'), [handleOpenLegal]);
 
   const renderMainContent = () => (
     <>
@@ -250,7 +254,8 @@ const App: React.FC = () => {
         onPatientOpen={handlePatientOpen}
         onLiveOpen={handleLiveOpen}
       />
-      {!isSeoPage && (
+      <SEOContent location={location} />
+      {currentPage !== 'atendimento' && (
         <Suspense fallback={<div className="h-screen bg-slate-950"></div>}>
           <TriagePlatformSection 
             onStartTrial={handleLiveOpen} 
@@ -258,7 +263,6 @@ const App: React.FC = () => {
           />
         </Suspense>
       )}
-      <SEOContent location={location} />
       <Suspense fallback={<JobsBoardSkeleton />}>
         <JobsBoard location={location} jobs={jobsWithSlugs} onNavigate={handleNavigate} />
       </Suspense>
@@ -267,18 +271,23 @@ const App: React.FC = () => {
   );
 
   const renderPage = () => {
-    if (isCareersPage) return <CareersPage jobs={jobsWithSlugs} onNavigate={handleNavigate} />;
-    if (isAIToolsPage) return <AIToolsPage />;
-    if (isForDoctorsPage) return <ForDoctorsPage onStartTrial={handleLiveOpen} onRegisterUnit={() => setIsProfModalOpen(true)} />;
-    if (selectedJob) return <JobDetailPage job={selectedJob} onNavigate={handleNavigate} />;
-    return renderMainContent();
+    switch(currentPage) {
+      case 'careers': return <CareersPage jobs={jobsWithSlugs} onNavigate={handleNavigate} />;
+      case 'ai-tools': return <AIToolsPage />;
+      case 'for-doctors': return <ForDoctorsPage onStartTrial={handleLiveOpen} onRegisterUnit={() => setIsProfModalOpen(true)} />;
+      case 'doctor-search': return <DoctorSearchPage />;
+      case 'status': return <SystemStatusPage />;
+      case 'job-detail': return selectedJob ? <JobDetailPage job={selectedJob} onNavigate={handleNavigate} /> : renderMainContent();
+      default: return renderMainContent();
+    }
   };
   
   return (
     <div className="min-h-screen flex flex-col font-sans relative">
       <Header 
         isScrolled={isScrolled} 
-        onAdminOpen={handleAdminOpen}
+        onAdminOpen={handleAdminAuth}
+        onProfOpen={handleProfAuth}
         onPatientOpen={handlePatientOpen}
         onNavigate={handleNavigate}
       />
@@ -292,7 +301,7 @@ const App: React.FC = () => {
       <Footer 
         location={location} 
         isAuthorized={isAuthorized}
-        onAdminOpen={handleAdminOpen} 
+        onAdminOpen={handleAdminAuth} 
         onOpenLegal={handleOpenLegal}
         onNavigate={handleNavigate}
       />
@@ -300,14 +309,14 @@ const App: React.FC = () => {
       {/* Floating Action Buttons & Widgets */}
       <div className="fixed bottom-6 left-6 z-[100] flex items-center gap-4">
         <button 
-          onClick={handleAdminOpen}
+          onClick={handleAdminAuth}
           aria-label="Painel Flame Work SEO Admin"
           className={`w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all border-2 border-white/10 ${isAuthorized ? 'opacity-100' : 'opacity-30'}`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.879 16.121A5 5 0 0014.142 11.858" /></svg>
         </button>
 
-        {!selectedJob && !isCareersPage && !isAIToolsPage && !isForDoctorsPage && (
+        {currentPage === 'home' && (
           <button 
             onClick={() => setIsChatOpen(!isChatOpen)}
             aria-label={isChatOpen ? "Fechar chat de triagem" : "Abrir chat de triagem inteligente"}
@@ -324,10 +333,7 @@ const App: React.FC = () => {
         )}
       </div>
 
-      {!selectedJob && !isCareersPage && !isAIToolsPage && !isForDoctorsPage && (
-        <WhatsAppWidget />
-      )}
-
+      {currentPage === 'home' && <WhatsAppWidget />}
       <CookieConsent onOpenPrivacy={handleOpenPrivacy} />
       
       {/* Modais carregados sob demanda */}
@@ -338,7 +344,12 @@ const App: React.FC = () => {
           </div>
         )}
         {legalModal.open && <LegalModal title={legalModal.title} type={legalModal.type} onClose={() => setLegalModal({ ...legalModal, open: false })} />}
-        {isAuthOpen && <AdminAuthModal onClose={() => setIsAuthOpen(false)} onSuccess={() => { setIsAuthorized(true); setIsAuthOpen(false); setIsAdminOpen(true); }} />}
+        {authModal.open && <AuthModal 
+            onClose={() => setAuthModal({ ...authModal, open: false })} 
+            onAdminSuccess={() => { setIsAuthorized(true); setAuthModal({ ...authModal, open: false }); setIsAdminOpen(true); }}
+            onProfessionalRegister={() => { setAuthModal({ ...authModal, open: false }); setIsProfModalOpen(true); }}
+            initialTab={authModal.initialTab}
+        />}
         {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={(loc) => setLocation(loc)} currentLocation={location} onOpenProcessing={() => { setIsAdminOpen(false); setIsProcessingOpen(true); }} />}
         {isProcessingOpen && <ProcessingDashboard onClose={() => setIsProcessingOpen(false)} location={location} />}
         {isProfModalOpen && <ProfessionalModal onClose={() => setIsProfModalOpen(false)} />}
@@ -351,7 +362,6 @@ const App: React.FC = () => {
               if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
                 // @ts-ignore
                 await window.aistudio.openSelectKey();
-                // Assume success and proceed to avoid race conditions as per guidelines.
                 setIsTutorialOpen(false);
                 setIsLiveOpen(true);
               }

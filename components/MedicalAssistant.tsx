@@ -32,10 +32,11 @@ const MedicalAssistant: React.FC<MedicalAssistantProps> = ({ location, onClose }
     setInput('');
     setIsLoading(true);
 
-    const history = messages.map(m => ({ role: m.role, text: m.text }));
-    const response = await getMedicalOrientation(userMsg, history);
+    const historyForAPI = messages.map(m => ({ role: m.role, text: m.text }));
+    const response = await getMedicalOrientation(userMsg, historyForAPI);
     
-    setMessages(prev => [...prev, { role: 'model', text: response }]);
+    // FIX: Add both user message and model response to maintain correct conversation history.
+    setMessages(prev => [...prev, { role: 'user', text: userMsg }, { role: 'model', text: response }]);
     setIsLoading(false);
   };
   

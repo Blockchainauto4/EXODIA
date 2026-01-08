@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { UserLocation, BRAZIL_STATES, SPECIALTIES, CITIES_BY_STATE } from '../types';
+import { checkApiStatus, ApiStatus } from '../services/consultarApi';
 
 interface AdminPanelProps {
   onClose: () => void;
@@ -15,6 +16,18 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
     city: currentLocation.city === 'sua região' ? 'São Paulo' : currentLocation.city,
     specialty: SPECIALTIES.includes(currentLocation.specialty || '') ? currentLocation.specialty : SPECIALTIES[0]
   });
+  const [apiStatus, setApiStatus] = useState<ApiStatus | null>(null);
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      const status = await checkApiStatus();
+      setApiStatus(status);
+    };
+
+    fetchStatus();
+    const interval = setInterval(fetchStatus, 60000); // Verifica a cada 60 segundos
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const stateCities = CITIES_BY_STATE[form.state] || [];
@@ -119,10 +132,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, onApply, currentLocati
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex gap-4">
+        <div className="pt-8 border-t border-white/10">
+          {apiStatus && (
+            <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl mb-6" title={apiStatus.message}>
+              <div className={`w-3 h-3 rounded-full ${apiStatus.status === 'online' ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`}></div>
+              <div>
+                <p className="text-xs font-bold text-white uppercase tracking-widest">API de Validação</p>
+                <p className={`text-[10px] font-bold uppercase ${apiStatus.status === 'online' ? 'text-emerald-400' : 'text-red-400'}`}>{apiStatus.status}</p>
+              </div>
+            </div>
+          )}
+
           <button 
             onClick={handleApply}
-            className="flex-grow py-5 bg-teal-600 hover:bg-teal-500 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl active:scale-95 border-b-4 border-teal-800"
+            className="w-full py-5 bg-teal-600 hover:bg-teal-500 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl active:scale-95 border-b-4 border-teal-800"
           >
             Atualizar Contexto Local
           </button>

@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BRAZIL_STATES, SPECIALTIES, CITIES_BY_STATE, DoctorProfile } from '../types';
+import { fetchCRMData, CrmData } from '../services/consultarApi';
 
 interface ProfessionalModalProps {
   onClose: () => void;
@@ -33,6 +34,8 @@ const FINAL_LOGS = [
 const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [crmError, setCrmError] = useState('');
   const [currentLogIdx, setCurrentLogIdx] = useState(0);
   const [dynamicLogs, setDynamicLogs] = useState<string[]>([]);
   const [selectedModules, setSelectedModules] = useState<string[]>(['flame-seo', 'ai-triage']);
@@ -44,6 +47,24 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
     estado: 'SP',
     capacidadeDiaria: 10
   });
+
+  const handleCrmVerification = async () => {
+    if (!formData.crm || !formData.estado) {
+      setCrmError('Preencha o CRM e o Estado.');
+      return;
+    }
+    setIsVerifying(true);
+    setCrmError('');
+    try {
+      const crmData = await fetchCRMData(formData.crm, formData.estado);
+      setFormData(prev => ({ ...prev, nome: crmData.nome }));
+      setStep(1.5); // Etapa de confirmação
+    } catch (err: any) {
+      setCrmError(err.message);
+    } finally {
+      setIsVerifying(false);
+    }
+  };
 
   const handleCategoryToggle = (spec: string) => {
     setFormData(prev => ({
@@ -121,64 +142,70 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           {step === 1 && (
             <div className="space-y-6 animate-fade-in">
               <div className="p-5 bg-teal-50 border border-teal-100 rounded-2xl">
-                <p className="text-[10px] font-bold uppercase text-teal-700 tracking-widest mb-1">Passo 1: Identificação</p>
+                <p className="text-[10px] font-bold uppercase text-teal-700 tracking-widest mb-1">Passo 1: Validação de Credenciais</p>
                 <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tighter leading-none">Registro de Unidade</h3>
               </div>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                    <label className="block">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">CRM</span>
+                    <input 
+                        type="text" 
+                        placeholder="000000"
+                        className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none transition-all font-medium text-sm"
+                        value={formData.crm}
+                        onChange={e => setFormData({...formData, crm: e.target.value})}
+                    />
+                    </label>
+                     <label className="block">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Estado (UF)</span>
+                        <select 
+                        className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none appearance-none font-bold text-sm"
+                        value={formData.estado}
+                        onChange={e => setFormData({...formData, estado: e.target.value})}
+                        >
+                        {BRAZIL_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                    </label>
+                </div>
+              </div>
 
+               {crmError && <p className="text-center text-red-600 font-bold text-xs uppercase">{crmError}</p>}
+
+              <button 
+                onClick={handleCrmVerification}
+                disabled={isVerifying}
+                className="w-full py-5 bg-teal-800 hover:bg-teal-700 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200 disabled:opacity-50 flex items-center justify-center gap-3"
+              >
+                {isVerifying && <div className="w-4 h-4 border-2 border-white/50 border-t-white rounded-full animate-spin"></div>}
+                {isVerifying ? 'Validando...' : 'Verificar CRM'}
+              </button>
+            </div>
+          )}
+
+          {step === 1.5 && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="p-5 bg-emerald-50 border border-emerald-200 rounded-2xl text-center">
+                <p className="text-emerald-800 font-bold">✔ Credencial Verificada</p>
+                <h3 className="text-lg font-bold text-slate-900 mt-2">{formData.nome}</h3>
+              </div>
               <div className="space-y-4">
                 <label className="block">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nome do Responsável</span>
-                  <input 
-                    type="text" 
-                    placeholder="Ex: Dr. Bruno Rizk"
-                    className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none transition-all font-medium text-sm"
-                    value={formData.nome}
-                    onChange={e => setFormData({...formData, nome: e.target.value})}
-                  />
-                </label>
-                <label className="block">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">CRM e Estado</span>
-                  <input 
-                    type="text" 
-                    placeholder="000000-UF"
-                    className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none transition-all font-medium text-sm"
-                    value={formData.crm}
-                    onChange={e => setFormData({...formData, crm: e.target.value})}
-                  />
-                </label>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <label className="block">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Estado (UF)</span>
-                    <select 
-                      className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none appearance-none font-bold text-sm"
-                      value={formData.estado}
-                      onChange={e => setFormData({...formData, estado: e.target.value})}
-                    >
-                      {BRAZIL_STATES.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                  </label>
-                  <label className="block">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Cidade Sede</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Cidade Sede da Unidade</span>
                     <select 
                       className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none appearance-none font-bold text-sm"
                       value={formData.cidade}
                       onChange={e => setFormData({...formData, cidade: e.target.value})}
                     >
-                      <option value="">Selecione...</option>
+                      <option value="">Selecione a cidade...</option>
                       {cities.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </label>
-                </div>
               </div>
-
-              <button 
-                onClick={() => setStep(2)}
-                disabled={!formData.nome || !formData.crm || !formData.cidade}
-                className="w-full py-5 bg-teal-800 hover:bg-teal-700 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200 disabled:opacity-50"
-              >
-                Próximo Passo
-              </button>
+              <div className="flex gap-4">
+                 <button onClick={() => { setStep(1); setCrmError(''); }} className="flex-grow py-5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold uppercase tracking-widest rounded-2xl">Alterar CRM</button>
+                 <button onClick={() => setStep(2)} disabled={!formData.cidade} className="flex-[2] py-5 bg-teal-800 hover:bg-teal-700 text-white font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl disabled:opacity-50">Próximo Passo</button>
+              </div>
             </div>
           )}
 
@@ -209,7 +236,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
 
               <div className="flex gap-4">
                 <button 
-                  onClick={() => setStep(1)}
+                  onClick={() => setStep(1.5)}
                   className="flex-grow py-5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold uppercase tracking-widest rounded-2xl"
                 >
                   Voltar
