@@ -25,7 +25,6 @@ const CareersPage = lazy(() => import('./components/CareersPage'));
 const AIToolsPage = lazy(() => import('./components/AIToolsPage'));
 const ForDoctorsPage = lazy(() => import('./components/ForDoctorsPage'));
 const TutorialModal = lazy(() => import('./components/TutorialModal'));
-const AddToExtension = lazy(() => import('./components/AddToExtension'));
 
 const slugify = (text: string) => 
   text.toLowerCase()
@@ -113,12 +112,12 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const handleNavigate = (path: string, e: React.MouseEvent) => {
+  const handleNavigate = useCallback((path: string, e: React.MouseEvent) => {
     e.preventDefault();
     window.history.pushState({}, '', path);
     handleRouting();
     window.scrollTo(0, 0);
-  };
+  }, [handleRouting]);
 
 
   useEffect(() => {
@@ -174,7 +173,7 @@ const App: React.FC = () => {
     description.setAttribute('content', pageDescription);
   }, [location, selectedJob, isCareersPage, isAIToolsPage, isForDoctorsPage]);
 
-  const handleLiveOpen = async () => {
+  const handleLiveOpen = useCallback(async () => {
     // @ts-ignore
     if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
       try {
@@ -192,28 +191,49 @@ const App: React.FC = () => {
     } else {
       setIsTutorialOpen(true);
     }
-  };
+  }, []);
 
-  const handleKeyError = () => {
+  const handleKeyError = useCallback(() => {
     setIsLiveOpen(false);
     setIsTutorialOpen(true);
-  };
+  }, []);
 
-  const handleTrialEnd = () => {
+  const handleTrialEnd = useCallback(() => {
     setIsLiveOpen(false);
     setIsSubscriptionModalOpen(true);
-  };
+  }, []);
+
+  const handleAdminOpen = useCallback(() => {
+    isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true);
+  }, [isAuthorized]);
+
+  const handlePatientOpen = useCallback(() => {
+    setIsPatientModalOpen(true);
+  }, []);
+  
+  const handleStartChat = useCallback(() => {
+    setIsChatOpen(true)
+  }, []);
+
+  const handleOpenLegal = useCallback((type: LegalModalType, title: string) => {
+    setLegalModal({ open: true, type, title });
+  }, []);
+
+  const handleOpenPrivacy = useCallback(() => {
+    handleOpenLegal('privacy', 'Política de Privacidade');
+  }, [handleOpenLegal]);
 
   const renderMainContent = () => (
     <>
       <Hero 
         location={location} 
-        onStartChat={() => setIsChatOpen(true)}
-        onPatientOpen={() => setIsPatientModalOpen(true)}
+        onStartChat={handleStartChat}
+        onPatientOpen={handlePatientOpen}
         onLiveOpen={handleLiveOpen}
       />
       <SEOContent location={location} />
       <VoiceFAQ location={location} />
+      <JobsBoard location={location} jobs={jobsWithSlugs} onNavigate={handleNavigate} />
     </>
   );
 
@@ -230,13 +250,12 @@ const App: React.FC = () => {
       <Header 
         isScrolled={isScrolled} 
         location={location} 
-        onAdminOpen={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
-        onPatientOpen={() => setIsPatientModalOpen(true)}
+        onAdminOpen={handleAdminOpen}
+        onPatientOpen={handlePatientOpen}
       />
       
       <main className="flex-grow">
         <Suspense fallback={<div className="pt-48 text-center text-lg font-bold">Carregando conteúdo...</div>}>
-          <AddToExtension />
           {renderPage()}
         </Suspense>
       </main>
@@ -244,14 +263,14 @@ const App: React.FC = () => {
       <Footer 
         location={location} 
         isAuthorized={isAuthorized}
-        onAdminOpen={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)} 
-        onOpenLegal={(type, title) => setLegalModal({ open: true, type, title })}
+        onAdminOpen={handleAdminOpen} 
+        onOpenLegal={handleOpenLegal}
       />
       
       {/* Floating Action Buttons & Widgets */}
       <div className="fixed bottom-6 left-6 z-[100] flex items-center gap-4">
         <button 
-          onClick={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
+          onClick={handleAdminOpen}
           aria-label="Painel Flame Work SEO Admin"
           className={`w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all border-2 border-white/10 ${isAuthorized ? 'opacity-100' : 'opacity-30'}`}
         >
@@ -263,7 +282,7 @@ const App: React.FC = () => {
             onClick={() => setIsChatOpen(!isChatOpen)}
             aria-label={isChatOpen ? "Fechar chat de triagem" : "Abrir chat de triagem inteligente"}
             className={`w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-[101] border-2 border-white/20 ${
-              isChatOpen ? 'bg-slate-900 text-white' : 'bg-teal-600 text-white shadow-teal-500/40'
+              isChatOpen ? 'bg-slate-900 text-white' : 'bg-teal-800 text-white shadow-teal-700/40'
             }`}
           >
             {isChatOpen ? 
@@ -279,7 +298,7 @@ const App: React.FC = () => {
         <WhatsAppWidget />
       )}
 
-      <CookieConsent onOpenPrivacy={() => setLegalModal({ open: true, type: 'privacy', title: 'Política de Privacidade' })} />
+      <CookieConsent onOpenPrivacy={handleOpenPrivacy} />
       
       {/* Modais carregados sob demanda */}
       <Suspense fallback={null}>

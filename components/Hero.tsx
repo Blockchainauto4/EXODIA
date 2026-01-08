@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { UserLocation } from '../types';
 
 interface HeroProps {
@@ -24,7 +24,7 @@ const Hero: React.FC<HeroProps> = ({ location, onStartChat, onPatientOpen, onLiv
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight mb-6 tracking-tight">
-            {location.specialty || 'Atendimento Médico'} <span className="text-teal-600">Perto de Mim</span> em {city}
+            {location.specialty || 'Atendimento Médico'} <span className="text-teal-700">Perto de Mim</span> em {city}
           </h1>
           
           <p className="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed max-w-3xl mx-auto">
@@ -34,7 +34,7 @@ const Hero: React.FC<HeroProps> = ({ location, onStartChat, onPatientOpen, onLiv
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
               onClick={onStartChat}
-              className="px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl shadow-lg shadow-teal-500/20 transition-all flex items-center justify-center gap-2"
+              className="px-8 py-4 bg-teal-800 hover:bg-teal-700 text-white font-bold rounded-xl shadow-lg shadow-teal-700/20 transition-all flex items-center justify-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.839 8.839 0 01-4.082-.978L1 19l1.978-4.082A6.974 6.974 0 0110 3c4.418 0 8 3.134 8 7zm-2 0c0-2.76-2.686-5-6-5s-6 2.24-6 5 2.686 5 6 5 6-2.24 6-5zm-6-3a1 1 0 100 2 1 1 0 000-2zm-3 1a1 1 0 112 0 1 1 0 01-2 0zm7 0a1 1 0 112 0 1 1 0 01-2 0z" clipRule="evenodd" /></svg>
               Iniciar Triagem Inteligente
@@ -53,4 +53,4 @@ const Hero: React.FC<HeroProps> = ({ location, onStartChat, onPatientOpen, onLiv
   );
 };
 
-export default Hero;
+export default memo(Hero);

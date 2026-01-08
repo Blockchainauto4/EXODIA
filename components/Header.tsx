@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { UserLocation } from '../types';
 
 interface HeaderProps {
@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPa
     }`}>
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
         <a href="/" className="flex items-center gap-3" aria-label="Página inicial do IA HOSPITAL">
-          <div className="w-9 h-9 bg-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-md shadow-teal-500/20">IA</div>
+          <div className="w-9 h-9 bg-teal-700 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-md shadow-teal-600/20">IA</div>
           <span className={`font-bold text-lg text-slate-900`}>IA Hospital</span>
         </a>
         
@@ -76,4 +76,4 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, location, onAdminOpen, onPa
   );
 };
 
-export default Header;
+export default memo(Header);

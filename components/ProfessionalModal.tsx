@@ -99,7 +99,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           <div className="bg-slate-900 p-8 text-white shrink-0">
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center font-black">DR</div>
+                <div className="w-10 h-10 bg-teal-800 rounded-xl flex items-center justify-center font-black">DR</div>
                 <div>
                   <h2 className="text-xl font-black uppercase tracking-tighter leading-none">Arquitetura de Unidade</h2>
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Configuração em Tempo Real</p>
@@ -111,7 +111,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
             </div>
             <div className="flex items-center gap-2">
               {[1, 2, 3].map(i => (
-                <div key={i} className={`h-1.5 flex-grow rounded-full transition-all duration-700 ${step >= i ? 'bg-teal-600' : 'bg-slate-700'}`}></div>
+                <div key={i} className={`h-1.5 flex-grow rounded-full transition-all duration-700 ${step >= i ? 'bg-teal-700' : 'bg-slate-700'}`}></div>
               ))}
             </div>
           </div>
@@ -175,7 +175,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               <button 
                 onClick={() => setStep(2)}
                 disabled={!formData.nome || !formData.crm || !formData.cidade}
-                className="w-full py-5 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200 disabled:opacity-50"
+                className="w-full py-5 bg-teal-800 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200 disabled:opacity-50"
               >
                 Próximo Passo
               </button>
@@ -198,7 +198,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                     aria-pressed={formData.categorias.includes(spec)}
                     className={`p-3 rounded-xl border-2 text-[10px] font-black uppercase tracking-tight transition-all text-left ${
                       formData.categorias.includes(spec)
-                        ? 'bg-teal-600 border-teal-600 text-white shadow-md'
+                        ? 'bg-teal-800 border-teal-800 text-white shadow-md'
                         : 'bg-white border-slate-100 text-slate-500 hover:border-teal-200'
                     }`}
                   >
@@ -217,7 +217,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                 <button 
                   onClick={() => setStep(3)}
                   disabled={formData.categorias.length === 0}
-                  className="flex-[2] py-5 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl disabled:opacity-50"
+                  className="flex-[2] py-5 bg-teal-800 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl disabled:opacity-50"
                 >
                   Personalizar Sistema
                 </button>
@@ -253,7 +253,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                       </p>
                     </div>
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-                      selectedModules.includes(module.id) ? 'bg-teal-600 border-teal-600 text-white' : 'border-slate-200 text-transparent'
+                      selectedModules.includes(module.id) ? 'bg-teal-700 border-teal-700 text-white' : 'border-slate-200 text-transparent'
                     }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
                     </div>
@@ -271,7 +271,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                 <button 
                   onClick={handleSubmit}
                   disabled={selectedModules.length === 0 || isSubmitting}
-                  className="flex-[2] py-5 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
+                  className="flex-[2] py-5 bg-teal-800 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
                 >
                   Gerar Sistema Customizado
                 </button>
@@ -334,7 +334,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                     const mod = SYSTEM_MODULES.find(sm => sm.id === m);
                     return (
                       <span key={m} className="px-4 py-2 bg-white border border-slate-200 rounded-2xl text-[10px] font-black text-slate-700 uppercase shadow-sm flex items-center gap-2 hover:border-emerald-400 transition-colors cursor-default">
-                        <span className="text-teal-600" aria-hidden="true">{mod?.icon}</span> {mod?.name}
+                        <span className="text-teal-800" aria-hidden="true">{mod?.icon}</span> {mod?.name}
                       </span>
                     )
                   })}

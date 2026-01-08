@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { UserLocation, BRAZIL_STATES, LegalModalType } from '../types';
 
 interface FooterProps {
@@ -36,7 +36,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onOpenLegal, location, isA
         <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-8 text-white">
-              <div className="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center font-black text-lg shadow-lg shadow-teal-500/20">IA</div>
+              <div className="w-10 h-10 bg-teal-700 rounded-xl flex items-center justify-center font-black text-lg shadow-lg shadow-teal-600/20">IA</div>
               <p className="font-black text-2xl uppercase tracking-tighter">IA HOSPITAL</p>
             </div>
             <p className="text-slate-300 max-w-sm mb-8 font-medium leading-relaxed italic">
@@ -71,7 +71,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onOpenLegal, location, isA
               <li><button onClick={() => onOpenLegal?.('privacy', 'Política de Privacidade')} className="hover:text-teal-400 transition-colors text-left">Privacidade</button></li>
               <li><button onClick={() => onOpenLegal?.('terms', 'Termos de Uso')} className="hover:text-teal-400 transition-colors text-left">Termos de Uso</button></li>
               <li><button onClick={() => onOpenLegal?.('data', 'Segurança de Dados')} className="hover:text-teal-400 transition-colors text-left">Segurança de Dados</button></li>
-              <li><button onClick={onAdminOpen} aria-label="Abrir painel administrativo" className="hover:text-white transition-colors text-left opacity-30 text-[9px]">Flame Engine 3.1</button></li>
+              <li><button onClick={onAdminOpen} aria-label="Abrir painel administrativo" className="hover:text-white transition-colors text-left text-slate-500 text-[9px]">Flame Engine 3.1</button></li>
             </ul>
           </nav>
         </div>
@@ -97,4 +97,4 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onOpenLegal, location, isA
   );
 };
 
-export default Footer;
+export default memo(Footer);

@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo, memo } from 'react';
 import { UserLocation, JobOpportunity } from '../types';
 // FIX: Correcting the import name from 'initCheckoutPro' to 'initCheckoutProMP' as suggested by the error message.
 import { initCheckoutProMP } from '../services/paymentService';
@@ -18,27 +18,30 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => 
   const normalize = (str: string) => 
     str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 
-  const filteredJobs = jobs.filter(job => {
-    const isBrazilScope = location.state === 'Brasil';
-    const stateMatch = isBrazilScope || job.state.toLowerCase() === location.state.toLowerCase();
-    
-    const cityMatch = location.city === 'sua região' || 
-                      normalize(job.city).includes(normalize(location.city)) ||
-                      normalize(location.city).includes(normalize(job.city));
-                      
-    const currentSpec = normalize(location.specialty || '');
-    const jobSpec = normalize(job.specialty);
-    const jobTitle = normalize(job.title);
-    const jobDesc = normalize(job.description);
-    
-    const specialtyMatch = !location.specialty || 
-                           currentSpec === 'atendimento medico' ||
-                           jobSpec.includes(currentSpec) || 
-                           jobTitle.includes(currentSpec) ||
-                           jobDesc.includes(currentSpec);
+  const filteredJobs = useMemo(() => {
+    return jobs.filter(job => {
+      const isBrazilScope = location.state === 'Brasil';
+      const stateMatch = isBrazilScope || job.state.toLowerCase() === location.state.toLowerCase();
+      
+      const cityMatch = location.city === 'sua região' || 
+                        normalize(job.city).includes(normalize(location.city)) ||
+                        normalize(location.city).includes(normalize(job.city));
+                        
+      const currentSpec = normalize(location.specialty || '');
+      const jobSpec = normalize(job.specialty);
+      const jobTitle = normalize(job.title);
+      const jobDesc = normalize(job.description);
+      
+      const specialtyMatch = !location.specialty || 
+                             currentSpec === 'atendimento medico' ||
+                             jobSpec.includes(currentSpec) || 
+                             jobTitle.includes(currentSpec) ||
+                             jobDesc.includes(currentSpec);
 
-    return stateMatch && specialtyMatch;
-  }).slice(0, 15);
+      return stateMatch && specialtyMatch;
+    }).slice(0, 15);
+  }, [jobs, location]);
+
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
@@ -81,7 +84,7 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => 
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-teal-600 rounded-2xl flex items-center justify-center text-white animate-pulse shadow-lg shadow-teal-900/40">
+            <div className="w-12 h-12 bg-teal-800 rounded-2xl flex items-center justify-center text-white animate-pulse shadow-lg shadow-teal-900/40">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
             </div>
             <div>
@@ -170,4 +173,4 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => 
   );
 };
 
-export default JobsBoard;
+export default memo(JobsBoard);

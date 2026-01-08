@@ -34,7 +34,7 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
         
         {step === 1 && (
           <>
-            <div className="bg-teal-600 p-8 text-white shrink-0">
+            <div className="bg-teal-800 p-8 text-white shrink-0">
               <div className="flex justify-between items-start mb-4">
                 <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
@@ -109,7 +109,7 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-2 py-5 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200 flex items-center justify-center gap-3 disabled:opacity-50"
+                className="w-full mt-2 py-5 bg-teal-800 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-300 flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {isSubmitting ? 'Processando Localização...' : 'Iniciar Triagem Imediata'}
               </button>
@@ -128,12 +128,12 @@ const PatientRegistrationModal: React.FC<PatientRegistrationModalProps> = ({ onC
             
             <div>
               <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">Triagem Concluída!</h2>
-              <p className="text-teal-600 font-bold uppercase text-[10px] tracking-widest mt-4">Match Regional Ativado com Sucesso</p>
+              <p className="text-teal-800 font-bold uppercase text-[10px] tracking-widest mt-4">Match Regional Ativado com Sucesso</p>
             </div>
 
             <div className="p-6 bg-slate-50 border border-slate-200 rounded-[2rem] text-left space-y-4">
               <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
-                Sua triagem foi encaminhada para a unidade mais eficiente próxima do CEP <span className="text-teal-600 font-bold">{formData.cep}</span>. Você receberá os detalhes do local ideal para seu caso em instantes.
+                Sua triagem foi encaminhada para a unidade mais eficiente próxima do CEP <span className="text-teal-800 font-bold">{formData.cep}</span>. Você receberá os detalhes do local ideal para seu caso em instantes.
               </p>
             </div>
 
