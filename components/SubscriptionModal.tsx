@@ -30,10 +30,10 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 z-[400] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-xl" onClick={onClose}></div>
-      <div className="relative w-full max-w-lg bg-white rounded-[2.5rem] shadow-[0_0_100px_rgba(37,99,235,0.4)] overflow-hidden animate-fade-in border border-white/20">
+      <div className="relative w-full max-w-lg bg-white rounded-[2.5rem] shadow-[0_0_100px_rgba(13,148,136,0.4)] overflow-hidden animate-fade-in border border-white/20">
         <div className="p-12 text-center">
-          <div className="w-24 h-24 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-lg shadow-blue-50 mb-8">
-            ⏱️
+          <div className="w-24 h-24 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-lg shadow-teal-50 mb-8">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           </div>
           
           <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900 leading-none">Sua Demonstração Terminou</h2>
@@ -41,7 +41,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ onClose }) => {
           
           <div className="my-8 p-6 bg-slate-50 border border-slate-200 rounded-[2rem]">
             <p className="text-sm font-black text-slate-800 uppercase">Plano IA HOSPITAL PRO</p>
-            <p className="text-4xl font-black text-blue-600 tracking-tighter mt-1">R$199<span className="text-lg">,90/mês</span></p>
+            <p className="text-4xl font-black text-teal-600 tracking-tighter mt-1">R$199<span className="text-lg">,90/mês</span></p>
           </div>
           
           {error && <p className="text-red-600 text-xs font-bold mb-4">{error}</p>}
@@ -57,7 +57,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ onClose }) => {
             <button 
               onClick={() => handlePayment('mp')}
               disabled={!!isLoading}
-              className="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-3 disabled:opacity-60"
+              className="w-full py-5 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-3 disabled:opacity-60"
             >
               {isLoading === 'mp' ? 'Aguarde...' : 'Assinar com Mercado Pago'}
             </button>

@@ -47,7 +47,9 @@ const ProcessingDashboard: React.FC<ProcessingDashboardProps> = ({ onClose, loca
         <div className="md:w-1/3 bg-slate-950 p-10 border-r border-white/5 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-12 h-12 bg-orange-600 rounded-2xl flex items-center justify-center text-2xl">⚡</div>
+              <div className="w-12 h-12 bg-orange-600 rounded-2xl flex items-center justify-center text-white">
+                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              </div>
               <div>
                 <h2 className="text-white font-black uppercase tracking-tighter text-xl">Instant Index</h2>
                 <p className="text-slate-400 text-xs font-black uppercase tracking-widest">Dashboard v1.0</p>

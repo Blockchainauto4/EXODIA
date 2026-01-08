@@ -7,13 +7,13 @@ interface ProfessionalModalProps {
 }
 
 const SYSTEM_MODULES = [
-  { id: 'ehr', name: 'Prontuário Inteligente (EHR)', icon: '🩺', desc: 'Histórico clínico com suporte a IA e CID-11.' },
-  { id: 'tele', name: 'Módulo de Teleconsulta', icon: '📹', desc: 'Vídeo chamadas criptografadas com sala de espera.' },
-  { id: 'ai-triage', name: 'Triagem IA Local', icon: '🤖', desc: 'Pré-atendimento automatizado para sua região.' },
-  { id: 'schedule', name: 'Gestão de Agendamentos', icon: '📅', desc: 'Agenda inteligente com confirmação via WhatsApp.' },
-  { id: 'rx', name: 'Prescrição Digital', icon: '💊', desc: 'Receitas digitais aceitas em todo o território nacional.' },
-  { id: 'flame-seo', name: 'Dashboard Flame Work SEO', icon: '🔥', desc: 'Gestão de autoridade e buscas "Perto de Mim".' },
-  { id: 'finance', name: 'Gestão Financeira Enterprise', icon: '💰', desc: 'Controle de faturamento, convênios e repasses.' },
+  { id: 'ehr', name: 'Prontuário Inteligente (EHR)', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002-2h2a2 2 0 002 2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>, desc: 'Histórico clínico com suporte a IA e CID-11.' },
+  { id: 'tele', name: 'Módulo de Teleconsulta', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>, desc: 'Vídeo chamadas criptografadas com sala de espera.' },
+  { id: 'ai-triage', name: 'Triagem IA Local', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7.757 16.243a6 6 0 108.486-8.486 6 6 0 00-8.486 8.486z" /></svg>, desc: 'Pré-atendimento automatizado para sua região.' },
+  { id: 'schedule', name: 'Gestão de Agendamentos', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>, desc: 'Agenda inteligente com confirmação via WhatsApp.' },
+  { id: 'rx', name: 'Prescrição Digital', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-6 0H3" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6" /></svg>, desc: 'Receitas digitais aceitas em todo o território nacional.' },
+  { id: 'flame-seo', name: 'Dashboard Flame Work SEO', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.879 16.121A5 5 0 0014.142 11.858" /></svg>, desc: 'Gestão de autoridade e buscas "Perto de Mim".' },
+  { id: 'finance', name: 'Gestão Financeira Integrada', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H9a2 2 0 00-2 2v2m-3 2h16M5 12h14M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>, desc: 'Controle de faturamento, convênios e repasses.' },
 ];
 
 const BASE_LOGS = [
@@ -99,7 +99,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           <div className="bg-slate-900 p-8 text-white shrink-0">
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-black">DR</div>
+                <div className="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center font-black">DR</div>
                 <div>
                   <h2 className="text-xl font-black uppercase tracking-tighter leading-none">Arquitetura de Unidade</h2>
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Configuração em Tempo Real</p>
@@ -111,7 +111,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
             </div>
             <div className="flex items-center gap-2">
               {[1, 2, 3].map(i => (
-                <div key={i} className={`h-1.5 flex-grow rounded-full transition-all duration-700 ${step >= i ? 'bg-blue-600' : 'bg-slate-700'}`}></div>
+                <div key={i} className={`h-1.5 flex-grow rounded-full transition-all duration-700 ${step >= i ? 'bg-teal-600' : 'bg-slate-700'}`}></div>
               ))}
             </div>
           </div>
@@ -120,8 +120,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
         <div className="p-8 overflow-y-auto custom-scrollbar">
           {step === 1 && (
             <div className="space-y-6 animate-fade-in">
-              <div className="p-5 bg-blue-50 border border-blue-100 rounded-2xl">
-                <p className="text-[10px] font-black uppercase text-blue-700 tracking-widest mb-1">Passo 1: Identificação</p>
+              <div className="p-5 bg-teal-50 border border-teal-100 rounded-2xl">
+                <p className="text-[10px] font-black uppercase text-teal-700 tracking-widest mb-1">Passo 1: Identificação</p>
                 <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter leading-none">Registro de Unidade</h3>
               </div>
 
@@ -131,7 +131,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   <input 
                     type="text" 
                     placeholder="Ex: Dr. Bruno Rizk"
-                    className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-600 outline-none transition-all font-medium text-sm"
+                    className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none transition-all font-medium text-sm"
                     value={formData.nome}
                     onChange={e => setFormData({...formData, nome: e.target.value})}
                   />
@@ -141,7 +141,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   <input 
                     type="text" 
                     placeholder="000000-UF"
-                    className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-600 outline-none transition-all font-medium text-sm"
+                    className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none transition-all font-medium text-sm"
                     value={formData.crm}
                     onChange={e => setFormData({...formData, crm: e.target.value})}
                   />
@@ -151,7 +151,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   <label className="block">
                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Estado (UF)</span>
                     <select 
-                      className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-600 outline-none appearance-none font-bold text-sm"
+                      className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none appearance-none font-bold text-sm"
                       value={formData.estado}
                       onChange={e => setFormData({...formData, estado: e.target.value})}
                     >
@@ -161,7 +161,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   <label className="block">
                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Cidade Sede</span>
                     <select 
-                      className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-blue-600 outline-none appearance-none font-bold text-sm"
+                      className="w-full mt-1 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:border-teal-600 outline-none appearance-none font-bold text-sm"
                       value={formData.cidade}
                       onChange={e => setFormData({...formData, cidade: e.target.value})}
                     >
@@ -175,7 +175,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               <button 
                 onClick={() => setStep(2)}
                 disabled={!formData.nome || !formData.crm || !formData.cidade}
-                className="w-full py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-blue-200 disabled:opacity-50"
+                className="w-full py-5 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-teal-200 disabled:opacity-50"
               >
                 Próximo Passo
               </button>
@@ -184,8 +184,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
 
           {step === 2 && (
             <div className="space-y-6 animate-fade-in">
-              <div className="p-5 bg-blue-50 border border-blue-100 rounded-2xl">
-                <p className="text-[10px] font-black uppercase text-blue-700 tracking-widest mb-1">Passo 2: Categorização</p>
+              <div className="p-5 bg-teal-50 border border-teal-100 rounded-2xl">
+                <p className="text-[10px] font-black uppercase text-teal-700 tracking-widest mb-1">Passo 2: Categorização</p>
                 <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter leading-none">Áreas de Atuação Local</h3>
               </div>
 
@@ -198,8 +198,8 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                     aria-pressed={formData.categorias.includes(spec)}
                     className={`p-3 rounded-xl border-2 text-[10px] font-black uppercase tracking-tight transition-all text-left ${
                       formData.categorias.includes(spec)
-                        ? 'bg-blue-600 border-blue-600 text-white shadow-md'
-                        : 'bg-white border-slate-100 text-slate-500 hover:border-blue-200'
+                        ? 'bg-teal-600 border-teal-600 text-white shadow-md'
+                        : 'bg-white border-slate-100 text-slate-500 hover:border-teal-200'
                     }`}
                   >
                     {spec}
@@ -217,7 +217,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                 <button 
                   onClick={() => setStep(3)}
                   disabled={formData.categorias.length === 0}
-                  className="flex-[2] py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl disabled:opacity-50"
+                  className="flex-[2] py-5 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl disabled:opacity-50"
                 >
                   Personalizar Sistema
                 </button>
@@ -228,7 +228,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
           {step === 3 && (
             <div className="space-y-6 animate-fade-in">
               <div className="p-5 bg-slate-900 border border-slate-700 rounded-2xl">
-                <p className="text-[10px] font-black uppercase text-blue-400 tracking-widest mb-1">Passo 3: Módulos</p>
+                <p className="text-[10px] font-black uppercase text-teal-400 tracking-widest mb-1">Passo 3: Módulos</p>
                 <h3 className="text-lg font-black text-white uppercase tracking-tighter leading-none">Seleção de Funcionalidades</h3>
               </div>
 
@@ -242,10 +242,10 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                     className={`w-full p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left group ${
                       selectedModules.includes(module.id)
                         ? 'bg-slate-900 border-slate-900 text-white shadow-lg'
-                        : 'bg-white border-slate-100 text-slate-600 hover:border-blue-200'
+                        : 'bg-white border-slate-100 text-slate-600 hover:border-teal-200'
                     }`}
                   >
-                    <span className="text-2xl" aria-hidden="true">{module.icon}</span>
+                    <div className={`transition-colors ${selectedModules.includes(module.id) ? 'text-teal-400' : 'text-slate-500'}`} aria-hidden="true">{module.icon}</div>
                     <div className="flex-grow">
                       <p className="text-xs font-black uppercase tracking-tight">{module.name}</p>
                       <p className={`text-[10px] font-medium leading-tight mt-0.5 ${selectedModules.includes(module.id) ? 'text-slate-300' : 'text-slate-400'}`}>
@@ -253,7 +253,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                       </p>
                     </div>
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-                      selectedModules.includes(module.id) ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-200 text-transparent'
+                      selectedModules.includes(module.id) ? 'bg-teal-600 border-teal-600 text-white' : 'border-slate-200 text-transparent'
                     }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
                     </div>
@@ -271,7 +271,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                 <button 
                   onClick={handleSubmit}
                   disabled={selectedModules.length === 0 || isSubmitting}
-                  className="flex-[2] py-5 bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
+                  className="flex-[2] py-5 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
                 >
                   Gerar Sistema Customizado
                 </button>
@@ -283,7 +283,9 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
             <div className="py-16 text-center space-y-8 animate-fade-in flex flex-col items-center justify-center min-h-[400px]">
               <div className="w-24 h-24 bg-slate-900 rounded-[2.5rem] flex items-center justify-center relative shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10">
                 <div className="absolute inset-0 border-4 border-emerald-500 border-t-transparent rounded-[2.5rem] animate-spin"></div>
-                <span className="text-3xl animate-pulse">⚡</span>
+                <div className="text-3xl animate-pulse">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
               </div>
               
               <div className="w-full max-w-sm space-y-4">
@@ -312,7 +314,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               <div className="relative mx-auto w-28 h-28">
                 <div className="absolute inset-0 bg-emerald-100 rounded-full animate-ping opacity-20 scale-150"></div>
                 <div className="relative w-28 h-28 bg-emerald-100 text-emerald-600 rounded-[2.5rem] flex items-center justify-center text-5xl shadow-2xl z-10 border border-emerald-200">
-                  🏥
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-6 0H3" /></svg>
                 </div>
               </div>
               <div>
@@ -325,14 +327,14 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                     <span className="w-2 h-2 bg-emerald-500 rounded-full"></span> Módulos Provisionados:
                   </p>
-                  <span className="text-[9px] font-black text-blue-600 uppercase">Flame Core 3.1</span>
+                  <span className="text-[9px] font-black text-teal-600 uppercase">Flame Core 3.1</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {selectedModules.map(m => {
                     const mod = SYSTEM_MODULES.find(sm => sm.id === m);
                     return (
                       <span key={m} className="px-4 py-2 bg-white border border-slate-200 rounded-2xl text-[10px] font-black text-slate-700 uppercase shadow-sm flex items-center gap-2 hover:border-emerald-400 transition-colors cursor-default">
-                        <span aria-hidden="true">{mod?.icon}</span> {mod?.name}
+                        <span className="text-teal-600" aria-hidden="true">{mod?.icon}</span> {mod?.name}
                       </span>
                     )
                   })}

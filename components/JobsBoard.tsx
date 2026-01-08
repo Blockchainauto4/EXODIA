@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from 'react';
 import { UserLocation, JobOpportunity } from '../types';
 // FIX: Correcting the import name from 'initCheckoutPro' to 'initCheckoutProMP' as suggested by the error message.
@@ -80,8 +81,8 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => 
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white animate-pulse shadow-lg shadow-blue-900/40">
-              <span className="text-2xl" aria-hidden="true">👨‍⚕️</span>
+            <div className="w-12 h-12 bg-teal-600 rounded-2xl flex items-center justify-center text-white animate-pulse shadow-lg shadow-teal-900/40">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
             </div>
             <div>
               <h2 className="text-white font-black uppercase tracking-tighter text-3xl leading-none">Vagas Médicas em Destaque</h2>
@@ -127,19 +128,23 @@ const JobsBoard: React.FC<JobsBoardProps> = ({ location, jobs, onNavigate }) => 
                   {job.employmentType === 'TEMPORARY' && <span className="bg-red-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase shadow-lg shadow-red-500/20">URGENTE</span>}
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-tight h-14 overflow-hidden">{job.title}</h3>
-                <p className="text-[10px] font-bold text-blue-700 uppercase mt-1 tracking-widest truncate">{job.hiringOrganization}</p>
+                <p className="text-[10px] font-bold text-teal-700 uppercase mt-1 tracking-widest truncate">{job.hiringOrganization}</p>
               </div>
 
               <div className="space-y-4 mb-8 flex-grow relative z-10 overflow-hidden">
                 <div className="flex items-center gap-3">
-                  <span className="text-xl" aria-hidden="true">💰</span>
+                  <div className="text-xl text-slate-500" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H9a2 2 0 00-2 2v2m-3 2h16M5 12h14M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>
+                  </div>
                   <div>
                     <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Remuneração</h4>
                     <p className="text-sm font-black text-emerald-700">{job.salary}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <span className="text-xl" aria-hidden="true">ℹ️</span>
+                  <div className="text-xl text-slate-500 pt-0.5" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  </div>
                   <div className="text-[11px] text-slate-700 leading-relaxed font-medium line-clamp-6 italic">"{job.description}"</div>
                 </div>
               </div>

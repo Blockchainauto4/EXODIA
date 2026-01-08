@@ -30,6 +30,13 @@ const AIToolsPage: React.FC = () => {
     }))
   };
 
+  const tools = [
+    { icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>, title: 'Diagnóstico e Análise de Imagens', desc: 'IAs que leem raios-X, tomografias e ressonâncias, auxiliando na detecção precoce de doenças.' },
+    { icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002-2h2a2 2 0 002 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>, title: 'Gestão de Prontuários e Operações', desc: 'Sistemas que organizam dados de pacientes, preveem demandas e otimizam o fluxo de trabalho hospitalar.' },
+    { icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7.757 16.243a6 6 0 108.486-8.486 6 6 0 00-8.486 8.486z" /></svg>, title: 'Triagem Inteligente e Atendimento', desc: 'Chatbots e assistentes virtuais que realizam a primeira triagem e guiam os pacientes ao cuidado certo.' },
+    { icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-6 0H3" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6" /></svg>, title: 'Suporte à Decisão Clínica', desc: 'Plataformas que analisam o histórico do paciente e a literatura médica para sugerir opções de tratamento.' },
+  ];
+
   return (
     <div className="animate-fade-in">
       <script
@@ -37,9 +44,9 @@ const AIToolsPage: React.FC = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="relative bg-slate-900 pt-40 pb-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-slate-900 opacity-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-teal-900 to-slate-900 opacity-50"></div>
         <div className="max-w-4xl mx-auto px-4 relative z-10 text-center">
-          <p className="text-blue-400 text-sm font-black uppercase tracking-[0.2em]">Conteúdo Estratégico</p>
+          <p className="text-teal-400 text-sm font-black uppercase tracking-[0.2em]">Conteúdo Estratégico</p>
           <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mt-2 tracking-tighter">Guia Definitivo de Ferramentas de IA para Saúde</h1>
           <p className="text-slate-200 max-w-3xl mx-auto mt-6 text-lg leading-relaxed">
             Explore como a Inteligência Artificial está revolucionando o diagnóstico, a gestão hospitalar e o atendimento ao paciente. Um guia para médicos, gestores e profissionais que buscam inovação.
@@ -53,14 +60,9 @@ const AIToolsPage: React.FC = () => {
           <p>A Inteligência Artificial na saúde não é uma única tecnologia, mas um ecossistema de ferramentas especializadas. Cada uma resolve um desafio específico, desde a análise de um exame até a otimização da agenda de uma clínica inteira. Compreender essas categorias é o primeiro passo para uma implementação bem-sucedida.</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-12 not-prose">
-            {[
-              { icon: '🩺', title: 'Diagnóstico e Análise de Imagens', desc: 'IAs que leem raios-X, tomografias e ressonâncias, auxiliando na detecção precoce de doenças.' },
-              { icon: '🗂️', title: 'Gestão de Prontuários e Operações', desc: 'Sistemas que organizam dados de pacientes, preveem demandas e otimizam o fluxo de trabalho hospitalar.' },
-              { icon: '🤖', title: 'Triagem Inteligente e Atendimento', desc: 'Chatbots e assistentes virtuais que realizam a primeira triagem e guiam os pacientes ao cuidado certo.' },
-              { icon: '💊', title: 'Suporte à Decisão Clínica', desc: 'Plataformas que analisam o histórico do paciente e a literatura médica para sugerir opções de tratamento.' },
-            ].map(item => (
-              <div key={item.title} className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:border-blue-300 transition-colors">
-                <span className="text-4xl">{item.icon}</span>
+            {tools.map(item => (
+              <div key={item.title} className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:border-teal-300 transition-colors">
+                <div className="text-teal-600">{item.icon}</div>
                 <h3 className="text-lg font-black text-slate-900 mt-4 mb-2">{item.title}</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
               </div>

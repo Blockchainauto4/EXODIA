@@ -6,20 +6,20 @@ const WhatsAppWidget: React.FC = () => {
   const professionalUrl = "https://wa.me/5511932046970?text=Sou%20profissional%20e%20quero%20me%20cadastrar%20no%20IA%20Hospital";
 
   return (
-    <div className="fixed bottom-24 right-6 z-[60] flex flex-col items-end gap-4 group">
+    <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-4 group">
       {/* Opção Secundária: Cadastro Profissional (Aparece no Hover) */}
       <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
-        <div className="bg-white px-4 py-2 rounded-xl shadow-xl border border-blue-100">
-          <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest whitespace-nowrap">Portal Profissional</p>
+        <div className="bg-white px-4 py-2 rounded-xl shadow-xl border border-teal-100">
+          <p className="text-[10px] font-black text-teal-600 uppercase tracking-widest whitespace-nowrap">Portal Profissional</p>
         </div>
         <a 
           href={professionalUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-500 hover:scale-110 transition-all"
+          className="w-12 h-12 bg-teal-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-teal-500 hover:scale-110 transition-all"
           title="Cadastro de Profissionais"
         >
-          <span className="text-xl" aria-hidden="true">👨‍⚕️</span>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
         </a>
       </div>
 

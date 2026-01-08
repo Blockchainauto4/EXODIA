@@ -24,6 +24,8 @@ const JobDetailPage = lazy(() => import('./components/JobDetailPage'));
 const CareersPage = lazy(() => import('./components/CareersPage'));
 const AIToolsPage = lazy(() => import('./components/AIToolsPage'));
 const ForDoctorsPage = lazy(() => import('./components/ForDoctorsPage'));
+const TutorialModal = lazy(() => import('./components/TutorialModal'));
+const AddToExtension = lazy(() => import('./components/AddToExtension'));
 
 const slugify = (text: string) => 
   text.toLowerCase()
@@ -39,7 +41,7 @@ const MOCK_JOBS_DATA: Omit<JobOpportunity, 'slug'>[] = [
   { id: 'job-uci-campinas-01', title: 'Pediatra para UCI - Maternidade de Campinas/SP', description: 'Oportunidade para Pediatra na UCI do Hospital Maternidade de Campinas, gerido pelo BNG Hub. Requisitos: Título de especialista ou Residência completa em Pediatria/Neonatologia.', datePosted: '2025-01-09', validThrough: '2025-04-30', employmentType: 'CONTRACTOR', hiringOrganization: 'BNG Hub (Maternidade de Campinas)', city: 'Campinas', state: 'SP', specialty: 'Pediatria', salary: 'R$ 1.500 (semana) / R$ 1.700 (fim de semana) por plantão', contactUrl: 'https://wa.me/5511952134811' },
   { id: 'job-salaparto-campinas-01', title: 'Pediatra para Sala de Parto - Maternidade de Campinas/SP', description: 'O BNG Hub busca Pediatra para atuar na Sala de Parto do Hospital Maternidade de Campinas. Requisitos: Título de especialista ou Residência completa em Pediatria/Neonatologia.', datePosted: '2025-01-09', validThrough: '2025-04-30', employmentType: 'CONTRACTOR', hiringOrganization: 'BNG Hub (Maternidade de Campinas)', city: 'Campinas', state: 'SP', specialty: 'Pediatria', salary: 'R$ 1.500 (semana) / R$ 1.700 (fim de semana) por plantão', contactUrl: 'https://wa.me/5511952134811' },
   { id: 'job-alojamento-campinas-01', title: 'Pediatra para Alojamento Conjunto - Maternidade de Campinas/SP', description: 'Junte-se ao time BNG Hub na Maternidade de Campinas. Vaga para Pediatra no Alojamento Conjunto. Requisitos: Título de especialista ou Residência completa.', datePosted: '2025-01-09', validThrough: '2025-04-30', employmentType: 'CONTRACTOR', hiringOrganization: 'BNG Hub (Maternidade de Campinas)', city: 'Campinas', state: 'SP', specialty: 'Pediatria', salary: 'R$ 1.500 (semana) / R$ 1.700 (fim de semana) por plantão', contactUrl: 'https://wa.me/5511952134811' },
-  { id: 'job-go-barramansa-01', title: '🚨 Plantão G&O - Pagamento à Vista', description: 'Cobertura de plantão para Ginecologista e Obstetra no Hospital Maternidade Theresa Sacchi de Moura. Plantões diurnos, noturnos ou 24h para o dia 09/01. Pagamento líquido à vista.', datePosted: '2025-01-08', validThrough: '2025-01-10', employmentType: 'TEMPORARY', hiringOrganization: 'Hospital Maternidade Theresa Sacchi de Moura', city: 'Barra Mansa', state: 'RJ', specialty: 'Ginecologia', salary: 'Valor líquido (Pagamento à vista)', contactUrl: 'https://wa.me/5521994165405' },
+  { id: 'job-go-barramansa-01', title: 'Plantão G&O - Pagamento à Vista', description: 'Cobertura de plantão para Ginecologista e Obstetra no Hospital Maternidade Theresa Sacchi de Moura. Plantões diurnos, noturnos ou 24h para o dia 09/01. Pagamento líquido à vista.', datePosted: '2025-01-08', validThrough: '2025-01-10', employmentType: 'TEMPORARY', hiringOrganization: 'Hospital Maternidade Theresa Sacchi de Moura', city: 'Barra Mansa', state: 'RJ', specialty: 'Ginecologia', salary: 'Valor líquido (Pagamento à vista)', contactUrl: 'https://wa.me/5521994165405' },
   { id: 'job-anestesista-pr-01', title: 'Anestesista - Hospital das Clínicas/Curitiba-PR', description: 'Oportunidade de alta remuneração para Médico Anestesista no Hospital das Clínicas em Curitiba, Paraná. Ganhos mensais entre R$ 40 mil e R$ 60 mil.', datePosted: '2025-01-28', validThrough: '2025-09-30', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital das Clínicas', city: 'Curitiba', state: 'PR', specialty: 'Clínica Geral', salary: 'R$ 40.000 a R$ 60.000 / Mês', contactWhatsapp: '5544998711112' },
   { id: 'job-upa-pr-01', title: 'Plantonista UPA (Clínica Médica) - Lapa/Ivaí-PR', description: 'Oportunidade para Médico Plantonista (Clínica Médica) para atuar nas UPAs de Lapa e Ivaí (PR). Plantões de 12h, diurnos e noturnos. Pagamento via PJ.', datePosted: '2025-01-27', validThrough: '2025-08-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Selettho Med', city: 'Lapa', state: 'PR', specialty: 'Clínica Geral', salary: 'R$ 1.600,00 / Plantão 12h', contactWhatsapp: '554198773803' },
   { id: 'job-gineco-rj-01', title: 'Ginecologia - Centro/RJ', description: 'Vaga para Ginecologista (com ou sem Obstetrícia) para consultas ambulatoriais no Centro do Rio de Janeiro. Pagamento por produtividade em até 1 dia via PIX.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Ginecologia', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
@@ -47,18 +49,18 @@ const MOCK_JOBS_DATA: Omit<JobOpportunity, 'slug'>[] = [
   { id: 'job-uro-rj-01', title: 'Urologia - Centro/RJ', description: 'Clínica no Centro/RJ busca Urologista para consultas ambulatoriais. Modelo de pagamento por produtividade com repasse rápido via PIX.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Clínica Geral', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
   { id: 'job-psiq-rj-01', title: 'Psiquiatria (RQE) - Centro/RJ', description: 'Vaga para Psquiatra com RQE para atendimento ambulatorial no Centro/RJ. Remuneração por produtividade e pagamento em até 1 dia.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Psiquiatria', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
   { id: 'job-nutro-rj-01', title: 'Nutrologia (RQE) - Centro/RJ', description: 'Buscamos Nutrólogo com RQE para consultas ambulatoriais na Clínica Saúde Pra Todos, Centro/RJ. Pagamento por produtividade.', datePosted: '2025-01-27', validThrough: '2025-07-31', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Saúde Pra Todos', city: 'Rio de Janeiro', state: 'RJ', specialty: 'Nutrição', salary: 'Produtividade (PIX D+1)', contactWhatsapp: '5521976317222' },
-  { id: 'job-go-001', title: 'Ginecologia e Obstetrícia - Amparo/SP', description: '🤰 Oportunidade para Ginecologia e Obstetrícia em Amparo. Atendimento em Maternidade e Ambulatório. Rede de alta complexidade com suporte completo.', datePosted: '2025-01-26', validThrough: '2025-06-30', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital Regional Amparo', city: 'Amparo', state: 'SP', specialty: 'Ginecologia', salary: 'Tabela Hospitalar', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-ped-001', title: 'Pediatria (Sala de Parto) - Amparo/SP', description: '👶 Pediatra para acompanhamento de Sala de Parto e Recepção de Recém-nascido. Unidade em Amparo/SP com infraestrutura moderna.', datePosted: '2025-01-26', validThrough: '2025-05-15', employmentType: 'FULL_TIME', hiringOrganization: 'Maternidade Amparo', city: 'Amparo', state: 'SP', specialty: 'Pediatria', salary: 'A combinar', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-eped-001', title: 'Emergência Pediatria (RQE) - Sorocaba/SP', description: '🚨 Plantões de Emergência Pediátrica em Sorocaba/SP. Obrigatório RQE na especialidade. Unidade de pronto atendimento 24h.', datePosted: '2025-01-26', validThrough: '2025-04-01', employmentType: 'TEMPORARY', hiringOrganization: 'Pronto Socorro Infantil Sorocaba', city: 'Sorocaba', state: 'SP', specialty: 'Pediatria', salary: 'Valor por Plantão', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-uti-001', title: 'UTI Neonatal - Taipas/SP', description: '🩺 Médico Intensivista para UTI Neonatal na região de Taipas (São Paulo). Equipe multidisciplinar e suporte tecnológico avançado.', datePosted: '2025-01-26', validThrough: '2025-07-20', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital Geral Taipas', city: 'São Paulo', state: 'SP', specialty: 'Pediatria', salary: 'Valor Hora UTI', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-orto-jundiai', title: 'Ortopedia Especializada - Jundiaí/SP', description: '🦴 Vaga para Ortopedia em Jundiaí. Atendimento ambulatorial e retaguarda hospitalar. Oportunidade fixa para especialistas.', datePosted: '2025-01-26', validThrough: '2025-08-15', employmentType: 'FULL_TIME', hiringOrganization: 'Hospital Jundiaí', city: 'Jundiaí', state: 'SP', specialty: 'Ortopedia', salary: 'Rendimento Expressivo', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-vasc-001', title: 'Vascular - Jundiaí/SP e Cacoal/RO', description: '🩸 Oportunidade para Angiologia e Cirurgia Vascular em Jundiaí/SP e Cacoal/RO. Vagas para ambulatório e procedimentos cirúrgicos.', datePosted: '2025-01-26', validThrough: '2025-09-01', employmentType: 'CONTRACTOR', hiringOrganization: 'Rede Vascular Integrada', city: 'Jundiaí', state: 'SP', specialty: 'Clínica Geral', salary: 'Comissão por Procedimento', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-card-001', title: 'Cardiologia - Jundiaí/SP', description: '🫀 Cardiologista para corpo clínico em Jundiaí. Exames de imagem (Eco/Holter) e consultas ambulatoriais. Vaga estável.', datePosted: '2025-01-26', validThrough: '2025-10-10', employmentType: 'PART_TIME', hiringOrganization: 'Centro Cardiológico Jundiaí', city: 'Jundiaí', state: 'SP', specialty: 'Cardiologia', salary: 'Valor por Consulta/Exame', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-neuro-001', title: 'Neurologia e Neuropediatria - Jundiaí/SP', description: '🧠 Atendimento especializado em Neurologia Clínica e Neuropediatria em Jundiaí. Foco em neurodesenvolvimento e distúrbios cognitivos.', datePosted: '2025-01-26', validThrough: '2025-12-31', employmentType: 'CONTRACTOR', hiringOrganization: 'NeuroCenter Jundiaí', city: 'Jundiaí', state: 'SP', specialty: 'Saúde Mental', salary: 'Remuneração Diferenciada', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-psiq-001', title: 'Psiquiatria - Jundiaí/SP', description: '🧠 Médico Psiquiatra para acompanhamento ambulatorial e suporte em saúde mental na região de Jundiaí. Agenda flexível.', datePosted: '2025-01-26', validThrough: '2025-11-05', employmentType: 'PART_TIME', hiringOrganization: 'Saúde Mental Regional', city: 'Jundiaí', state: 'SP', specialty: 'Psiquiatria', salary: 'Valor por Atendimento', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-orto-fortaleza', title: 'Ortopedia - Fortaleza/CE', description: '🦴 Oportunidade na Ortopedia em Fortaleza. Atendimento ambulatorial e plantões em hospital de grande porte.', datePosted: '2025-01-26', validThrough: '2025-06-15', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital Fortaleza Unidade I', city: 'Fortaleza', state: 'CE', specialty: 'Ortopedia', salary: 'A consultar', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-clin-fortaleza', title: 'Clínica Médica - Fortaleza/CE', description: '🏛️ Médico Clínico para atendimento em unidade hospitalar de Fortaleza. Carga horária flexível e excelente ambiente de trabalho.', datePosted: '2025-01-26', validThrough: '2025-09-30', employmentType: 'FULL_TIME', hiringOrganization: 'Rede Saúde Fortaleza', city: 'Fortaleza', state: 'CE', specialty: 'Clínica Geral', salary: 'Salário Fixo + Benefícios', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
-  { id: 'job-gastro-001', title: 'Gastroenterologia - Valinhos/SP', description: '🧪 Médico Gastroenterologista para Valinhos e Jundiaí. Foco em exames endoscópicos e consultas. Unidade com alto fluxo.', datePosted: '2025-01-26', validThrough: '2025-08-01', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Digestiva Valinhos', city: 'Valinhos', state: 'SP', specialty: 'Clínica Geral', salary: 'Fixo + Comissão', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' }
+  { id: 'job-go-001', title: 'Ginecologia e Obstetrícia - Amparo/SP', description: 'Oportunidade para Ginecologia e Obstetrícia em Amparo. Atendimento em Maternidade e Ambulatório. Rede de alta complexidade com suporte completo.', datePosted: '2025-01-26', validThrough: '2025-06-30', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital Regional Amparo', city: 'Amparo', state: 'SP', specialty: 'Ginecologia', salary: 'Tabela Hospitalar', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-ped-001', title: 'Pediatria (Sala de Parto) - Amparo/SP', description: 'Pediatra para acompanhamento de Sala de Parto e Recepção de Recém-nascido. Unidade em Amparo/SP com infraestrutura moderna.', datePosted: '2025-01-26', validThrough: '2025-05-15', employmentType: 'FULL_TIME', hiringOrganization: 'Maternidade Amparo', city: 'Amparo', state: 'SP', specialty: 'Pediatria', salary: 'A combinar', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-eped-001', title: 'Emergência Pediatria (RQE) - Sorocaba/SP', description: 'Plantões de Emergência Pediátrica em Sorocaba/SP. Obrigatório RQE na especialidade. Unidade de pronto atendimento 24h.', datePosted: '2025-01-26', validThrough: '2025-04-01', employmentType: 'TEMPORARY', hiringOrganization: 'Pronto Socorro Infantil Sorocaba', city: 'Sorocaba', state: 'SP', specialty: 'Pediatria', salary: 'Valor por Plantão', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-uti-001', title: 'UTI Neonatal - Taipas/SP', description: 'Médico Intensivista para UTI Neonatal na região de Taipas (São Paulo). Equipe multidisciplinar e suporte tecnológico avançado.', datePosted: '2025-01-26', validThrough: '2025-07-20', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital Geral Taipas', city: 'São Paulo', state: 'SP', specialty: 'Pediatria', salary: 'Valor Hora UTI', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-orto-jundiai', title: 'Ortopedia Especializada - Jundiaí/SP', description: 'Vaga para Ortopedia em Jundiaí. Atendimento ambulatorial e retaguarda hospitalar. Oportunidade fixa para especialistas.', datePosted: '2025-01-26', validThrough: '2025-08-15', employmentType: 'FULL_TIME', hiringOrganization: 'Hospital Jundiaí', city: 'Jundiaí', state: 'SP', specialty: 'Ortopedia', salary: 'Rendimento Expressivo', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-vasc-001', title: 'Vascular - Jundiaí/SP e Cacoal/RO', description: 'Oportunidade para Angiologia e Cirurgia Vascular em Jundiaí/SP e Cacoal/RO. Vagas para ambulatório e procedimentos cirúrgicos.', datePosted: '2025-01-26', validThrough: '2025-09-01', employmentType: 'CONTRACTOR', hiringOrganization: 'Rede Vascular Integrada', city: 'Jundiaí', state: 'SP', specialty: 'Clínica Geral', salary: 'Comissão por Procedimento', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-card-001', title: 'Cardiologia - Jundiaí/SP', description: 'Cardiologista para corpo clínico em Jundiaí. Exames de imagem (Eco/Holter) e consultas ambulatoriais. Vaga estável.', datePosted: '2025-01-26', validThrough: '2025-10-10', employmentType: 'PART_TIME', hiringOrganization: 'Centro Cardiológico Jundiaí', city: 'Jundiaí', state: 'SP', specialty: 'Cardiologia', salary: 'Valor por Consulta/Exame', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-neuro-001', title: 'Neurologia e Neuropediatria - Jundiaí/SP', description: 'Atendimento especializado em Neurologia Clínica e Neuropediatria em Jundiaí. Foco em neurodesenvolvimento e distúrbios cognitivos.', datePosted: '2025-01-26', validThrough: '2025-12-31', employmentType: 'CONTRACTOR', hiringOrganization: 'NeuroCenter Jundiaí', city: 'Jundiaí', state: 'SP', specialty: 'Saúde Mental', salary: 'Remuneração Diferenciada', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-psiq-001', title: 'Psiquiatria - Jundiaí/SP', description: 'Médico Psiquiatra para acompanhamento ambulatorial e suporte em saúde mental na região de Jundiaí. Agenda flexível.', datePosted: '2025-01-26', validThrough: '2025-11-05', employmentType: 'PART_TIME', hiringOrganization: 'Saúde Mental Regional', city: 'Jundiaí', state: 'SP', specialty: 'Psiquiatria', salary: 'Valor por Atendimento', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-orto-fortaleza', title: 'Ortopedia - Fortaleza/CE', description: 'Oportunidade na Ortopedia em Fortaleza. Atendimento ambulatorial e plantões em hospital de grande porte.', datePosted: '2025-01-26', validThrough: '2025-06-15', employmentType: 'CONTRACTOR', hiringOrganization: 'Hospital Fortaleza Unidade I', city: 'Fortaleza', state: 'CE', specialty: 'Ortopedia', salary: 'A consultar', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-clin-fortaleza', title: 'Clínica Médica - Fortaleza/CE', description: 'Médico Clínico para atendimento em unidade hospitalar de Fortaleza. Carga horária flexível e excelente ambiente de trabalho.', datePosted: '2025-01-26', validThrough: '2025-09-30', employmentType: 'FULL_TIME', hiringOrganization: 'Rede Saúde Fortaleza', city: 'Fortaleza', state: 'CE', specialty: 'Clínica Geral', salary: 'Salário Fixo + Benefícios', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' },
+  { id: 'job-gastro-001', title: 'Gastroenterologia - Valinhos/SP', description: 'Médico Gastroenterologista para Valinhos e Jundiaí. Foco em exames endoscópicos e consultas. Unidade com alto fluxo.', datePosted: '2025-01-26', validThrough: '2025-08-01', employmentType: 'CONTRACTOR', hiringOrganization: 'Clínica Digestiva Valinhos', city: 'Valinhos', state: 'SP', specialty: 'Clínica Geral', salary: 'Fixo + Comissão', contactUrl: 'https://wa.me/message/IVXUAVBMSDFEM1' }
 ];
 
 const jobsWithSlugs: JobOpportunity[] = MOCK_JOBS_DATA.map(job => ({ ...job, slug: slugify(job.title) }));
@@ -77,6 +79,7 @@ const App: React.FC = () => {
   const [isPatientModalOpen, setIsPatientModalOpen] = useState(false);
   const [isProcessingOpen, setIsProcessingOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [isLiveOpen, setIsLiveOpen] = useState(false);
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
   
@@ -171,6 +174,31 @@ const App: React.FC = () => {
     description.setAttribute('content', pageDescription);
   }, [location, selectedJob, isCareersPage, isAIToolsPage, isForDoctorsPage]);
 
+  const handleLiveOpen = async () => {
+    // @ts-ignore
+    if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
+      try {
+        // @ts-ignore
+        const hasKey = await window.aistudio.hasSelectedApiKey();
+        if (hasKey) {
+          setIsLiveOpen(true);
+        } else {
+          setIsTutorialOpen(true);
+        }
+      } catch (e) {
+        console.error("Erro ao verificar a chave de API:", e);
+        setIsTutorialOpen(true);
+      }
+    } else {
+      setIsTutorialOpen(true);
+    }
+  };
+
+  const handleKeyError = () => {
+    setIsLiveOpen(false);
+    setIsTutorialOpen(true);
+  };
+
   const handleTrialEnd = () => {
     setIsLiveOpen(false);
     setIsSubscriptionModalOpen(true);
@@ -182,7 +210,7 @@ const App: React.FC = () => {
         location={location} 
         onStartChat={() => setIsChatOpen(true)}
         onPatientOpen={() => setIsPatientModalOpen(true)}
-        onLiveOpen={() => setIsLiveOpen(true)}
+        onLiveOpen={handleLiveOpen}
       />
       <SEOContent location={location} />
       <VoiceFAQ location={location} />
@@ -192,7 +220,7 @@ const App: React.FC = () => {
   const renderPage = () => {
     if (isCareersPage) return <CareersPage jobs={jobsWithSlugs} onNavigate={handleNavigate} />;
     if (isAIToolsPage) return <AIToolsPage />;
-    if (isForDoctorsPage) return <ForDoctorsPage onStartTrial={() => setIsLiveOpen(true)} onRegisterUnit={() => setIsProfModalOpen(true)} />;
+    if (isForDoctorsPage) return <ForDoctorsPage onStartTrial={handleLiveOpen} onRegisterUnit={() => setIsProfModalOpen(true)} />;
     if (selectedJob) return <JobDetailPage job={selectedJob} onNavigate={handleNavigate} />;
     return renderMainContent();
   };
@@ -208,6 +236,7 @@ const App: React.FC = () => {
       
       <main className="flex-grow">
         <Suspense fallback={<div className="pt-48 text-center text-lg font-bold">Carregando conteúdo...</div>}>
+          <AddToExtension />
           {renderPage()}
         </Suspense>
       </main>
@@ -219,49 +248,68 @@ const App: React.FC = () => {
         onOpenLegal={(type, title) => setLegalModal({ open: true, type, title })}
       />
       
-      {!selectedJob && !isCareersPage && !isAIToolsPage && !isForDoctorsPage &&(
-        <>
-          <div className="fixed bottom-24 left-6 z-[100] flex flex-col items-start gap-4">
-            {isChatOpen && (
-              <Suspense fallback={<div className="w-12 h-12 bg-white rounded-full animate-pulse shadow-xl"></div>}>
-                <div className="w-[calc(100vw-3rem)] sm:w-[400px] animate-slide-up shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-[2.5rem] overflow-hidden border-2 border-slate-200 bg-white">
-                  <MedicalAssistant location={location} onClose={() => setIsChatOpen(false)} />
-                </div>
-              </Suspense>
-            )}
-            <button 
-              onClick={() => setIsChatOpen(!isChatOpen)}
-              aria-label={isChatOpen ? "Fechar chat de triagem" : "Abrir chat de triagem inteligente"}
-              className={`w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-[101] border-2 border-white/20 ${
-                isChatOpen ? 'bg-slate-900 text-white' : 'bg-blue-600 text-white shadow-blue-500/40'
-              }`}
-            >
-              <span className="text-2xl" aria-hidden="true">{isChatOpen ? '✕' : '💬'}</span>
-            </button>
-          </div>
-          <WhatsAppWidget />
-        </>
+      {/* Floating Action Buttons & Widgets */}
+      <div className="fixed bottom-6 left-6 z-[100] flex items-center gap-4">
+        <button 
+          onClick={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
+          aria-label="Painel Flame Work SEO Admin"
+          className={`w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all border-2 border-white/10 ${isAuthorized ? 'opacity-100' : 'opacity-30'}`}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.879 16.121A5 5 0 0014.142 11.858" /></svg>
+        </button>
+
+        {!selectedJob && !isCareersPage && !isAIToolsPage && !isForDoctorsPage && (
+          <button 
+            onClick={() => setIsChatOpen(!isChatOpen)}
+            aria-label={isChatOpen ? "Fechar chat de triagem" : "Abrir chat de triagem inteligente"}
+            className={`w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-[101] border-2 border-white/20 ${
+              isChatOpen ? 'bg-slate-900 text-white' : 'bg-teal-600 text-white shadow-teal-500/40'
+            }`}
+          >
+            {isChatOpen ? 
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              :
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+            }
+          </button>
+        )}
+      </div>
+
+      {!selectedJob && !isCareersPage && !isAIToolsPage && !isForDoctorsPage && (
+        <WhatsAppWidget />
       )}
 
       <CookieConsent onOpenPrivacy={() => setLegalModal({ open: true, type: 'privacy', title: 'Política de Privacidade' })} />
       
-      <button 
-        onClick={() => isAuthorized ? setIsAdminOpen(true) : setIsAuthOpen(true)}
-        aria-label="Painel Flame Work SEO Admin"
-        className={`fixed bottom-6 left-6 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all z-[60] border-2 border-white/10 ${isAuthorized ? 'opacity-100' : 'opacity-30'}`}
-      >
-        <span className="text-2xl" aria-hidden="true">🔥</span>
-      </button>
-
       {/* Modais carregados sob demanda */}
       <Suspense fallback={null}>
+        {isChatOpen && (
+          <div className="fixed inset-0 z-[200] animate-slide-up">
+            <MedicalAssistant location={location} onClose={() => setIsChatOpen(false)} />
+          </div>
+        )}
         {legalModal.open && <LegalModal title={legalModal.title} type={legalModal.type} onClose={() => setLegalModal({ ...legalModal, open: false })} />}
         {isAuthOpen && <AdminAuthModal onClose={() => setIsAuthOpen(false)} onSuccess={() => { setIsAuthorized(true); setIsAuthOpen(false); setIsAdminOpen(true); }} />}
         {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={(loc) => setLocation(loc)} currentLocation={location} onOpenProcessing={() => { setIsAdminOpen(false); setIsProcessingOpen(true); }} />}
         {isProcessingOpen && <ProcessingDashboard onClose={() => setIsProcessingOpen(false)} location={location} />}
         {isProfModalOpen && <ProfessionalModal onClose={() => setIsProfModalOpen(false)} />}
         {isPatientModalOpen && <PatientRegistrationModal onClose={() => setIsPatientModalOpen(false)} />}
-        {isLiveOpen && <LiveAnalysis location={location} onClose={() => setIsLiveOpen(false)} onTrialEnd={handleTrialEnd} />}
+        {isTutorialOpen && (
+          <TutorialModal 
+            onClose={() => setIsTutorialOpen(false)}
+            onOpenSelectKey={async () => {
+              // @ts-ignore
+              if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
+                // @ts-ignore
+                await window.aistudio.openSelectKey();
+                // Assume success and proceed to avoid race conditions as per guidelines.
+                setIsTutorialOpen(false);
+                setIsLiveOpen(true);
+              }
+            }}
+          />
+        )}
+        {isLiveOpen && <LiveAnalysis location={location} onClose={() => setIsLiveOpen(false)} onTrialEnd={handleTrialEnd} onKeyError={handleKeyError} />}
         {isSubscriptionModalOpen && <SubscriptionModal onClose={() => setIsSubscriptionModalOpen(false)} />}
       </Suspense>
     </div>
