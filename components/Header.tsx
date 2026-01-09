@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, onAdminOpen, onPatientOpen,
         <nav className="hidden lg:flex gap-6 items-center">
           <a href="/" onClick={handleFaqClick} className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Perguntas</a>
           <a href="/carreiras" onClick={(e) => onNavigate('/carreiras', e)} className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Vagas Médicas</a>
-          <a href="/medicos" onClick={(e) => onNavigate('/medicos', e)} className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Para Médicos</a>
+          <a href="https://painel.iahospital.com.br/" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Para Médicos</a>
           <a href="/consulta-medicos" onClick={(e) => onNavigate('/consulta-medicos', e)} className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Consulta CRM</a>
         </nav>
 
@@ -79,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({ isScrolled, onAdminOpen, onPatientOpen,
         <div className="lg:hidden absolute top-full left-0 right-0 bg-slate-900 border-b border-white/10 p-4 space-y-2 animate-fade-in shadow-lg">
           <a href="/" onClick={(e) => handleNavAndCloseMenu('/', e, true)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Perguntas</a>
           <a href="/carreiras" onClick={(e) => handleNavAndCloseMenu('/carreiras', e)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Vagas Médicas</a>
-          <a href="/medicos" onClick={(e) => handleNavAndCloseMenu('/medicos', e)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Para Médicos</a>
+          <a href="https://painel.iahospital.com.br/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Para Médicos</a>
           <a href="/consulta-medicos" onClick={(e) => handleNavAndCloseMenu('/consulta-medicos', e)} className="block px-4 py-3 rounded-lg text-base font-semibold text-slate-200 hover:bg-white/10">Consulta CRM</a>
           <div className="pt-2 mt-2 border-t border-white/10 space-y-2">
              <button onClick={() => { onProfOpen(); setIsMobileMenuOpen(false); }} className="block w-full text-center px-4 py-3 rounded-lg text-base font-semibold text-slate-900 bg-white hover:bg-slate-200">Acesso Profissional</button>

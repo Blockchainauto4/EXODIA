@@ -13,10 +13,7 @@ import { UserLocation, LegalModalType, JobOpportunity } from './types';
 const TriagePlatformSection = lazy(() => import('./components/TriagePlatformSection'));
 const JobsBoard = lazy(() => import('./components/JobsBoard'));
 const MedicalAssistant = lazy(() => import('./components/MedicalAssistant'));
-const AdminPanel = lazy(() => import('./components/AdminPanel'));
-const ProfessionalModal = lazy(() => import('./components/ProfessionalModal'));
 const PatientRegistrationModal = lazy(() => import('./components/PatientRegistrationModal'));
-const AuthModal = lazy(() => import('./components/AuthModal'));
 const ProcessingDashboard = lazy(() => import('./components/ProcessingDashboard'));
 const LegalModal = lazy(() => import('./components/LegalModal'));
 const LiveAnalysis = lazy(() => import('./components/LiveAnalysis'));
@@ -88,10 +85,6 @@ const App: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<JobOpportunity | null>(null);
   const [currentPage, setCurrentPage] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
-  const [authModal, setAuthModal] = useState<{ open: boolean, initialTab: 'professional' | 'admin' }>({ open: false, initialTab: 'professional' });
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isProfModalOpen, setIsProfModalOpen] = useState(false);
   const [isPatientModalOpen, setIsPatientModalOpen] = useState(false);
   const [isProcessingOpen, setIsProcessingOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -146,6 +139,9 @@ const App: React.FC = () => {
     window.scrollTo(0, 0);
   }, [handleRouting]);
 
+  const handleSystemAccess = useCallback(() => {
+    window.open('https://painel.iahospital.com.br/', '_blank');
+  }, []);
 
   useEffect(() => {
     handleRouting();
@@ -233,14 +229,6 @@ const App: React.FC = () => {
     setIsSubscriptionModalOpen(true);
   }, []);
 
-  const handleAdminAuth = useCallback(() => {
-    isAuthorized ? setIsAdminOpen(true) : setAuthModal({ open: true, initialTab: 'admin' });
-  }, [isAuthorized]);
-  
-  const handleProfAuth = useCallback(() => {
-    setAuthModal({ open: true, initialTab: 'professional' });
-  }, []);
-
   const handlePatientOpen = useCallback(() => setIsPatientModalOpen(true), []);
   const handleStartChat = useCallback(() => setIsChatOpen(true), []);
   const handleOpenLegal = useCallback((type: LegalModalType, title: string) => setLegalModal({ open: true, type, title }), []);
@@ -259,7 +247,7 @@ const App: React.FC = () => {
         <Suspense fallback={<div className="h-screen bg-slate-950"></div>}>
           <TriagePlatformSection 
             onStartTrial={handleLiveOpen} 
-            onRegisterUnit={() => setIsProfModalOpen(true)}
+            onRegisterUnit={handleSystemAccess}
           />
         </Suspense>
       )}
@@ -274,7 +262,7 @@ const App: React.FC = () => {
     switch(currentPage) {
       case 'careers': return <CareersPage jobs={jobsWithSlugs} onNavigate={handleNavigate} />;
       case 'ai-tools': return <AIToolsPage />;
-      case 'for-doctors': return <ForDoctorsPage onStartTrial={handleLiveOpen} onRegisterUnit={() => setIsProfModalOpen(true)} />;
+      case 'for-doctors': return <ForDoctorsPage onStartTrial={handleLiveOpen} onRegisterUnit={handleSystemAccess} />;
       case 'doctor-search': return <DoctorSearchPage />;
       case 'status': return <SystemStatusPage />;
       case 'job-detail': return selectedJob ? <JobDetailPage job={selectedJob} onNavigate={handleNavigate} /> : renderMainContent();
@@ -286,8 +274,8 @@ const App: React.FC = () => {
     <div className="min-h-screen flex flex-col font-sans relative">
       <Header 
         isScrolled={isScrolled} 
-        onAdminOpen={handleAdminAuth}
-        onProfOpen={handleProfAuth}
+        onAdminOpen={handleSystemAccess}
+        onProfOpen={handleSystemAccess}
         onPatientOpen={handlePatientOpen}
         onNavigate={handleNavigate}
       />
@@ -300,8 +288,7 @@ const App: React.FC = () => {
 
       <Footer 
         location={location} 
-        isAuthorized={isAuthorized}
-        onAdminOpen={handleAdminAuth} 
+        onAdminOpen={handleSystemAccess} 
         onOpenLegal={handleOpenLegal}
         onNavigate={handleNavigate}
       />
@@ -309,9 +296,9 @@ const App: React.FC = () => {
       {/* Floating Action Buttons & Widgets */}
       <div className="fixed bottom-6 left-6 z-[100] flex items-center gap-4">
         <button 
-          onClick={handleAdminAuth}
+          onClick={handleSystemAccess}
           aria-label="Painel Flame Work SEO Admin"
-          className={`w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all border-2 border-white/10 ${isAuthorized ? 'opacity-100' : 'opacity-30'}`}
+          className="w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-orange-600 hover:scale-110 active:scale-95 transition-all border-2 border-white/10"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A8 8 0 0117.657 18.657z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.879 16.121A5 5 0 0014.142 11.858" /></svg>
         </button>
@@ -344,15 +331,7 @@ const App: React.FC = () => {
           </div>
         )}
         {legalModal.open && <LegalModal title={legalModal.title} type={legalModal.type} onClose={() => setLegalModal({ ...legalModal, open: false })} />}
-        {authModal.open && <AuthModal 
-            onClose={() => setAuthModal({ ...authModal, open: false })} 
-            onAdminSuccess={() => { setIsAuthorized(true); setAuthModal({ ...authModal, open: false }); setIsAdminOpen(true); }}
-            onProfessionalRegister={() => { setAuthModal({ ...authModal, open: false }); setIsProfModalOpen(true); }}
-            initialTab={authModal.initialTab}
-        />}
-        {isAdminOpen && <AdminPanel onClose={() => setIsAdminOpen(false)} onApply={(loc) => setLocation(loc)} currentLocation={location} onOpenProcessing={() => { setIsAdminOpen(false); setIsProcessingOpen(true); }} />}
         {isProcessingOpen && <ProcessingDashboard onClose={() => setIsProcessingOpen(false)} location={location} />}
-        {isProfModalOpen && <ProfessionalModal onClose={() => setIsProfModalOpen(false)} />}
         {isPatientModalOpen && <PatientRegistrationModal onClose={() => setIsPatientModalOpen(false)} />}
         {isTutorialOpen && (
           <TutorialModal 

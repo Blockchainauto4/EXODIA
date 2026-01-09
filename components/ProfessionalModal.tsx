@@ -369,7 +369,7 @@ const ProfessionalModal: React.FC<ProfessionalModalProps> = ({ onClose }) => {
               </div>
 
               <button 
-                onClick={onClose}
+                onClick={() => { window.open('https://painel.iahospital.com.br/', '_blank'); onClose(); }}
                 aria-label="Concluir e acessar painel de controle"
                 className="w-full py-6 bg-slate-900 hover:bg-black text-white font-bold uppercase tracking-widest rounded-3xl transition-all shadow-2xl hover:scale-[1.02] active:scale-95 border-b-4 border-black"
               >

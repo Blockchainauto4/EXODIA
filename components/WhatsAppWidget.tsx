@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 
 const WhatsAppWidget: React.FC = () => {
   const mainContactUrl = "https://api.whatsapp.com/send?phone=5511932046970&text=Ol%C3%A1%2C%2C%20preciso%20de%20orienta%C3%A7%C3%A3o%20m%C3%A9dica%20pelo%20IA%20HOSPITAL.";
-  const professionalUrl = "https://wa.me/5511932046970?text=Sou%20profissional%20e%20quero%20me%20cadastrar%20no%20IA%20Hospital";
+  const professionalUrl = "https://painel.iahospital.com.br/";
 
   return (
     <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-4 group">

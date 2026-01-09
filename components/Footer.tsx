@@ -6,11 +6,10 @@ interface FooterProps {
   onAdminOpen?: () => void;
   onOpenLegal?: (type: LegalModalType, title: string) => void;
   location?: UserLocation;
-  isAuthorized?: boolean;
   onNavigate: (path: string, e: React.MouseEvent) => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ onAdminOpen, onOpenLegal, location, isAuthorized, onNavigate }) => {
+const Footer: React.FC<FooterProps> = ({ onAdminOpen, onOpenLegal, location, onNavigate }) => {
   return (
     <footer className="bg-slate-950 text-white py-20 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4">
@@ -25,8 +24,9 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onOpenLegal, location, isA
           </div>
           <div className="flex flex-col sm:flex-row gap-4 relative z-10 shrink-0">
             <a
-              href="/medicos"
-              onClick={(e) => onNavigate('/medicos', e)}
+              href="https://painel.iahospital.com.br/"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Solicitar assento profissional na rede IA Hospital"
               className="px-12 py-6 bg-white text-slate-950 font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl hover:scale-105 active:scale-95 whitespace-nowrap flex items-center justify-center"
             >
@@ -63,7 +63,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminOpen, onOpenLegal, location, isA
               <li><button onClick={() => onOpenLegal?.('about', 'Nossa Visão')} className="hover:text-teal-400 transition-colors">Nossa Visão</button></li>
               <li><a href="/ferramentas-ia" onClick={(e) => onNavigate('/ferramentas-ia', e)} className="hover:text-teal-400 transition-colors">Guia de Ferramentas IA</a></li>
               <li><a href="/carreiras" onClick={(e) => onNavigate('/carreiras', e)} className="hover:text-teal-400 transition-colors">Trabalhe Conosco</a></li>
-              <li><a href="/medicos" onClick={(e) => onNavigate('/medicos', e)} className="hover:text-teal-400 transition-colors text-left text-teal-500">Para Médicos</a></li>
+              <li><a href="https://painel.iahospital.com.br/" target="_blank" rel="noopener noreferrer" className="hover:text-teal-400 transition-colors text-left text-teal-500">Para Médicos</a></li>
             </ul>
           </nav>
 
